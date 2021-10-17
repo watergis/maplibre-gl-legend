@@ -8,7 +8,7 @@ module.exports = {
     output: {
         library: 'watergis',
         libraryTarget: 'umd',
-        filename: 'mapbox-gl-legend.js',
+        filename: 'maplibre-gl-legend.js',
         path: path.resolve(__dirname, 'dist/cdn'),
     },
     module: {
@@ -33,6 +33,6 @@ module.exports = {
         ],
     },
     externals: {
-        'mapbox-gl': 'mapboxgl'
+        'maplibre-gl': 'maplibregl'
     }
 };

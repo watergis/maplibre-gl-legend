@@ -5,7 +5,7 @@ name: deploy gh-pages
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths:
       - "lib/**"
       - "docs/**"
@@ -32,5 +32,5 @@ jobs:
         npm run build
         git config --global user.name "watergis+githubci"
         git config --global user.email "watergis+githubci@users.noreply.github.com"
-        git remote set-url origin https://x-access-token:${NODE_AUTH_TOKEN}@github.com/watergis/mapbox-gl-legend.git
+        git remote set-url origin https://x-access-token:${NODE_AUTH_TOKEN}@github.com/watergis/maplibre-gl-legend.git
         npm run deploy

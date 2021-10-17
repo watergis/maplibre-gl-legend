@@ -1,1 +1,1 @@
-export { default as MapboxLegendControl, LegendOptions } from './legend-control';
+export { default as MaplibreLegendControl, LegendOptions } from './legend-control';

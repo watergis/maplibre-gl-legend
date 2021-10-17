@@ -1,4 +1,4 @@
-import { accessToken, baseApiUrl, IControl, Map as MapboxMap } from "mapbox-gl";
+import maplibregl, { accessToken, baseApiUrl, IControl, Map as MaplibreMap } from "maplibre-gl";
 import LegendSymbol from '@watergis/legend-symbol';
 import axios from 'axios';
 
@@ -20,11 +20,11 @@ export type LegendOptions = {
  * @param {boolean} options.onlyRendered true: only rendered layers will be shown on legend as default. false: all layers' legend will be shown as default. If not specified, default value will be true.
  */
 
-export default class MapboxLegendControl implements IControl
+export default class MaplibreLegendControl implements IControl
 {
 
     private controlContainer: HTMLElement;
-    private map?: MapboxMap;
+    private map?: MaplibreMap;
     private legendContainer: HTMLElement;
     private legendButton: HTMLButtonElement;
     private closeButton: HTMLButtonElement;
@@ -82,7 +82,7 @@ export default class MapboxLegendControl implements IControl
      * @param layer mapboxgl.Layer object
      * @returns HTMLElement | undefined return TD Element
      */
-    private createLayerCheckbox(layer: mapboxgl.Layer): HTMLElement | undefined
+    private createLayerCheckbox(layer: maplibregl.Layer): HTMLElement | undefined
     {
         if (!this.options.showCheckbox) return;
         const this_ = this;
@@ -128,7 +128,7 @@ export default class MapboxLegendControl implements IControl
      * @param layer mapboxgl.Layer object
      * @returns HTMLElement | undefined return TR Element
      */
-    private getLayerLegend(layer: mapboxgl.Layer): HTMLElement | undefined
+    private getLayerLegend(layer: maplibregl.Layer): HTMLElement | undefined
     {
         const map = this.map;
         const zoom = map?.getZoom();
@@ -254,17 +254,17 @@ export default class MapboxLegendControl implements IControl
         }
     }
 
-    public onAdd(map: MapboxMap): HTMLElement
+    public onAdd(map: MaplibreMap): HTMLElement
     {
         this.map = map;
         this.controlContainer = document.createElement("div");
-        this.controlContainer.classList.add("mapboxgl-ctrl");
-        this.controlContainer.classList.add("mapboxgl-ctrl-group");
+        this.controlContainer.classList.add("maplibregl-ctrl");
+        this.controlContainer.classList.add("maplibregl-ctrl-group");
         this.legendContainer = document.createElement("div");
-        this.legendContainer.classList.add("mapboxgl-legend-list");
+        this.legendContainer.classList.add("maplibregl-legend-list");
         this.legendButton = document.createElement("button");
-        this.legendButton.classList.add("mapboxgl-ctrl-icon");
-        this.legendButton.classList.add("mapboxgl-legend-switcher");
+        this.legendButton.classList.add("maplibregl-ctrl-icon");
+        this.legendButton.classList.add("maplibregl-legend-switcher");
         this.legendButton.addEventListener("click", () => {
           this.legendButton.style.display = "none";
           this.legendContainer.style.display = "block";
@@ -275,7 +275,7 @@ export default class MapboxLegendControl implements IControl
         
         this.closeButton = document.createElement("button");
         this.closeButton.textContent = "x";
-        this.closeButton.classList.add("mapboxgl-legend-close-button");
+        this.closeButton.classList.add("maplibregl-legend-close-button");
         this.closeButton.addEventListener("click", () => {
             this.legendButton.style.display = "block";
             this.legendContainer.style.display = "none";
@@ -283,16 +283,16 @@ export default class MapboxLegendControl implements IControl
         this.legendContainer.appendChild(this.closeButton);
 
         const legendLabel = document.createElement('label');
-        legendLabel.classList.add("mapboxgl-legend-title-label");
+        legendLabel.classList.add("maplibregl-legend-title-label");
         legendLabel.textContent = "Legend";
         this.legendContainer.appendChild(legendLabel)
         this.legendContainer.appendChild(document.createElement("br"));
 
         const checkOnlyRendered = document.createElement('input');
         checkOnlyRendered.setAttribute('type', 'checkbox');
-        const checkboxOnlyRenderedId = `mapboxgl-legend-onlyrendered-checkbox-${Math.random()*100}`
+        const checkboxOnlyRenderedId = `maplibregl-legend-onlyrendered-checkbox-${Math.random()*100}`
         checkOnlyRendered.setAttribute('id', checkboxOnlyRenderedId);
-        checkOnlyRendered.classList.add("mapboxgl-legend-onlyRendered-checkbox");
+        checkOnlyRendered.classList.add("maplibregl-legend-onlyRendered-checkbox");
         checkOnlyRendered.checked = this.onlyRendered;
         const this_ = this;
         checkOnlyRendered.addEventListener('click', function(e){
@@ -303,7 +303,7 @@ export default class MapboxLegendControl implements IControl
         });
         this.legendContainer.appendChild(checkOnlyRendered);
         const onlyRenderedLabel = document.createElement('label');
-        onlyRenderedLabel.classList.add("mapboxgl-legend-onlyRendered-label");
+        onlyRenderedLabel.classList.add("maplibregl-legend-onlyRendered-label");
         onlyRenderedLabel.textContent = "Only rendered";
         onlyRenderedLabel.htmlFor = checkboxOnlyRenderedId;
         this.legendContainer.appendChild(onlyRenderedLabel);

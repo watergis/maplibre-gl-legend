@@ -1,18 +1,16 @@
-import mapboxgl from 'mapbox-gl';
-import { MapboxLegendControl, LegendOptions } from '../lib/index';
+import maplibregl from 'maplibre-gl';
+import { MaplibreLegendControl, LegendOptions } from '../lib/index';
 import '../css/styles.css';
 
 (()=>{
-    // mapboxgl.accessToken='your mapbox access token'
-    const map = new mapboxgl.Map({
+    const map = new maplibregl.Map({
         container: 'map',
-        // style: 'mapbox://styles/mapbox/streets-v11',
         style:'https://narwassco.github.io/mapbox-stylefiles/unvt/style.json',
         center: [35.87063, -1.08551],
         zoom: 12,
         hash:true,
     });
-    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
     map.on('load', function() {
         const targets = {
@@ -46,7 +44,7 @@ import '../css/styles.css';
             onlyRendered: true,
             reverseOrder: true
         }
-        map.addControl(new MapboxLegendControl(targets, options), 'top-right');
+        map.addControl(new MaplibreLegendControl(targets, options), 'top-right');
 
         // add legend control with checkbox, and it will be shown as default
         options  = {
@@ -55,7 +53,7 @@ import '../css/styles.css';
             onlyRendered: true,
             reverseOrder: false
         }
-        map.addControl(new MapboxLegendControl(targets, options), 'bottom-right');
+        map.addControl(new MaplibreLegendControl(targets, options), 'bottom-right');
 
         // add legend control with all layers, and it reverse layer order
         options  = {
@@ -64,6 +62,6 @@ import '../css/styles.css';
             onlyRendered: false,
             reverseOrder: true
         }
-        map.addControl(new MapboxLegendControl({}, options), 'bottom-left');
+        map.addControl(new MaplibreLegendControl({}, options), 'bottom-left');
     });
 })()
