@@ -71,7 +71,7 @@ See [demo](https://watergis.github.io/maplibre-gl-legend/#12/-1.08551/35.87063).
 
 ```
 npm run build
-npm start
+npm run dev 
 ```
 
 open [http://localhost:8080](http://localhost:8080).
