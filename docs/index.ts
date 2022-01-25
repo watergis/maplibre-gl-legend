@@ -51,7 +51,8 @@ import '../css/styles.css';
             showDefault: true, 
             showCheckbox: true, 
             onlyRendered: true,
-            reverseOrder: false
+            reverseOrder: false,
+            title: "A custom title"
         }
         map.addControl(new MaplibreLegendControl(targets, options), 'bottom-right');
 
