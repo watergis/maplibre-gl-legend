@@ -9,6 +9,7 @@ export type LegendOptions = {
     reverseOrder: boolean;
     onlyRendered: boolean;
     accesstoken?: string;
+    title?: string;
 }
 
 /**
@@ -38,6 +39,7 @@ export default class MaplibreLegendControl implements IControl
         reverseOrder: true,
         onlyRendered: true,
         accesstoken: undefined,
+        title: undefined,
     };
     private sprite = {
         image: HTMLImageElement,
@@ -98,7 +100,7 @@ export default class MaplibreLegendControl implements IControl
         if (!visibility){
             checklayer.checked = true;
         }else{
-            let _checked = true;       
+            let _checked = true;
             switch(visibility){
                 case 'none':
                     _checked = false;
@@ -118,7 +120,7 @@ export default class MaplibreLegendControl implements IControl
             const _checked = e.target?.checked;
             this_.changeLayerVisibility(_id, _checked);
         });
-        td.appendChild(checklayer) 
+        td.appendChild(checklayer)
 
         return td;
     }
@@ -150,7 +152,7 @@ export default class MaplibreLegendControl implements IControl
                     img.src = symbol.attributes.style.backgroundImage.replace('url(','').replace(')','');
                     img.alt = layer.id;
                     img.style.cssText = `height: 17px;`
-                    td1.appendChild(img)      
+                    td1.appendChild(img)
                 }
                 td1.style.backgroundColor = symbol.attributes.style.backgroundColor;
                 td1.style.backgroundPosition = symbol.attributes.style.backgroundPosition;
@@ -219,7 +221,7 @@ export default class MaplibreLegendControl implements IControl
                 this.legendTable.className = 'legend-table';
                 this.legendContainer.appendChild(this.legendTable)
             }
-            
+
             while (this.legendTable.firstChild) {
                 this.legendTable.removeChild(this.legendTable.firstChild);
             }
@@ -233,9 +235,9 @@ export default class MaplibreLegendControl implements IControl
                     visibleLayers[l.id]=l
                 };
 
-                if ((this.targets === undefined) 
+                if ((this.targets === undefined)
                     // if target option is undefined, show all layers.
-                    || (this.targets && Object.keys(this.targets).length === 0) 
+                    || (this.targets && Object.keys(this.targets).length === 0)
                     // if no layer is specified, show all layers.
                     || (this.targets && Object.keys(this.targets).map((id:string)=>{return id;}).includes(l.id))
                     // if layers are speficied, only show these specific layers.
@@ -272,7 +274,7 @@ export default class MaplibreLegendControl implements IControl
         document.addEventListener("click", this.onDocumentClick);
         this.controlContainer.appendChild(this.legendButton);
         this.controlContainer.appendChild(this.legendContainer);
-        
+
         this.closeButton = document.createElement("button");
         this.closeButton.textContent = "x";
         this.closeButton.classList.add("maplibregl-legend-close-button");
@@ -284,7 +286,7 @@ export default class MaplibreLegendControl implements IControl
 
         const legendLabel = document.createElement('label');
         legendLabel.classList.add("maplibregl-legend-title-label");
-        legendLabel.textContent = "Legend";
+        legendLabel.textContent = this.options.title || "Legend";
         this.legendContainer.appendChild(legendLabel)
         this.legendContainer.appendChild(document.createElement("br"));
 
@@ -334,7 +336,7 @@ export default class MaplibreLegendControl implements IControl
             }
         }
         this.map.on('idle', afterLoadListener);
-        
+
         if (this.options && this.options.showDefault == true){
             this.legendContainer.style.display = "block";
             this.legendButton.style.display = "none";

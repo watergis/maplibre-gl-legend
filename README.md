@@ -71,7 +71,7 @@ See [demo](https://watergis.github.io/maplibre-gl-legend/#12/-1.08551/35.87063).
 
 ```
 npm run build
-npm start
+npm run dev 
 ```
 
 open [http://localhost:8080](http://localhost:8080).
@@ -135,12 +135,14 @@ Specify your layers which you want to add the legend by the control.
 - reverseOrder
   - true: layers will be ordered from top. 
   - false: layers will be ordered from bottom. 
-  - default value is `true` if you don't spefify the option.
+  - default value is `true` if you don't specfify the option.
 - onlyRendered
   - true: only rendered layers will be shown on legend as default. 
   - false: all layers' legend will be shown as default. 
   - default value will be true.
-
+- title
+  - the text shown above the icons
+  - default: "Legend"
 ## How to release
 
 ```zsh
