@@ -10,7 +10,7 @@ import '../css/styles.css';
         zoom: 12,
         hash:true,
     });
-    map.addControl(new maplibregl.NavigationControl(), 'top-right');
+    map.addControl(new maplibregl.NavigationControl({}), 'top-right');
 
     map.on('load', function() {
         const targets = {
