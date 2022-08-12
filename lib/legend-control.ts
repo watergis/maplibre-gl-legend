@@ -1,4 +1,4 @@
-import maplibregl, { accessToken, baseApiUrl, IControl, Map as MaplibreMap } from "maplibre-gl";
+import { ControlPosition, IControl, LayerSpecification, Map as MaplibreMap } from "maplibre-gl";
 import LegendSymbol from '@watergis/legend-symbol';
 import axios from 'axios';
 
@@ -8,7 +8,6 @@ export type LegendOptions = {
     showCheckbox: boolean;
     reverseOrder: boolean;
     onlyRendered: boolean;
-    accesstoken?: string;
     title?: string;
 }
 
@@ -38,7 +37,6 @@ export default class MaplibreLegendControl implements IControl
         showCheckbox: true,
         reverseOrder: true,
         onlyRendered: true,
-        accesstoken: undefined,
         title: undefined,
     };
     private sprite = {
@@ -56,7 +54,7 @@ export default class MaplibreLegendControl implements IControl
       this.onDocumentClick = this.onDocumentClick.bind(this);
     }
 
-    public getDefaultPosition(): string
+    public getDefaultPosition(): ControlPosition
     {
         const defaultPosition = "top-right";
         return defaultPosition;
@@ -84,7 +82,7 @@ export default class MaplibreLegendControl implements IControl
      * @param layer mapboxgl.Layer object
      * @returns HTMLElement | undefined return TD Element
      */
-    private createLayerCheckbox(layer: maplibregl.Layer): HTMLElement | undefined
+    private createLayerCheckbox(layer: LayerSpecification): HTMLElement | undefined
     {
         if (!this.options.showCheckbox) return;
         const this_ = this;
@@ -130,7 +128,7 @@ export default class MaplibreLegendControl implements IControl
      * @param layer mapboxgl.Layer object
      * @returns HTMLElement | undefined return TR Element
      */
-    private getLayerLegend(layer: maplibregl.Layer): HTMLElement | undefined
+    private getLayerLegend(layer: LayerSpecification): HTMLElement | undefined
     {
         const map = this.map;
         const zoom = map?.getZoom();
@@ -357,17 +355,9 @@ export default class MaplibreLegendControl implements IControl
             if (map.loaded()) {
                 const style = map.getStyle();
                 let styleUrl = style.sprite;
-                let strToken = '';
-                if (styleUrl && styleUrl.includes('mapbox://')){
-                    styleUrl = styleUrl
-                    .replace(/mapbox:\/\//g, baseApiUrl)
-                    .replace(/sprites/g,'/styles/v1');
-                    styleUrl = `${styleUrl}/sprite`;
-                    strToken = `?access_token=${this.options.accesstoken || accessToken}`;
-                }
                 const promise = Promise.all([
-                    this.loadImage(`${styleUrl}@2x.png${strToken}`),
-                    this.loadJson(`${styleUrl}.json${strToken}`),
+                    this.loadImage(`${styleUrl}@2x.png`),
+                    this.loadJson(`${styleUrl}.json`),
                 ]);
                 await promise.then(([image, json]) => {this.setSprite(image, json)});
                 this.updateLegendControl();
