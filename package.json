@@ -39,7 +39,7 @@
     "webpack-dev-server": "^4.11.0"
   },
   "dependencies": {
-    "@watergis/legend-symbol": "^0.2.2",
+    "@watergis/legend-symbol": "^0.2.3",
     "axios": "^0.27.2",
     "maplibre-gl": "^2.4.0"
   }
