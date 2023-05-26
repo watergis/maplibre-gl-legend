@@ -1,6 +1,6 @@
 {
 	"name": "@watergis/maplibre-gl-legend",
-	"version": "1.2.8",
+	"version": "2.0.0",
 	"description": "This module adds legend control which is able to create legend panel from mapbox style to mapbox-gl-legend",
 	"main": "dist/maplibre-gl-legend.umd.js",
 	"types": "./dist/types/index.d.ts",
