@@ -1,0 +1,71 @@
+{
+	"name": "@watergis/maplibre-gl-legend",
+	"version": "1.2.8",
+	"description": "This module adds legend control which is able to create legend panel from mapbox style to mapbox-gl-legend",
+	"main": "dist/maplibre-gl-legend.umd.js",
+	"types": "./dist/types/index.d.ts",
+	"module": "dist/maplibre-gl-legend.es.js",
+	"exports": {
+		".": {
+			"import": "./dist/maplibre-gl-legend.es.js",
+			"require": "./dist/maplibre-gl-legend.umd.js"
+		},
+		"./dist/maplibre-gl-legend.css": {
+			"import": "./dist/maplibre-gl-legend.css",
+			"require": "./dist/maplibre-gl-legend.css"
+		}
+	},
+	"files": [
+		"dist",
+		"package.json"
+	],
+	"scripts": {
+		"dev": "vite",
+		"build": "npm run build:js && npm run build:css",
+		"build:js": "tsc && vite build",
+		"build:scss": "sass --no-source-map --style=compressed src/scss/maplibre-gl-legend.scss:dist/maplibre-gl-legend.css",
+		"build:postcss": "postcss dist/*.css -r",
+		"build:css": "npm run build:scss && npm run build:postcss",
+		"preview": "vite preview",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write ."
+	},
+	"keywords": [
+		"mapbox",
+		"mapbox-gl-js",
+		"legend"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/watergis/maplibre-gl-legend.git"
+	},
+	"author": "Jin IGARASHI",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/watergis/maplibre-gl-legend/issues"
+	},
+	"homepage": "https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre-gl-legend#readme",
+	"devDependencies": {
+		"@types/geojson": "^7946.0.10",
+		"@types/node": "^20.2.4",
+		"@typescript-eslint/eslint-plugin": "^5.59.7",
+		"@typescript-eslint/parser": "^5.59.7",
+		"autoprefixer": "^10.4.14",
+		"eslint": "^8.41.0",
+		"eslint-config-prettier": "^8.8.0",
+		"eslint-plugin-import": "^2.27.5",
+		"path": "^0.12.7",
+		"postcss": "^8.4.23",
+		"postcss-cli": "^10.1.0",
+		"prettier": "^2.8.8",
+		"sass": "^1.62.1",
+		"sass-loader": "^13.3.0",
+		"typescript": "^5.0.4",
+		"vite": "^4.3.8"
+	},
+	"dependencies": {
+		"@watergis/legend-symbol": "^0.2.3",
+		"axios": "^0.27.2",
+		"maplibre-gl": "^3.0.0"
+	}
+}
