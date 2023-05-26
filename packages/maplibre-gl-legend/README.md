@@ -16,7 +16,7 @@ pnpm i -D @watergis/maplibre-gl-legend
 
 Try [codesandbox](https://codesandbox.io/s/mapbox-gl-legend-0x6f0).
 
-See [demo](https://watergis.github.io/maplibre-gl-legend/#12/-1.08551/35.87063).
+See [demo](https://maplibre-gl-legend.water-gis.com).
 
 ![demo.gif](./demo.gif)
 
