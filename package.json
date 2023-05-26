@@ -1,46 +1,31 @@
 {
   "name": "@watergis/maplibre-gl-legend",
-  "version": "1.2.8",
-  "description": "This module adds legend control which is able to create legend panel from mapbox style to mapbox-gl-legend",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "css"
-  ],
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
+  "version": "1.0.0",
+  "description": "This repository to manage plugin of maplibre-gl-legend.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && npm run build:cdn && npm run build:example",
-    "build:example": "webpack --mode production --config webpack.config.js",
-    "build:cdn": "webpack --mode production --config webpack.cdn.config.js && cp ./dist/cdn/maplibre-gl-legend.js ./docs/. && cp ./css/styles.css ./docs/maplibre-gl-legend.css",
-    "dev": "webpack serve --mode development --open --hot --config webpack.config.js",
-    "deploy": "gh-pages -d docs -m 'deploy to gh-pages'"
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format",
+    "build": "pnpm -r build",
+    "release": "changeset publish"
   },
-  "keywords": [
-    "mapbox",
-    "mapbox-gl-js",
-    "legend"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/watergis/maplibre-gl-legend.git"
+  },
+  "keywords": [],
   "author": "Jin IGARASHI",
   "license": "MIT",
-  "devDependencies": {
-    "@types/geojson": "^7946.0.10",
-    "css-loader": "^6.7.1",
-    "gh-pages": "^4.0.0",
-    "path": "^0.12.7",
-    "style-loader": "^3.3.1",
-    "ts-loader": "^9.3.1",
-    "typescript": "^4.8.3",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.0"
+  "bugs": {
+    "url": "https://github.com/watergis/maplibre-gl-legend/issues"
   },
-  "dependencies": {
-    "@watergis/legend-symbol": "^0.2.3",
-    "axios": "^0.27.2",
-    "maplibre-gl": "^2.4.0"
-  }
+  "homepage": "https://github.com/watergis/maplibre-gl-legend#readme",
+  "devDependencies": {
+    "@changesets/cli": "^2.26.0",
+    "lefthook": "^1.2.9"
+  },
+  "packageManager": "pnpm@8.2.0",
+  "engines": {
+    "pnpm": "^8.0.0"
+  },
+  "type": "module"
 }
