@@ -120,7 +120,7 @@ map.on('load', function() {
         'contour-label': 'Contour Label',
         'hillshade': 'Hillshade'
     };
-    map.addControl(new MaplibreLegendControl(targets, {
+    map.addControl(new MaplibreLegendControl.MaplibreLegendControl(targets, {
         showDefault: false, 
         showCheckbox: false, 
         onlyRendered: true,
@@ -130,7 +130,9 @@ map.on('load', function() {
 </script>
 ```
 
-Furthermore, you may download specific version's scripts and css locally from [release](https://github.com/watergis/mapbox-gl-legend/releases) page.
+Furthermore, you may download specific version's scripts and css locally from [NPM](https://www.npmjs.com/package/@watergis/maplibre-gl-legend) page.
+
+See an example HTML at [index_umd.html](./index_umd.html)
 
 ## Development
 
