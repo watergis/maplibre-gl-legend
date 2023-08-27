@@ -1,5 +1,12 @@
 # @watergis/maplibre-gl-legend
 
+## 2.0.1
+
+### Patch Changes
+
+- 08a9e60: fix: add some mergin in legend-list css
+- 0430288: fix: add text font color for title, only rendered checkbox and lagend label in scss
+
 ## 2.0.0
 
 ### Major Changes
