@@ -1,5 +1,11 @@
 # @watergis/maplibre-gl-legend
 
+## 2.0.3
+
+### Patch Changes
+
+- dde48e0: fix: add error handling when sprite@2x.png is not reachable
+
 ## 2.0.2
 
 ### Patch Changes
