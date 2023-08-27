@@ -66,6 +66,7 @@ th.legend-table-th {
 	font-size: 14px;
 	font-weight: bold;
 	margin: 5px;
+	color: #1c1c1c;
 }
 
 .maplibregl-legend-onlyRendered-checkbox {
@@ -75,8 +76,13 @@ th.legend-table-th {
 .maplibregl-legend-onlyRendered-label {
 	font-size: 14px;
 	margin: 5px;
+	color: #1c1c1c;
 }
 
 td.legend-table-td > svg {
 	height: 17px;
+}
+
+td.legend-table-td > label {
+	color: #1c1c1c;
 }
