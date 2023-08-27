@@ -339,6 +339,9 @@ export class MaplibreLegendControl implements IControl {
 		this.map.on('moveend', () => {
 			this.updateLegendControl();
 		});
+		this.map.on('styledata', () => {
+			this.updateLegendControl();
+		});
 		const afterLoadListener = async () => {
 			if (map.loaded()) {
 				const style = map.getStyle();
