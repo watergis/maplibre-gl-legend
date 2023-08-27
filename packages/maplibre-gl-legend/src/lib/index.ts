@@ -350,9 +350,11 @@ export class MaplibreLegendControl implements IControl {
 					this.loadImage(`${styleUrl}@2x.png`),
 					this.loadJson(`${styleUrl}.json`)
 				]);
-				await promise.then(([image, json]) => {
-					this.setSprite(image, json);
-				});
+				await promise
+					.then(([image, json]) => {
+						this.setSprite(image, json);
+					})
+					.catch((err) => console.error(err));
 				this.updateLegendControl();
 				map.off('idle', afterLoadListener);
 			}
