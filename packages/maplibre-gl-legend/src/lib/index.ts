@@ -346,15 +346,17 @@ export class MaplibreLegendControl implements IControl {
 			if (map.loaded()) {
 				const style = map.getStyle();
 				const styleUrl = style.sprite;
-				const promise = Promise.all([
-					this.loadImage(`${styleUrl}@2x.png`),
-					this.loadJson(`${styleUrl}.json`)
-				]);
-				await promise
-					.then(([image, json]) => {
-						this.setSprite(image, json);
-					})
-					.catch((err) => console.error(err));
+				if (styleUrl) {
+					const promise = Promise.all([
+						this.loadImage(`${styleUrl}@2x.png`),
+						this.loadJson(`${styleUrl}.json`)
+					]);
+					await promise
+						.then(([image, json]) => {
+							this.setSprite(image, json);
+						})
+						.catch((err) => console.error(err));
+				}
 				this.updateLegendControl();
 				map.off('idle', afterLoadListener);
 			}
