@@ -5,6 +5,7 @@
 .maplibregl-legend-list {
 	overflow-y: scroll;
 	max-height: calc(100vh * 0.7);
+	margin: 0.3em;
 }
 
 .maplibregl-ctrl-group .maplibregl-legend-list button {
@@ -71,6 +72,7 @@ th.legend-table-th {
 
 .maplibregl-legend-onlyRendered-checkbox {
 	margin: 5px;
+	margin-left: 0.5em;
 }
 
 .maplibregl-legend-onlyRendered-label {
