@@ -1,5 +1,11 @@
 # @watergis/maplibre-gl-legend
 
+## 2.0.2
+
+### Patch Changes
+
+- e4634ed: fix: updated legend in styledata event
+
 ## 2.0.1
 
 ### Patch Changes
