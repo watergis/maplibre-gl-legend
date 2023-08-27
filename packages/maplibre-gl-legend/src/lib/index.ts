@@ -424,7 +424,6 @@ export class MaplibreLegendControl implements IControl {
 				if (!cancelled) resolve(img);
 			};
 			img.onerror = (e) => {
-				console.log(e);
 				if (!cancelled) reject(e);
 			};
 			img.src = url;
