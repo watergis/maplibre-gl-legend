@@ -1,5 +1,11 @@
 # @watergis/maplibre-gl-legend
 
+## 2.0.4
+
+### Patch Changes
+
+- 0dfb343: fix: only load sprite file if sprite property in style is available
+
 ## 2.0.3
 
 ### Patch Changes
