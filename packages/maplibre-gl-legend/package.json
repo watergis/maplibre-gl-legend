@@ -8,7 +8,8 @@
 	"exports": {
 		".": {
 			"import": "./dist/maplibre-gl-legend.es.js",
-			"require": "./dist/maplibre-gl-legend.umd.js"
+			"require": "./dist/maplibre-gl-legend.umd.js",
+			"types": "./dist/types/index.d.ts"
 		},
 		"./dist/maplibre-gl-legend.css": {
 			"import": "./dist/maplibre-gl-legend.css",
