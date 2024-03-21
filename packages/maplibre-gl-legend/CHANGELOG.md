@@ -1,5 +1,11 @@
 # @watergis/maplibre-gl-legend
 
+## 2.0.5
+
+### Patch Changes
+
+- aca1d0b: export types in package json
+
 ## 2.0.4
 
 ### Patch Changes
