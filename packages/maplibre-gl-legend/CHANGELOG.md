@@ -1,5 +1,14 @@
 # @watergis/maplibre-gl-legend
 
+## 2.0.6
+
+### Patch Changes
+
+- 47e39b7: Update axios from 0.27.2 to 1.13.2
+- 47e39b7: Change CI files pnpm/action-setup from v2 to v3
+  And change PNPM_CACHE_FOLDER from .pnpm-store to .pnpm-store-v8
+- 47e39b7: Update Node.js from v18 to v24
+
 ## 2.0.5
 
 ### Patch Changes
