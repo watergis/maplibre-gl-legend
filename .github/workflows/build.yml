@@ -3,6 +3,8 @@
 
 name: Build
 
+name: Build
+
 on:
   push:
     branches: [ main ]
@@ -21,16 +23,23 @@ jobs:
         node-version: [18]
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: pnpm/action-setup@v2.2.4
-    - name: Setup Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: pnpm
-    - name: install dependencies
-      run: pnpm install --frozen-lockfile
+      - uses: actions/checkout@v4
 
-    - run: pnpm lint
+      # Set up Node.js before pnpm
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
 
-    - run: pnpm build
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - run: pnpm lint
+      - run: pnpm build
