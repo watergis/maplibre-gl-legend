@@ -23,18 +23,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Set up Node.js before pnpm
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: pnpm
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 8
+          cache: true
           run_install: false
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
