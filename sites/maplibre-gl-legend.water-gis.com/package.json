@@ -11,13 +11,13 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "^5.36.2",
-		"@typescript-eslint/parser": "^5.36.2",
+		"@typescript-eslint/eslint-plugin": "^5.62.0",
+		"@typescript-eslint/parser": "^5.62.0",
 		"@watergis/maplibre-gl-legend": "workspace:^",
-		"eslint-config-prettier": "^8.6.0",
-		"eslint-plugin-import": "^2.26.0",
-		"maplibre-gl": "^3.0.0",
-		"prettier": "^2.8.4",
-		"vite": "^4.2.0"
+		"eslint-config-prettier": "^8.10.2",
+		"eslint-plugin-import": "^2.32.0",
+		"maplibre-gl": "^5.24.0",
+		"prettier": "^2.8.8",
+		"vite": "^4.5.14"
 	}
 }
