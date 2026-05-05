@@ -1,5 +1,12 @@
 # @watergis/maplibre-gl-legend
 
+## 2.0.7
+
+### Patch Changes
+
+- d4d58f5: fix: support multiple sprite sources
+- e205a1a: chore: update dependencies including upgrading maplibre to v5. Removed axios from dependencies.
+
 ## 2.0.6
 
 ### Patch Changes
@@ -53,8 +60,8 @@
 
   ```html
   <link
-    href="https://www.unpkg.com/@watergis/maplibre-gl-legend@latest/dist/maplibre-gl-legend.css"
-    rel="stylesheet"
+  	href="https://www.unpkg.com/@watergis/maplibre-gl-legend@latest/dist/maplibre-gl-legend.css"
+  	rel="stylesheet"
   />
   <script src="https://www.unpkg.com/@watergis/maplibre-gl-legend@latest/dist/maplibre-gl-legend.umd.js"></script>
   ```
