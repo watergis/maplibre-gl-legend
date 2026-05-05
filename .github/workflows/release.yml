@@ -6,7 +6,8 @@ on:
 
 env:
   CI: true
-  PNPM_CACHE_FOLDER: .pnpm-store-v8
+  PNPM_CACHE_FOLDER: .pnpm-store
+  NODE_VERSION: 24
 
 jobs:
   release:
@@ -28,14 +29,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@v6
 
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
 
       - name: install dependencies
         run: pnpm install --frozen-lockfile
@@ -44,9 +44,13 @@ jobs:
         run: |
           pnpm --filter="./packages/**" build
 
+      # OIDC requires npm v11.5.1 or later, so ensure we have the latest npm installed
+      - name: Install latest npm
+        run: npm install -g npm@latest
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@6a0a831ff30acef54f2c6aa1cbbc1096b066edaf # v1.7.0
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: pnpm release
