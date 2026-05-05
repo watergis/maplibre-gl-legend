@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { ControlPosition, IControl, LayerSpecification, Map as MaplibreMap } from 'maplibre-gl';
+import {
+	ControlPosition,
+	IControl,
+	LayerSpecification,
+	Map as MaplibreMap,
+	SpriteSpecification
+} from 'maplibre-gl';
 import LegendSymbol from '@watergis/legend-symbol';
 
 export interface LegendOptions {
@@ -287,6 +293,17 @@ export class MaplibreLegendControl implements IControl {
 		}
 	}
 
+	private getStyleUrl(sprite: SpriteSpecification | undefined): string | undefined {
+		if (!sprite) return;
+		if (typeof sprite === 'string') {
+			return sprite;
+		}
+		if (Array.isArray(sprite) && sprite.length) {
+			return sprite[0].url;
+		}
+		return;
+	}
+
 	public onAdd(map: MaplibreMap): HTMLElement {
 		this.map = map;
 		this.controlContainer = document.createElement('div');
@@ -344,7 +361,7 @@ export class MaplibreLegendControl implements IControl {
 		const afterLoadListener = async () => {
 			if (map.loaded()) {
 				const style = map.getStyle();
-				const styleUrl = style.sprite;
+				const styleUrl = this.getStyleUrl(style.sprite);
 				if (styleUrl) {
 					const promise = Promise.all([
 						this.loadImage(`${styleUrl}@2x.png`),
