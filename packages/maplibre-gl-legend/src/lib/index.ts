@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ControlPosition, IControl, LayerSpecification, Map as MaplibreMap } from 'maplibre-gl';
 import LegendSymbol from '@watergis/legend-symbol';
-import axios from 'axios';
 
 export interface LegendOptions {
 	showDefault: boolean;
@@ -438,6 +437,11 @@ export class MaplibreLegendControl implements IControl {
 	}
 
 	private loadJson(url: string) {
-		return axios.get(url, { responseType: 'json' }).then((res) => res.data);
+		return fetch(url).then((res) => {
+			if (!res.ok) {
+				throw new Error(`Failed to load JSON: ${res.status} ${res.statusText}`);
+			}
+			return res.json();
+		});
 	}
 }
