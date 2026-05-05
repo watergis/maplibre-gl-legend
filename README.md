@@ -1,6 +1,9 @@
 # malibre-gl-legend
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/9ea8bcef-3dc8-4ac2-b10c-8caa86035749/deploy-status)](https://app.netlify.com/sites/maplibre-gl-legend/deploys)
+![License](https://img.shields.io/github/license/watergis/maplibre-gl-legend)
+[![version](https://img.shields.io/npm/v/@watergis/maplibre-gl-legend.svg)](https://www.npmjs.com/package/@watergis/maplibre-gl-legend)
+[![CI](https://github.com/watergis/maplibre-gl-legend/actions/workflows/build.yml/badge.svg)](https://github.com/watergis/maplibre-gl-legend/actions/workflows/build.yml)
+[![Release](https://github.com/watergis/maplibre-gl-legend/actions/workflows/release.yml/badge.svg)](https://github.com/watergis/maplibre-gl-legend/actions/workflows/release.yml)
 
 This monorepo manages the source code and demo page for `@watergis/maplibre-gl-legend`.
 
