@@ -28,7 +28,7 @@
 		"build:postcss": "postcss dist/*.css -r",
 		"build:css": "npm run build:scss && npm run build:postcss",
 		"preview": "vite preview",
-		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"lint": "prettier --plugin-search-dir . --check . && ESLINT_USE_FLAT_CONFIG=false eslint .",
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"keywords": [
@@ -47,6 +47,7 @@
 	},
 	"homepage": "https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre-gl-legend#readme",
 	"devDependencies": {
+		"@eslint/js": "^8.0.0",
 		"@types/geojson": "^7946.0.16",
 		"@types/node": "^20.19.39",
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
