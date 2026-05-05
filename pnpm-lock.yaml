@@ -90,6 +90,9 @@ importers:
       '@watergis/maplibre-gl-legend':
         specifier: workspace:^
         version: link:../../packages/maplibre-gl-legend
+      eslint:
+        specifier: ^8.57.1
+        version: 8.57.1
       eslint-config-prettier:
         specifier: ^8.10.2
         version: 8.10.2(eslint@8.57.1)
