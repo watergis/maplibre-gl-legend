@@ -8,9 +8,8 @@
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
 		/>
-		<script src="https://unpkg.com/maplibre-gl@3.0.1/dist/maplibre-gl.js"></script>
-		<link href="https://unpkg.com/maplibre-gl@3.0.1/dist/maplibre-gl.css" rel="stylesheet" />
-		<script src="./dist/maplibre-gl-legend.umd.js"></script>
+		<link href="https://unpkg.com/maplibre-gl@6.16.0/dist/maplibre-gl.css" rel="stylesheet" />
+		<script src="https://unpkg.com/pmtiles@4.5.0/dist/pmtiles.js"></script>
 		<link href="./dist/maplibre-gl-legend.css" rel="stylesheet" />
 		<style>
 			body {
@@ -35,7 +34,14 @@
 			>Fork me on GitHub</a
 		>
 		<div id="map"></div>
-		<script>
+		<script type="module">
+			// maplibre-gl v6 is distributed as ES modules only, so this example loads both maplibre-gl and the plugin as ES modules
+			import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.16.0/dist/maplibre-gl.mjs';
+			import { MaplibreLegendControl } from './dist/maplibre-gl-legend.es.js';
+
+			const protocol = new pmtiles.Protocol();
+			maplibregl.addProtocol('pmtiles', protocol.tile);
+
 			const map = new maplibregl.Map({
 				container: 'map',
 				style: 'https://narwassco.github.io/mapbox-stylefiles/unvt/style.json',
@@ -71,7 +77,7 @@
 					hillshade: 'Hillshade'
 				};
 				map.addControl(
-					new MaplibreLegendControl.MaplibreLegendControl(targets, {
+					new MaplibreLegendControl(targets, {
 						showDefault: true,
 						showCheckbox: true,
 						onlyRendered: true,
