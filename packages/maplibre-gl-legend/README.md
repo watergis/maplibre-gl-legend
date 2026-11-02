@@ -90,11 +90,17 @@ Specify your layers which you want to add the legend by the control.
 
 ### Use CDN
 
+maplibre-gl v6 is distributed as ES modules only, so load both maplibre-gl and this plugin with `<script type="module">`.
+
 ```html
+<link href='https://unpkg.com/maplibre-gl@6.16.0/dist/maplibre-gl.css' rel='stylesheet' />
 <link href='https://www.unpkg.com/@watergis/maplibre-gl-legend@latest/dist/maplibre-gl-legend.css' rel='stylesheet' />
-<script src='https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.js'></script>
-<script src="https://www.unpkg.com/@watergis/maplibre-gl-legend@latest/dist/maplibre-gl-legend.umd.js"></script>
-<script>
+<script type="module">
+import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.16.0/dist/maplibre-gl.mjs';
+import { MaplibreLegendControl } from 'https://www.unpkg.com/@watergis/maplibre-gl-legend@latest/dist/maplibre-gl-legend.es.js';
+
+const map = new maplibregl.Map({ /* your map options */ });
+
 map.on('load', function() {
     const targets = {
         'pipeline': 'Pipeline',
@@ -120,7 +126,7 @@ map.on('load', function() {
         'contour-label': 'Contour Label',
         'hillshade': 'Hillshade'
     };
-    map.addControl(new MaplibreLegendControl.MaplibreLegendControl(targets, {
+    map.addControl(new MaplibreLegendControl(targets, {
         showDefault: false, 
         showCheckbox: false, 
         onlyRendered: true,
@@ -132,7 +138,7 @@ map.on('load', function() {
 
 Furthermore, you may download specific version's scripts and css locally from [NPM](https://www.npmjs.com/package/@watergis/maplibre-gl-legend) page.
 
-See an example HTML at [index_umd.html](./index_umd.html)
+See an example HTML at [index_es.html](./index_es.html)
 
 ## Development
 
