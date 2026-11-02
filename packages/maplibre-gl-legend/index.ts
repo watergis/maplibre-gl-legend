@@ -7,7 +7,7 @@ import { Protocol } from 'pmtiles';
 
 setWorkerUrl(workerUrl);
 const protocol = new Protocol();
-addProtocol("pmtiles", protocol.tile);
+addProtocol('pmtiles', protocol.tile);
 
 const map = new Map({
 	container: 'map',
