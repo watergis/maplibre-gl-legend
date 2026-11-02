@@ -1,9 +1,15 @@
-import maplibregl, { NavigationControl } from 'maplibre-gl';
+import { Map, NavigationControl, setWorkerUrl, addProtocol } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { MaplibreLegendControl, LegendOptions } from './src/lib/index';
 import './src/scss/maplibre-gl-legend.scss';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+import { Protocol } from 'pmtiles';
 
-const map = new maplibregl.Map({
+setWorkerUrl(workerUrl);
+const protocol = new Protocol();
+addProtocol("pmtiles", protocol.tile);
+
+const map = new Map({
 	container: 'map',
 	style: 'https://narwassco.github.io/mapbox-stylefiles/unvt/style.json',
 	center: [35.87063, -1.08551],

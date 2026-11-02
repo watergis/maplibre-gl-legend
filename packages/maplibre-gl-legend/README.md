@@ -9,7 +9,7 @@ This module is using source code of [orangemug/legend-symbol](https://github.com
 ## Installation:
 
 ```bash
-pnpm i -D @watergis/maplibre-gl-legend
+pnpm i -D @watergis/maplibre-gl-legend maplibre-gl
 ```
 
 ## Demo:

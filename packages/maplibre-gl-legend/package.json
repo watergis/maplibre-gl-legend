@@ -56,6 +56,7 @@
 		"eslint": "^8.57.1",
 		"eslint-config-prettier": "^8.10.2",
 		"eslint-plugin-import": "^2.32.0",
+		"maplibre-gl": "^6.4.1",
 		"path": "^0.12.7",
 		"postcss": "^8.5.14",
 		"postcss-cli": "^10.1.0",
@@ -67,6 +68,9 @@
 	},
 	"dependencies": {
 		"@watergis/legend-symbol": "^0.2.3",
+		"pmtiles": "^4.5.0"
+	},
+	"peerDependencies": {
 		"maplibre-gl": "^6.4.1"
 	}
 }

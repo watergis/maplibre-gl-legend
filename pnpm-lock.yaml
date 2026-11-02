@@ -20,9 +20,9 @@ importers:
       '@watergis/legend-symbol':
         specifier: ^0.2.3
         version: 0.2.3
-      maplibre-gl:
-        specifier: ^6.4.1
-        version: 6.16.0
+      pmtiles:
+        specifier: ^4.5.0
+        version: 4.5.0
     devDependencies:
       '@eslint/js':
         specifier: ^8.0.0
@@ -51,6 +51,9 @@ importers:
       eslint-plugin-import:
         specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)
+      maplibre-gl:
+        specifier: ^6.4.1
+        version: 6.16.0
       path:
         specifier: ^0.12.7
         version: 0.12.7
@@ -1090,6 +1093,9 @@ packages:
   fastq@1.20.1:
     resolution: {integrity: sha512-GGToxJ/w1x32s/D2EKND7kTil4n8OVk/9mycTc4VDza13lOvpUZTGX3mFSCtV9ksdGBVzvsyAVLM6mHFThxXxw==}
 
+  fflate@0.8.3:
+    resolution: {integrity: sha512-tbZNuJrLwGUp3zshBtdy4W+ORxZuIh8a5ilyIEQDC5rY1f3U20JMry0Ll3WBzU58EZKsEuJFXhb5gwv8CsPvgA==}
+
   file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
@@ -1722,6 +1728,9 @@ packages:
   pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+
+  pmtiles@4.5.0:
+    resolution: {integrity: sha512-CBeD4SoUluFziGdy/8k7FOjQxQy486n+929W/tWophauvMICpkZ26vGBWhDt/6b1FZQWNaf4jFdT/5+q0Wii5w==}
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -3431,6 +3440,8 @@ snapshots:
     dependencies:
       reusify: 1.1.0
 
+  fflate@0.8.3: {}
+
   file-entry-cache@6.0.1:
     dependencies:
       flat-cache: 3.2.0
@@ -4063,6 +4074,10 @@ snapshots:
   pify@2.3.0: {}
 
   pify@4.0.1: {}
+
+  pmtiles@4.5.0:
+    dependencies:
+      fflate: 0.8.3
 
   possible-typed-array-names@1.1.0: {}
 
