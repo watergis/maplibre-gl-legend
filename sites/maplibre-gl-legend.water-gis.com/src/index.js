@@ -1,7 +1,13 @@
-import { Map, NavigationControl } from 'maplibre-gl';
+import { Map, NavigationControl, setWorkerUrl, addProtocol } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { MaplibreLegendControl } from '@watergis/maplibre-gl-legend';
 import '@watergis/maplibre-gl-legend/dist/maplibre-gl-legend.css';
+import { Protocol } from 'pmtiles';
+
+setWorkerUrl(workerUrl);
+const protocol = new Protocol();
+addProtocol('pmtiles', protocol.tile);
 
 const map = new Map({
 	container: 'map',
