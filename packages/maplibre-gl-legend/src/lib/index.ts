@@ -14,6 +14,7 @@ export interface LegendOptions {
 	reverseOrder: boolean;
 	onlyRendered: boolean;
 	title?: string;
+	onlyRenderedLabel?: string;
 }
 
 /**
@@ -23,6 +24,8 @@ export interface LegendOptions {
  * @param {boolean} options.showCheckbox true: checkbox will be added for switching layer's visibility. false: checkbox will not be added.
  * @param {boolean} options.reverseOrder true: layers will be ordered from top. false: layers will be ordered from bottom. If not specified, default value will be true.
  * @param {boolean} options.onlyRendered true: only rendered layers will be shown on legend as default. false: all layers' legend will be shown as default. If not specified, default value will be true.
+ * @param {string} options.title the text shown above the legend. Default is 'Legend'.
+ * @param {string} options.onlyRenderedLabel the text of the "Only rendered" checkbox label. Default is 'Only rendered'.
  */
 
 export class MaplibreLegendControl implements IControl {
@@ -40,7 +43,8 @@ export class MaplibreLegendControl implements IControl {
 		showCheckbox: true,
 		reverseOrder: true,
 		onlyRendered: true,
-		title: undefined
+		title: undefined,
+		onlyRenderedLabel: undefined
 	};
 	private sprite = {
 		image: HTMLImageElement,
@@ -347,7 +351,7 @@ export class MaplibreLegendControl implements IControl {
 		this.legendContainer.appendChild(checkOnlyRendered);
 		const onlyRenderedLabel = document.createElement('label');
 		onlyRenderedLabel.classList.add('maplibregl-legend-onlyRendered-label');
-		onlyRenderedLabel.textContent = 'Only rendered';
+		onlyRenderedLabel.textContent = this.options.onlyRenderedLabel || 'Only rendered';
 		onlyRenderedLabel.htmlFor = checkboxOnlyRenderedId;
 		this.legendContainer.appendChild(onlyRenderedLabel);
 		this.legendContainer.appendChild(document.createElement('br'));

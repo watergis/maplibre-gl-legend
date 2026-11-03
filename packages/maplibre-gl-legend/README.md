@@ -87,6 +87,9 @@ Specify your layers which you want to add the legend by the control.
 - title
   - the text shown above the icons
   - default: "Legend"
+- onlyRenderedLabel
+  - the label text of the "Only rendered" checkbox. Use it to translate the label into other languages.
+  - default: "Only rendered"
 
 ### Use CDN
 
