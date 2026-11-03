@@ -250,7 +250,11 @@ export class MaplibreLegendControl implements IControl {
 			if (!this.legendTable) {
 				this.legendTable = document.createElement('TABLE');
 				this.legendTable.className = 'legend-table';
-				this.legendContainer.appendChild(this.legendTable);
+				// only the table scrolls, so the scrollbar does not overlap the close button
+				const tableWrapper = document.createElement('div');
+				tableWrapper.className = 'maplibregl-legend-table-wrapper';
+				tableWrapper.appendChild(this.legendTable);
+				this.legendContainer.appendChild(tableWrapper);
 			}
 
 			while (this.legendTable.firstChild) {
