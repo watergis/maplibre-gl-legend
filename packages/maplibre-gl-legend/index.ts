@@ -58,7 +58,8 @@ map.on('load', function () {
 		showCheckbox: true,
 		onlyRendered: true,
 		reverseOrder: false,
-		title: 'Custom title'
+		title: 'Custom title',
+		onlyRenderedLabel: 'Show only rendered'
 	};
 	map.addControl(new MaplibreLegendControl(targets, options), 'bottom-right');
 
