@@ -3,9 +3,12 @@
 }
 
 .maplibregl-legend-list {
-	overflow-y: scroll;
-	max-height: calc(100vh * 0.7);
 	margin: 0.3em;
+}
+
+.maplibregl-legend-table-wrapper {
+	overflow-y: auto;
+	max-height: calc(100vh * 0.7);
 }
 
 .maplibregl-ctrl-group .maplibregl-legend-list button {
