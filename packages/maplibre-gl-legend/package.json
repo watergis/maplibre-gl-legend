@@ -8,13 +8,11 @@
 	"module": "dist/maplibre-gl-legend.es.js",
 	"exports": {
 		".": {
-			"import": "./dist/maplibre-gl-legend.es.js",
-			"types": "./dist/types/index.d.ts"
+			"types": "./dist/types/index.d.ts",
+			"default": "./dist/maplibre-gl-legend.es.js"
 		},
-		"./dist/maplibre-gl-legend.css": {
-			"import": "./dist/maplibre-gl-legend.css",
-			"require": "./dist/maplibre-gl-legend.css"
-		}
+		"./dist/maplibre-gl-legend.css": "./dist/maplibre-gl-legend.css",
+		"./package.json": "./package.json"
 	},
 	"files": [
 		"dist",
