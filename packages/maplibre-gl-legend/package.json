@@ -2,6 +2,7 @@
 	"name": "@watergis/maplibre-gl-legend",
 	"version": "2.0.7",
 	"description": "This module adds legend control which is able to create legend panel from mapbox style to mapbox-gl-legend",
+	"type": "module",
 	"main": "dist/maplibre-gl-legend.es.js",
 	"types": "./dist/types/index.d.ts",
 	"module": "dist/maplibre-gl-legend.es.js",
@@ -27,7 +28,7 @@
 		"build:postcss": "postcss dist/*.css -r",
 		"build:css": "npm run build:scss && npm run build:postcss",
 		"preview": "vite preview",
-		"lint": "prettier --check . && ESLINT_USE_FLAT_CONFIG=false eslint .",
+		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write ."
 	},
 	"keywords": [
@@ -55,6 +56,7 @@
 		"eslint": "^10.14.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-import": "^2.32.0",
+		"globals": "^17.14.0",
 		"maplibre-gl": "^6.16.0",
 		"path": "^0.12.7",
 		"pmtiles": "^4.5.0",
@@ -63,7 +65,8 @@
 		"prettier": "^3.9.10",
 		"sass": "^1.107.1",
 		"sass-loader": "^17.1.0",
-		"typescript": "^7.0.2",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.72.1",
 		"vite": "^8.3.5"
 	},
 	"dependencies": {
