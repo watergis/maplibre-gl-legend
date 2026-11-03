@@ -1,8 +1,9 @@
 {
   "name": "@watergis/maplibre-gl-legend",
   "version": "1.0.0",
-  "description": "This repository to manage plugin of maplibre-gl-legend.",
+  "description": "This repository to manage plugins of maplibre-gl-legend and mapbox-gl-legend.",
   "scripts": {
+    "dev": "pnpm --filter ./sites/demo dev",
     "lint": "pnpm -r lint",
     "format": "pnpm -r format",
     "build": "pnpm -r build",

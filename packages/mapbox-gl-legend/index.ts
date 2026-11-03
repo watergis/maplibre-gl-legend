@@ -1,13 +1,10 @@
-import { Map, NavigationControl, setWorkerUrl, addProtocol } from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
-import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
-import { MaplibreLegendControl } from '@watergis/maplibre-gl-legend';
-import '@watergis/maplibre-gl-legend/dist/maplibre-gl-legend.css';
-import { Protocol } from 'pmtiles';
+import mapboxgl, { Map, NavigationControl } from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { MapboxLegendControl, type LegendOptions } from './src/lib/index';
+import './src/scss/mapbox-gl-legend.scss';
 
-setWorkerUrl(workerUrl);
-const protocol = new Protocol();
-addProtocol('pmtiles', protocol.tile);
+// set your Mapbox access token in .env (see .env.example)
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESSTOKEN;
 
 const map = new Map({
 	container: 'map',
@@ -44,13 +41,13 @@ map.on('load', function () {
 		hillshade: 'Hillshade'
 	};
 	// add legend control without checkbox, and it will be hide as default
-	let options = {
+	let options: LegendOptions = {
 		showDefault: false,
 		showCheckbox: false,
 		onlyRendered: true,
 		reverseOrder: true
 	};
-	map.addControl(new MaplibreLegendControl(targets, options), 'top-right');
+	map.addControl(new MapboxLegendControl(targets, options), 'top-right');
 
 	// add legend control with checkbox, and it will be shown as default
 	options = {
@@ -58,9 +55,10 @@ map.on('load', function () {
 		showCheckbox: true,
 		onlyRendered: true,
 		reverseOrder: false,
-		title: 'Custom title'
+		title: 'Custom title',
+		onlyRenderedLabel: 'Show only rendered'
 	};
-	map.addControl(new MaplibreLegendControl(targets, options), 'bottom-right');
+	map.addControl(new MapboxLegendControl(targets, options), 'bottom-right');
 
 	// add legend control with all layers, and it reverse layer order
 	options = {
@@ -69,5 +67,5 @@ map.on('load', function () {
 		onlyRendered: false,
 		reverseOrder: true
 	};
-	map.addControl(new MaplibreLegendControl({}, options), 'bottom-left');
+	map.addControl(new MapboxLegendControl({}, options), 'bottom-left');
 });

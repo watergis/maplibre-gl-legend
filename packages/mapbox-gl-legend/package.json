@@ -1,0 +1,75 @@
+{
+	"name": "@watergis/mapbox-gl-legend",
+	"version": "1.2.6",
+	"description": "This module adds legend control which is able to create legend panel from mapbox style to mapbox-gl",
+	"type": "module",
+	"main": "dist/mapbox-gl-legend.es.js",
+	"types": "./dist/types/index.d.ts",
+	"module": "dist/mapbox-gl-legend.es.js",
+	"exports": {
+		".": {
+			"types": "./dist/types/index.d.ts",
+			"default": "./dist/mapbox-gl-legend.es.js"
+		},
+		"./dist/mapbox-gl-legend.css": "./dist/mapbox-gl-legend.css",
+		"./package.json": "./package.json"
+	},
+	"files": [
+		"dist",
+		"package.json"
+	],
+	"scripts": {
+		"dev": "vite",
+		"build": "npm run build:js && npm run build:css",
+		"build:js": "tsc && vite build",
+		"build:scss": "sass --no-source-map --style=compressed src/scss/mapbox-gl-legend.scss:dist/mapbox-gl-legend.css",
+		"build:postcss": "postcss dist/*.css -r",
+		"build:css": "npm run build:scss && npm run build:postcss",
+		"preview": "vite preview",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"keywords": [
+		"mapbox",
+		"mapbox-gl-js",
+		"legend"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/watergis/maplibre-gl-legend.git"
+	},
+	"author": "Jin IGARASHI",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/watergis/maplibre-gl-legend/issues"
+	},
+	"homepage": "https://github.com/watergis/maplibre-gl-legend/tree/main/packages/mapbox-gl-legend#readme",
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@types/geojson": "^7946.0.16",
+		"@types/node": "^26.6.6",
+		"@typescript-eslint/eslint-plugin": "^8.72.1",
+		"@typescript-eslint/parser": "^8.72.1",
+		"autoprefixer": "^10.6.2",
+		"eslint": "^10.14.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-import": "^2.32.0",
+		"globals": "^17.14.0",
+		"mapbox-gl": "^3.26.0",
+		"path": "^0.12.7",
+		"postcss": "^8.5.32",
+		"postcss-cli": "^12.0.0",
+		"prettier": "^3.9.10",
+		"sass": "^1.107.1",
+		"sass-loader": "^17.1.0",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.72.1",
+		"vite": "^8.3.5"
+	},
+	"dependencies": {
+		"@watergis/legend-symbol": "^0.2.3"
+	},
+	"peerDependencies": {
+		"mapbox-gl": "^3.0.0"
+	}
+}
