@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/watergis/maplibre-gl-legend#readme",
   "devDependencies": {
-    "@changesets/cli": "^2.31.0",
+    "@changesets/cli": "^3.0.3",
     "lefthook": "^2.1.6"
   },
   "packageManager": "pnpm@10.33.3",
