@@ -27,8 +27,8 @@
 		"build:postcss": "postcss dist/*.css -r",
 		"build:css": "npm run build:scss && npm run build:postcss",
 		"preview": "vite preview",
-		"lint": "prettier --plugin-search-dir . --check . && ESLINT_USE_FLAT_CONFIG=false eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"lint": "prettier --check . && ESLINT_USE_FLAT_CONFIG=false eslint .",
+		"format": "prettier --write ."
 	},
 	"keywords": [
 		"mapbox",
@@ -46,25 +46,25 @@
 	},
 	"homepage": "https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre-gl-legend#readme",
 	"devDependencies": {
-		"@eslint/js": "^8.0.0",
+		"@eslint/js": "^10.0.1",
 		"@types/geojson": "^7946.0.16",
-		"@types/node": "^20.19.39",
-		"@typescript-eslint/eslint-plugin": "^5.62.0",
-		"@typescript-eslint/parser": "^5.62.0",
-		"autoprefixer": "^10.5.0",
-		"eslint": "^8.57.1",
-		"eslint-config-prettier": "^8.10.2",
+		"@types/node": "^26.6.6",
+		"@typescript-eslint/eslint-plugin": "^8.72.1",
+		"@typescript-eslint/parser": "^8.72.1",
+		"autoprefixer": "^10.6.2",
+		"eslint": "^10.14.0",
+		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-import": "^2.32.0",
-		"maplibre-gl": "^6.4.1",
+		"maplibre-gl": "^6.16.0",
 		"path": "^0.12.7",
 		"pmtiles": "^4.5.0",
-		"postcss": "^8.5.14",
-		"postcss-cli": "^10.1.0",
-		"prettier": "^2.8.8",
-		"sass": "^1.99.0",
-		"sass-loader": "^13.3.3",
-		"typescript": "^5.9.3",
-		"vite": "^4.5.14"
+		"postcss": "^8.5.32",
+		"postcss-cli": "^12.0.0",
+		"prettier": "^3.9.10",
+		"sass": "^1.107.1",
+		"sass-loader": "^17.1.0",
+		"typescript": "^7.0.2",
+		"vite": "^8.3.5"
 	},
 	"dependencies": {
 		"@watergis/legend-symbol": "^0.2.3"

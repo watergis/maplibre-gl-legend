@@ -1,15 +1,16 @@
 {
 	"compilerOptions": {
 		"alwaysStrict": true,
-		"baseUrl": ".",
+		"strict": false,
 		"emitDeclarationOnly": true,
 		"declaration": true,
 		"declarationMap": true,
 		"declarationDir": "./dist/types",
+		"rootDir": "./src/lib",
 		"experimentalDecorators": true,
 		"lib": ["dom", "ESNext"],
 		"module": "ESNext",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"noImplicitThis": true,
 		"noUnusedLocals": true,
 		"outDir": "./dist/lib",

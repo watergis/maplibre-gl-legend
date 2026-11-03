@@ -7,7 +7,7 @@
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
-		"lint": "prettier --plugin-search-dir . --check . && ESLINT_USE_FLAT_CONFIG=false eslint .",
+		"lint": "prettier --check . && ESLINT_USE_FLAT_CONFIG=false eslint .",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
@@ -18,9 +18,11 @@
 		"eslint": "^10.14.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-import": "^2.32.0",
+		"globals": "^17.14.0",
 		"maplibre-gl": "^6.16.0",
 		"pmtiles": "^4.5.0",
 		"prettier": "^3.9.10",
+		"typescript-eslint": "^8.72.1",
 		"vite": "^8.3.5"
 	}
 }
