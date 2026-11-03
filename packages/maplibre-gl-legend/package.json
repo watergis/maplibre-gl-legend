@@ -2,13 +2,12 @@
 	"name": "@watergis/maplibre-gl-legend",
 	"version": "2.0.7",
 	"description": "This module adds legend control which is able to create legend panel from mapbox style to mapbox-gl-legend",
-	"main": "dist/maplibre-gl-legend.umd.js",
+	"main": "dist/maplibre-gl-legend.es.js",
 	"types": "./dist/types/index.d.ts",
 	"module": "dist/maplibre-gl-legend.es.js",
 	"exports": {
 		".": {
 			"import": "./dist/maplibre-gl-legend.es.js",
-			"require": "./dist/maplibre-gl-legend.umd.js",
 			"types": "./dist/types/index.d.ts"
 		},
 		"./dist/maplibre-gl-legend.css": {
@@ -56,7 +55,9 @@
 		"eslint": "^8.57.1",
 		"eslint-config-prettier": "^8.10.2",
 		"eslint-plugin-import": "^2.32.0",
+		"maplibre-gl": "^6.4.1",
 		"path": "^0.12.7",
+		"pmtiles": "^4.5.0",
 		"postcss": "^8.5.14",
 		"postcss-cli": "^10.1.0",
 		"prettier": "^2.8.8",
@@ -66,7 +67,9 @@
 		"vite": "^4.5.14"
 	},
 	"dependencies": {
-		"@watergis/legend-symbol": "^0.2.3",
-		"maplibre-gl": "^5.24.0"
+		"@watergis/legend-symbol": "^0.2.3"
+	},
+	"peerDependencies": {
+		"maplibre-gl": "^6.4.1"
 	}
 }

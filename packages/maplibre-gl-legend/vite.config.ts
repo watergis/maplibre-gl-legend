@@ -12,15 +12,10 @@ export default defineConfig({
 			entry: resolve(__dirname, 'src/lib/index.ts'),
 			name: 'MaplibreLegendControl',
 			fileName: (format) => `maplibre-gl-legend.${format}.js`,
-			formats: ['es', 'umd']
+			formats: ['es']
 		},
 		rollupOptions: {
-			external: ['maplibre-gl'], // バンドルしたくない依存関係を指定
-			output: {
-				globals: {
-					'maplibre-gl': 'maplibregl' // UMDビルド時に、external指定した依存関係をscript タグで読み込まれた場合に使用される変数名を指定
-				}
-			}
+			external: ['maplibre-gl'] // バンドルしたくない依存関係を指定
 		}
 	},
 	plugins: []
