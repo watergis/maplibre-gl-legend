@@ -35,12 +35,13 @@ export function legendOptions(args: Partial<LegendStoryArgs>) {
  */
 export function legendPane(
 	layer: LayerSpecification,
-	options: LegendOptions,
+	options: LegendOptions | Promise<LegendOptions>,
 	style: StyleSpecification = { ...EMPTY_STYLE, layers: [layer] }
 ): HTMLElement {
 	const pane = document.createElement('div');
 	pane.textContent = 'Loading…';
-	createLayerLegend(layer, style, options)
+	Promise.resolve(options)
+		.then((resolved) => createLayerLegend(layer, style, resolved))
 		.then((legend) => pane.replaceChildren(legendRows(legend)))
 		.catch((error: unknown) => {
 			pane.style.color = '#c00';
@@ -49,16 +50,22 @@ export function legendPane(
 	return pane;
 }
 
+/** Options of a story besides the ones of its args, such as the images of a sprite */
+export type StoryOptions = Omit<LegendOptions, 'zoom' | 'defaultLabel'>;
+
+const withArgs = (options: StoryOptions | Promise<StoryOptions>, shown: LegendOptions) =>
+	Promise.resolve(options).then((resolved) => ({ ...resolved, ...shown }));
+
 /** Render the legend of a layer next to the definition of the layer */
 export function renderLegend(
 	layer: LayerSpecification,
 	args: Partial<LegendStoryArgs>,
-	options: Omit<LegendOptions, 'zoom' | 'defaultLabel'> = {},
+	options: StoryOptions | Promise<StoryOptions> = {},
 	style?: StyleSpecification
 ): HTMLElement {
 	const shown = legendOptions(args);
 	const root = sideBySide(
-		legendPane(layer, { ...options, ...shown }, style),
+		legendPane(layer, withArgs(options, shown), style),
 		definitionPane(layer, shown)
 	);
 	root.style.fontFamily = 'sans-serif';
@@ -73,7 +80,7 @@ export function renderLegend(
 export function renderLayers(
 	layers: LayerSpecification[],
 	args: Partial<LegendStoryArgs>,
-	options: Omit<LegendOptions, 'zoom' | 'defaultLabel'> = {}
+	options: StoryOptions | Promise<StoryOptions> = {}
 ): HTMLElement {
 	const shown = legendOptions(args);
 	const style: StyleSpecification = { ...EMPTY_STYLE, layers };
@@ -81,7 +88,7 @@ export function renderLayers(
 	root.style.fontFamily = 'sans-serif';
 	root.style.fontSize = '14px';
 	for (const layer of layers) {
-		const legend = legendPane(layer, { ...options, ...shown }, style);
+		const legend = legendPane(layer, withArgs(options, shown), style);
 		root.append(layerDetails(layer, legend, shown, true));
 	}
 	return root;

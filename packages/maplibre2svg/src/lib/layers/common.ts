@@ -1,6 +1,6 @@
 import { toCssColor } from '../color';
 import type { EvaluatedLayer } from '../expression';
-import { createSvg, fmt } from '../svg';
+import { createSvg, el, fmt } from '../svg';
 import type { RenderContext, RenderedSymbol } from './types';
 
 export const clamp = (value: number, min: number, max: number) =>
@@ -65,4 +65,24 @@ export function widen(symbol: RenderedSymbol, width: number): RenderedSymbol {
 	symbol.svg.setAttribute('width', fmt(width));
 	symbol.svg.setAttribute('viewBox', `${fmt(-dx)} 0 ${fmt(width)} ${fmt(symbol.height)}`);
 	return { ...symbol, width };
+}
+
+/** Color of the frame of area symbols: mid grey, which reads on light and dark pages */
+export const FRAME_COLOR = 'rgba(128,128,128,0.45)';
+
+/**
+ * A 1px neutral frame at the edge of an area symbol, so that very light or translucent areas
+ * still show. It does not take the opacity of the layer. Undefined when the host turned it off.
+ */
+export function frame(ctx: RenderContext, width: number, height: number): Element | undefined {
+	if (!ctx.swatch.frame) return undefined;
+	return el(ctx.document, 'rect', {
+		x: 0.5,
+		y: 0.5,
+		width: width - 1,
+		height: height - 1,
+		fill: 'none',
+		stroke: FRAME_COLOR,
+		'stroke-width': 1
+	});
 }

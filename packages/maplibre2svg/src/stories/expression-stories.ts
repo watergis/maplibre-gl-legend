@@ -1,7 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/html-vite';
 import type { LayerSpecification } from 'maplibre-gl';
 import { customLabelsMetadata } from './fixtures/expressions';
-import { legendArgs, legendArgTypes, renderLegend, type LegendStoryArgs } from './render';
+import {
+	legendArgs,
+	legendArgTypes,
+	renderLegend,
+	type LegendStoryArgs,
+	type StoryOptions
+} from './render';
+
+/** Options of the stories of a type, loaded for each render, such as the images of a sprite */
+export type OptionsLoader = () => StoryOptions | Promise<StoryOptions>;
 
 /** Args of the stories of a layer type */
 export type TypeStoryArgs = LegendStoryArgs & { showDefault: boolean };
@@ -51,16 +60,25 @@ export function storyLayer(type: string, name: string, parts: LayerParts, metada
 }
 
 /** A story of one layer of the type */
-export function layerStory(type: string, name: string, parts: LayerParts): TypeStory {
-	return { name, render: (args) => renderLegend(storyLayer(type, name, parts), args) };
+export function layerStory(
+	type: string,
+	name: string,
+	parts: LayerParts,
+	options: OptionsLoader = () => ({})
+): TypeStory {
+	return { name, render: (args) => renderLegend(storyLayer(type, name, parts), args, options()) };
 }
 
 /**
  * The expression stories of a layer type: the cases given, and `CustomLabels`, which is
  * `Categorical` with `metadata.legend`
  */
-export function expressionStories(type: string, cases: ExpressionCases) {
-	const story = (name: string, parts: LayerParts) => layerStory(type, name, parts);
+export function expressionStories(
+	type: string,
+	cases: ExpressionCases,
+	options: OptionsLoader = () => ({})
+) {
+	const story = (name: string, parts: LayerParts) => layerStory(type, name, parts, options);
 	return {
 		Categorical: story('Categorical', cases.Categorical),
 		CategoricalCase: story('CategoricalCase', cases.CategoricalCase),
@@ -79,7 +97,8 @@ export function expressionStories(type: string, cases: ExpressionCases) {
 						cases.Categorical,
 						customLabelsMetadata(args.showDefault)
 					),
-					args
+					args,
+					options()
 				)
 		} satisfies TypeStory
 	};

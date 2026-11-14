@@ -2,6 +2,7 @@ import { shade } from '../color';
 import type { EvaluatedLayer } from '../expression';
 import { el, fmt } from '../svg';
 import { layerOpacity, opacity, paintColor, paintNumber, swatch } from './common';
+import { patternPaint } from './pattern-paint';
 import type { RenderContext, RenderedSymbol } from './types';
 
 /** Half the width and half the depth of the top face, in pixels */
@@ -35,10 +36,14 @@ export function boxHeight(layer: EvaluatedLayer, siblings: EvaluatedLayer[]): nu
 const points = (list: [number, number][]) => list.map(([x, y]) => `${fmt(x)},${fmt(y)}`).join(' ');
 
 /**
- * An isometric box: the top face in `fill-extrusion-color`, the two side faces in darker
- * shades of it, and the height relative to the other classes of the layer
+ * An isometric box: the top face in `fill-extrusion-color` (or `fill-extrusion-pattern`), the
+ * two side faces in darker shades of the color, and the height relative to the other classes
+ * of the layer
  */
-export function renderFillExtrusion(layer: EvaluatedLayer, ctx: RenderContext): RenderedSymbol {
+export async function renderFillExtrusion(
+	layer: EvaluatedLayer,
+	ctx: RenderContext
+): Promise<RenderedSymbol> {
 	const { swatch: size, document: doc } = ctx;
 	const h = boxHeight(layer, ctx.siblings);
 	const total = 2 * DY + h;
@@ -52,11 +57,12 @@ export function renderFillExtrusion(layer: EvaluatedLayer, ctx: RenderContext): 
 	const w: [number, number] = [cx - DX, top + DY];
 	const down = ([x, y]: [number, number]): [number, number] => [x, y + h];
 	const color = paintColor(layer.paint['fill-extrusion-color']);
-	const face = (list: [number, number][], fill: string) =>
+	const pattern = await patternPaint(ctx, layer.paint['fill-extrusion-pattern']);
+	const face = (list: [number, number][], fill: string, edge = fill) =>
 		el(doc, 'polygon', {
 			points: points(list),
 			fill,
-			stroke: fill,
+			stroke: edge,
 			'stroke-width': 0.5,
 			'stroke-linejoin': 'round'
 		});
@@ -67,8 +73,10 @@ export function renderFillExtrusion(layer: EvaluatedLayer, ctx: RenderContext): 
 		[
 			face([w, s, down(s), down(w)], shade(color.color, SIDE_SHADES.left)),
 			face([s, e, down(e), down(s)], shade(color.color, SIDE_SHADES.right)),
-			face([n, e, s, w], color.color)
+			// the top face shows `fill-extrusion-pattern` when there is one
+			face([n, e, s, w], pattern ? pattern.paint : color.color, color.color)
 		]
 	);
-	return swatch(ctx, width, height, [group]);
+	const defs = pattern ? [el(doc, 'defs', {}, [pattern.defs])] : [];
+	return swatch(ctx, width, height, [...defs, group]);
 }

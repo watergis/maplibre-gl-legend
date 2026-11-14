@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { attrsOf, evaluatedLayer, renderContext } from '../test-utils';
 import { renderCircle } from './circle';
 
-const render = (paint: Record<string, unknown>) =>
+const render = async (paint: Record<string, unknown>) =>
 	renderCircle(evaluatedLayer('circle', paint), renderContext());
 
 describe('renderCircle', () => {
-	it('draws a circle of the real radius in the middle of the swatch', () => {
-		const symbol = render({ 'circle-radius': 4, 'circle-color': '#ff0000' });
+	it('draws a circle of the real radius in the middle of the swatch', async () => {
+		const symbol = await render({ 'circle-radius': 4, 'circle-color': '#ff0000' });
 		expect([symbol.width, symbol.height]).toEqual([30, 20]);
 		expect(symbol.svg.children).toHaveLength(1);
 		expect(attrsOf(symbol.svg, 'circle')).toMatchObject({
@@ -18,8 +18,8 @@ describe('renderCircle', () => {
 		});
 	});
 
-	it('draws the stroke outside the radius', () => {
-		const symbol = render({
+	it('draws the stroke outside the radius', async () => {
+		const symbol = await render({
 			'circle-radius': 4,
 			'circle-stroke-width': 2,
 			'circle-stroke-color': '#000'
@@ -32,17 +32,17 @@ describe('renderCircle', () => {
 		});
 	});
 
-	it('grows the swatch with the radius and clamps it to maxSize', () => {
-		const mid = render({ 'circle-radius': 14 });
+	it('grows the swatch with the radius and clamps it to maxSize', async () => {
+		const mid = await render({ 'circle-radius': 14 });
 		expect([mid.width, mid.height]).toEqual([30, 30]);
-		const big = render({ 'circle-radius': 100, 'circle-stroke-width': 100 });
+		const big = await render({ 'circle-radius': 100, 'circle-stroke-width': 100 });
 		expect(big.height).toBe(42);
 		expect(attrsOf(big.svg, 'circle')).toMatchObject({ r: '10' });
 		expect(attrsOf(big.svg, 'circle', 1)).toMatchObject({ r: '15', 'stroke-width': '10' });
 	});
 
-	it('composes the fill and stroke opacities separately', () => {
-		const symbol = render({
+	it('composes the fill and stroke opacities separately', async () => {
+		const symbol = await render({
 			'circle-opacity': 0.5,
 			'circle-stroke-width': 1,
 			'circle-stroke-opacity': 0.25

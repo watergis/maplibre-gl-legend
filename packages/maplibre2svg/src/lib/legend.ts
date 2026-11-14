@@ -18,9 +18,18 @@ export async function createLayerLegend(
 	const resolved = resolveOptions(options);
 	const classes = classifyLayer(layer, { zoom: resolved.zoom });
 	const labelled = labelClasses(layer, classes, { defaultLabel: resolved.defaultLabel });
-	const symbols = renderSymbols(
+	const symbols = await renderSymbols(
 		labelled.map((cls) => cls.layer),
-		{ document: resolved.document, swatch: resolved.swatch }
+		{
+			document: resolved.document,
+			swatch: resolved.swatch,
+			images: {
+				getImage: resolved.getImage,
+				listImages: resolved.listImages,
+				encode: resolved.imageEncoder,
+				cache: resolved.cache
+			}
+		}
 	);
 	const entries: LegendEntry[] = labelled.map((cls, i) => ({
 		label: cls.text,

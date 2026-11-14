@@ -1,4 +1,5 @@
 import type { EvaluatedLayer } from '../expression';
+import type { ImageContext } from '../images';
 import type { SwatchOptions } from '../types';
 
 /** What a renderer is given besides the evaluated layer */
@@ -10,6 +11,8 @@ export interface RenderContext {
 	 * relative between the classes, such as the height of an extrusion
 	 */
 	siblings: EvaluatedLayer[];
+	/** the images of the style, for icons and patterns */
+	images: ImageContext;
 }
 
 /** A symbol of the legend: an `<svg>` with `width`, `height` and `viewBox` */
@@ -20,4 +23,7 @@ export interface RenderedSymbol {
 }
 
 /** Draws the symbol of one class of a layer type */
-export type Renderer = (layer: EvaluatedLayer, ctx: RenderContext) => RenderedSymbol;
+export type Renderer = (
+	layer: EvaluatedLayer,
+	ctx: RenderContext
+) => RenderedSymbol | Promise<RenderedSymbol>;

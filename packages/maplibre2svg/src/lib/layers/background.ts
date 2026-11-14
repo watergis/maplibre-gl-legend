@@ -1,26 +1,30 @@
 import type { EvaluatedLayer } from '../expression';
 import { el } from '../svg';
-import { layerOpacity, paintColor, swatch } from './common';
+import { frame, layerOpacity, opacity, paintColor, swatch } from './common';
+import { patternPaint } from './pattern-paint';
 import type { RenderContext, RenderedSymbol } from './types';
 
 /**
- * A rectangle of `background-color` × `background-opacity`, filling the swatch.
- * `background-pattern` comes with the sprite images in a later step.
+ * A rectangle of `background-color` (or `background-pattern`) × `background-opacity`, filling
+ * the swatch, with the neutral frame around it
  */
-export function renderBackground(layer: EvaluatedLayer, ctx: RenderContext): RenderedSymbol {
+export async function renderBackground(
+	layer: EvaluatedLayer,
+	ctx: RenderContext
+): Promise<RenderedSymbol> {
 	const { width, height } = ctx.swatch;
-	const color = paintColor(
-		layer.paint['background-color'],
-		layer.paint['background-opacity'],
-		layerOpacity(layer)
-	);
+	const layerAlpha = opacity(layer.paint['background-opacity']) * layerOpacity(layer);
+	const pattern = await patternPaint(ctx, layer.paint['background-pattern']);
+	const color = paintColor(layer.paint['background-color'], layerAlpha);
 	const rect = el(ctx.document, 'rect', {
 		x: 0,
 		y: 0,
 		width,
 		height,
-		fill: color.color,
-		'fill-opacity': color.opacity
+		fill: pattern ? pattern.paint : color.color,
+		'fill-opacity': pattern ? layerAlpha : color.opacity
 	});
-	return swatch(ctx, width, height, [rect]);
+	const border = frame(ctx, width, height);
+	const defs = pattern ? [el(ctx.document, 'defs', {}, [pattern.defs])] : [];
+	return swatch(ctx, width, height, [...defs, rect, ...(border ? [border] : [])]);
 }

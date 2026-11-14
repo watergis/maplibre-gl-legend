@@ -33,14 +33,40 @@ export interface LayerLegend {
 	entries: LegendEntry[];
 }
 
-/** An image of the style, such as of the sprite, in RGBA */
+/**
+ * An image of the style, such as of the sprite: straight (not premultiplied) RGBA pixels,
+ * `width × height × 4` bytes. From MapLibre's `map.getImage(id)`, which gives the pixels in
+ * `image.data.data` and the size in `image.data.width` / `.height`:
+ *
+ * ```ts
+ * getImage: (id) => {
+ *   const image = map.getImage(id);
+ *   const rgba = image?.data;
+ *   if (!rgba || !('data' in rgba)) return undefined;
+ *   return { data: rgba.data, width: rgba.width, height: rgba.height,
+ *     pixelRatio: image.pixelRatio, sdf: image.sdf };
+ * }
+ * ```
+ */
 export interface LegendImage {
 	data: Uint8Array | Uint8ClampedArray;
 	width: number;
 	height: number;
+	/** physical pixels per CSS pixel of the image, e.g. 2 for `@2x` sprites */
 	pixelRatio: number;
+	/** whether the alpha channel holds a signed distance field to tint with `icon-color` */
 	sdf: boolean;
 }
+
+/**
+ * Encode RGBA pixels as an image URL, usually a PNG data URL. Undefined when it cannot,
+ * such as without a canvas.
+ */
+export type ImageEncoder = (
+	rgba: Uint8ClampedArray,
+	width: number,
+	height: number
+) => Promise<string | undefined> | string | undefined;
 
 /** Size of a symbol in pixels */
 export interface SwatchOptions {
@@ -50,6 +76,11 @@ export interface SwatchOptions {
 	height: number;
 	/** the largest width or height that a symbol can grow to, 40 by default */
 	maxSize: number;
+	/**
+	 * Draw a thin neutral frame around area symbols (fill, background) unless the layer has an
+	 * outline of its own, so that very light or translucent areas still show. True by default.
+	 */
+	frame: boolean;
 }
 
 /** Keeps what the legends of a map are made from, such as glyphs and tiles, between calls */
@@ -63,8 +94,18 @@ export interface LegendOptions {
 	zoom?: number;
 	/** center of the map as `[lng, lat]`, for the thumbnails of raster layers */
 	center?: [number, number];
-	/** get an image of the style by its id, such as `(id) => map.getImage(id)` */
+	/** get an image of the style by its id; see `LegendImage` for MapLibre's `map.getImage` */
 	getImage?: (id: string) => LegendImage | undefined;
+	/**
+	 * The ids of the images there are, such as `() => map.listImages()`. Used to pick an image
+	 * for an `icon-image` with `{tokens}` which the legend cannot fill
+	 */
+	listImages?: () => string[];
+	/**
+	 * Encode images, for the environments without a canvas or for tests. A DOM canvas, or an
+	 * `OffscreenCanvas`, by default; without either, images are drawn as placeholders
+	 */
+	imageEncoder?: ImageEncoder;
 	/** sources which override the ones of the style, e.g. with the `tiles` of TileJSON resolved */
 	sources?: StyleSpecification['sources'];
 	/** label of the fallback class of a `match` or a `case`, `Other` by default */

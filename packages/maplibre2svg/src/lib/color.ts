@@ -41,3 +41,10 @@ export function shade(color: string, factor: number): string {
 	const f = (v: number) => toHex(Math.min(1, v * factor));
 	return `#${f(r)}${f(g)}${f(b)}`;
 }
+
+/** A color of the style as straight RGBA, each channel 0..1; black for what is not a color */
+export function toRgba(value: unknown): [number, number, number, number] {
+	const { color, opacity } = toCssColor(value);
+	const [r, g, b] = (Color.parse(color) ?? Color.black).rgb;
+	return [r, g, b, opacity];
+}

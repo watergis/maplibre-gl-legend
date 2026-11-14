@@ -16,6 +16,7 @@ import {
 	typeMetaArgs,
 	type TypeStoryArgs
 } from './expression-stories';
+import { storyImages } from './sprite';
 
 const OUTLINES = ['#7f0000', '#0b3c6b', '#1b5e20', '#4a148c'];
 
@@ -28,6 +29,14 @@ export const Plain = layerStory('fill', 'Plain', { paint: { 'fill-color': '#4daf
 export const OutlineColor = layerStory('fill', 'OutlineColor', {
 	paint: { 'fill-color': '#a6cee3', 'fill-outline-color': '#1f3c88' }
 });
+
+/** fill-pattern: hatching made in code, at fill-opacity 0.8 */
+export const Pattern = layerStory(
+	'fill',
+	'Pattern',
+	{ paint: { 'fill-color': '#cccccc', 'fill-pattern': 'hatch', 'fill-opacity': 0.8 } },
+	storyImages
+);
 
 /** fill-opacity 0.4, which the outline shares */
 export const Translucent = layerStory('fill', 'Translucent', {

@@ -6,6 +6,7 @@ import { renderDefault } from './default';
 import { renderFill } from './fill';
 import { renderFillExtrusion } from './fill-extrusion';
 import { renderLine } from './line';
+import { renderSymbolLayer } from './symbol';
 import type { RenderContext, RenderedSymbol, Renderer } from './types';
 
 export type { RenderContext, RenderedSymbol, Renderer } from './types';
@@ -16,11 +17,15 @@ export const RENDERERS: Record<string, Renderer> = {
 	line: renderLine,
 	circle: renderCircle,
 	'fill-extrusion': renderFillExtrusion,
-	background: renderBackground
+	background: renderBackground,
+	symbol: renderSymbolLayer
 };
 
 /** Draw the symbol of one class with the renderer of its layer type */
-export function renderSymbol(layer: EvaluatedLayer, ctx: RenderContext): RenderedSymbol {
+export async function renderSymbol(
+	layer: EvaluatedLayer,
+	ctx: RenderContext
+): Promise<RenderedSymbol> {
 	return (RENDERERS[layer.type] ?? renderDefault)(layer, ctx);
 }
 
@@ -28,11 +33,13 @@ export function renderSymbol(layer: EvaluatedLayer, ctx: RenderContext): Rendere
  * Draw the symbols of all classes of a layer. They share the widest width, with their
  * content centered, so that the labels after them line up.
  */
-export function renderSymbols(
+export async function renderSymbols(
 	layers: EvaluatedLayer[],
 	ctx: Omit<RenderContext, 'siblings'>
-): RenderedSymbol[] {
-	const symbols = layers.map((layer) => renderSymbol(layer, { ...ctx, siblings: layers }));
+): Promise<RenderedSymbol[]> {
+	const symbols = await Promise.all(
+		layers.map((layer) => renderSymbol(layer, { ...ctx, siblings: layers }))
+	);
 	const width = Math.max(0, ...symbols.map((symbol) => symbol.width));
 	return symbols.map((symbol) => widen(symbol, width));
 }

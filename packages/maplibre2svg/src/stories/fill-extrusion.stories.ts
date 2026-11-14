@@ -5,6 +5,7 @@ import {
 	typeMetaArgs,
 	type TypeStoryArgs
 } from './expression-stories';
+import { storyImages } from './sprite';
 import {
 	categorical,
 	categoricalCase,
@@ -23,6 +24,14 @@ export default { title: 'Layers/fill-extrusion', ...typeMetaArgs } satisfies Met
 export const Plain = layerStory('fill-extrusion', 'Plain', {
 	paint: { 'fill-extrusion-color': '#4daf4a', 'fill-extrusion-height': 20 }
 });
+
+/** fill-extrusion-pattern on the top face: hatching made in code */
+export const Pattern = layerStory(
+	'fill-extrusion',
+	'Pattern',
+	{ paint: { 'fill-extrusion-color': '#9ecae1', 'fill-extrusion-pattern': 'hatch' } },
+	storyImages
+);
 
 /** fill-extrusion-opacity 0.5 */
 export const Translucent = layerStory('fill-extrusion', 'Translucent', {

@@ -1,6 +1,7 @@
 import type { Meta } from '@storybook/html-vite';
 import type { ExpressionSpecification } from 'maplibre-gl';
 import type { TypeStory } from './expression-stories';
+import { storyImages } from './sprite';
 import {
 	expressionStories,
 	layerStory,
@@ -94,6 +95,14 @@ export const Gradient = layerStory('line', 'Gradient', {
 		]
 	}
 });
+
+/** line-pattern: the `oneway` arrow of the sprite, scaled to the line width 8 */
+export const Pattern = layerStory(
+	'line',
+	'Pattern',
+	{ paint: { 'line-width': 8, 'line-pattern': 'oneway' } },
+	storyImages
+);
 
 /** legacy zoom stops for the width: move the zoom control */
 export const LegacyZoomStops = layerStory('line', 'LegacyZoomStops', {
