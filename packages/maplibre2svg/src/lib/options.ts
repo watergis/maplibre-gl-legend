@@ -1,11 +1,13 @@
 import { createLegendCache } from './cache';
+import { defaultFetchGlyphs, type GlyphFetcher } from './glyphs';
 import { defaultEncoder } from './images/encoder';
+import { outputPixelRatio } from './sdf';
 import type { ImageEncoder, LegendCache, LegendOptions, SwatchOptions } from './types';
 
 export const DEFAULT_SWATCH: SwatchOptions = { width: 30, height: 20, maxSize: 40, frame: true };
 export const DEFAULT_LABEL = 'Other';
 
-type Optional = 'center' | 'getImage' | 'listImages' | 'sources';
+type Optional = 'center' | 'getImage' | 'listImages' | 'sources' | 'sampleText';
 
 /** Legend options with the defaults filled in */
 export type ResolvedOptions = Omit<Required<LegendOptions>, Optional> &
@@ -13,6 +15,7 @@ export type ResolvedOptions = Omit<Required<LegendOptions>, Optional> &
 		swatch: SwatchOptions;
 		cache: LegendCache;
 		imageEncoder: ImageEncoder;
+		fetchGlyphs: GlyphFetcher;
 	};
 
 export function resolveOptions(options: LegendOptions = {}): ResolvedOptions {
@@ -27,6 +30,8 @@ export function resolveOptions(options: LegendOptions = {}): ResolvedOptions {
 		// a cache of this call only, when the caller keeps none
 		cache: options.cache ?? createLegendCache(),
 		imageEncoder: options.imageEncoder ?? defaultEncoder(doc),
+		fetchGlyphs: options.fetchGlyphs ?? defaultFetchGlyphs,
+		pixelRatio: outputPixelRatio(options.pixelRatio),
 		document: doc
 	};
 }

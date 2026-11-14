@@ -1,68 +1,46 @@
+import { resampleInto, shadeDistances, type SdfStyle } from '../sdf';
 import type { LegendImage } from '../types';
 
-/** A straight RGBA color, each channel 0..1 */
-export type Rgba = [number, number, number, number];
+/** The largest side of a tinted icon, in device pixels */
+const MAX_SIDE = 256;
 
-/** How MapLibre's symbol SDF shader draws an icon */
-export const SDF_PX = 8;
-export const EDGE_GAMMA = 0.105;
-/** the edge of the shape: alpha 192 / 256 */
-export const SDF_CUTOFF = 0.75;
-
-export interface SdfTint {
-	color: Rgba;
-	haloColor: Rgba;
-	/** `icon-halo-width` in CSS pixels */
-	haloWidth: number;
-	/** `icon-halo-blur` in CSS pixels */
-	haloBlur: number;
-	/** `icon-size`, the scale the icon is displayed at */
-	size: number;
-}
-
-const smoothstep = (e0: number, e1: number, x: number) => {
-	if (e1 <= e0) return x < e0 ? 0 : 1;
-	const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
-	return t * t * (3 - 2 * t);
-};
-
-/**
- * The thresholds of MapLibre's shader for an icon displayed at `size`, with the image drawn at
- * its own pixel ratio: `buff ± gamma` around the distance.
- */
-export function sdfThresholds(tint: SdfTint, pixelRatio: number) {
-	const size = Math.max(tint.size, 1e-3);
-	const edge = EDGE_GAMMA / Math.max(pixelRatio, 1e-3);
+/** The size in device pixels to draw an icon of `width × height` CSS pixels at */
+export function outputSize(width: number, height: number, pixelRatio: number) {
+	const scale = Math.min(pixelRatio, MAX_SIDE / Math.max(width, height, 1e-3));
 	return {
-		fill: { buff: SDF_CUTOFF, gamma: edge / size },
-		halo: {
-			buff: (6 - tint.haloWidth / size) / SDF_PX,
-			gamma: ((tint.haloBlur * 1.19) / SDF_PX + edge) / size
-		}
+		width: Math.max(1, Math.round(width * scale)),
+		height: Math.max(1, Math.round(height * scale)),
+		pixelRatio: scale
 	};
 }
 
 /**
- * Tint an SDF image: the shape in `color`, over a halo in `haloColor` when `haloWidth > 0`,
- * with edges anti-aliased by a smoothstep around the cutoff as MapLibre does. Gives straight
- * RGBA pixels of the same size.
+ * Tint an SDF image as MapLibre's shader does per fragment: the alpha is sampled bilinearly
+ * at each output pixel of `size` (the display size at the output pixel ratio, so that a
+ * large `icon-size` stays sharp), then the shape is drawn in `color` over the halo
  */
-export function tintSdf(image: LegendImage, tint: SdfTint): Uint8ClampedArray {
-	const { fill, halo } = sdfThresholds(tint, image.pixelRatio);
-	const withHalo = tint.haloWidth > 0 && tint.haloColor[3] > 0;
-	const out = new Uint8ClampedArray(image.width * image.height * 4);
-	for (let i = 0; i < out.length; i += 4) {
-		const dist = image.data[i + 3] / 255;
-		const af = smoothstep(fill.buff - fill.gamma, fill.buff + fill.gamma, dist) * tint.color[3];
-		const ah = withHalo
-			? smoothstep(halo.buff - halo.gamma, halo.buff + halo.gamma, dist) * tint.haloColor[3]
-			: 0;
-		const a = af + ah * (1 - af);
-		if (a <= 0) continue;
-		for (let c = 0; c < 3; c++) {
-			out[i + c] = ((tint.color[c] * af + tint.haloColor[c] * ah * (1 - af)) / a) * 255;
-		}
-		out[i + 3] = a * 255;
+export function tintSdf(
+	image: LegendImage,
+	style: SdfStyle,
+	size: { width: number; height: number; pixelRatio: number } = {
+		width: image.width,
+		height: image.height,
+		pixelRatio: image.pixelRatio
 	}
-	return out;
+): Uint8ClampedArray {
+	const distances = new Float32Array(size.width * size.height);
+	const field = {
+		data: image.data,
+		width: image.width,
+		height: image.height,
+		stride: 4,
+		channel: 3
+	};
+	resampleInto(field, distances, size.width, {
+		left: 0,
+		top: 0,
+		width: size.width,
+		height: size.height
+	});
+	return shadeDistances(distances, style, size.pixelRatio);
 }

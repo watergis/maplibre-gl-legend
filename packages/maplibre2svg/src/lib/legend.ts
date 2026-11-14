@@ -1,4 +1,6 @@
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
+import { createLegendCache } from './cache';
+import { DEFAULT_SAMPLE } from './glyphs';
 import { classifyLayer } from './classify';
 import { labelClasses, layerLabelOf } from './label';
 import { renderSymbols } from './layers';
@@ -11,7 +13,7 @@ import type { LayerLegend, LegendEntry, LegendOptions } from './types';
  */
 export async function createLayerLegend(
 	layer: LayerSpecification,
-	// the style gives the sprite, glyphs and sources, which the renderers of later steps read
+	// the style gives the glyphs, and later the sources
 	style: StyleSpecification,
 	options: LegendOptions = {}
 ): Promise<LayerLegend> {
@@ -28,6 +30,12 @@ export async function createLayerLegend(
 				listImages: resolved.listImages,
 				encode: resolved.imageEncoder,
 				cache: resolved.cache
+			},
+			pixelRatio: resolved.pixelRatio,
+			text: {
+				glyphs: resolved.glyphs && typeof style.glyphs === 'string' ? style.glyphs : undefined,
+				fetchGlyphs: resolved.fetchGlyphs,
+				sampleText: resolved.sampleText ?? DEFAULT_SAMPLE
 			}
 		}
 	);
@@ -44,5 +52,7 @@ export async function createLegend(
 	style: StyleSpecification,
 	options: LegendOptions = {}
 ): Promise<LayerLegend[]> {
-	return Promise.all(style.layers.map((layer) => createLayerLegend(layer, style, options)));
+	// one cache for all layers, so that an image or a glyph range is loaded once
+	const shared = { ...options, cache: options.cache ?? createLegendCache() };
+	return Promise.all(style.layers.map((layer) => createLayerLegend(layer, style, shared)));
 }

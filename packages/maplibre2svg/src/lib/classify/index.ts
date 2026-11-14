@@ -13,6 +13,7 @@ import { interpolateClasses } from './interpolate';
 import { matchClasses } from './match';
 import { stepClasses } from './step';
 import { candidatesOfNodes } from './zoom-merge';
+import { seedFromFilter, type FilterSeed } from './filter-seed';
 import { substitutionOverrides, type ClassificationAxis } from './substitute';
 import type { ClassCandidate, LegendClass } from './types';
 import { cleanProperties, type ClassifyContext } from './verify';
@@ -84,10 +85,14 @@ function findAxis(layer: LayerSpecification, zoom: number) {
 	return undefined;
 }
 
-function candidatesOf(layer: LayerSpecification, zoom: number) {
+function candidatesOf(layer: LayerSpecification, zoom: number, seed: FilterSeed) {
 	const target = findAxis(layer, zoom);
 	if (!target) return undefined;
-	const ctx: ClassifyContext = { zoom, geometryType: geometryTypeOf(layer.type) };
+	const ctx: ClassifyContext = {
+		zoom,
+		geometryType: seed.geometryType ?? geometryTypeOf(layer.type),
+		base: seed.properties
+	};
 	try {
 		const candidates = candidatesOfNodes(target.nodes, ctx, CLASSIFIERS);
 		return candidates.length > 0 ? { axis: target.axis, candidates } : undefined;
@@ -103,13 +108,16 @@ function candidatesOf(layer: LayerSpecification, zoom: number) {
  */
 export function classifyLayer(layer: LayerSpecification, options: ClassifyOptions): LegendClass[] {
 	const { zoom } = options;
-	const target = candidatesOf(layer, zoom);
+	const seed = seedFromFilter((layer as { filter?: unknown }).filter);
+	const { geometryType } = seed;
+	const target = candidatesOf(layer, zoom, seed);
 	if (!target) {
-		const evaluated = evaluateLayer(layer, { zoom, properties: {} });
-		return [{ kind: 'single', properties: {}, label: { kind: 'single' }, layer: evaluated }];
+		const properties = { ...seed.properties };
+		const evaluated = evaluateLayer(layer, { zoom, properties, geometryType });
+		return [{ kind: 'single', properties, label: { kind: 'single' }, layer: evaluated }];
 	}
 	return target.candidates.map((candidate) => {
-		const properties = cleanProperties(candidate.properties);
+		const properties = cleanProperties({ ...seed.properties, ...candidate.properties });
 		return {
 			kind: candidate.kind,
 			properties,
@@ -117,6 +125,7 @@ export function classifyLayer(layer: LayerSpecification, options: ClassifyOption
 			layer: evaluateLayer(layer, {
 				zoom,
 				properties,
+				geometryType,
 				overrides: substitutionOverrides(target.axis, candidate.found, candidate)
 			})
 		};

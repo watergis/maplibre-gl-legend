@@ -5,6 +5,7 @@ import {
 	findImage,
 	findImageByTemplate,
 	imageUrl,
+	outputSize,
 	tintSdf,
 	type FoundImage
 } from '../../images';
@@ -19,7 +20,7 @@ const PLACEHOLDER_SIZE = 14;
 /** The image of `icon-image`, or of the `{token}` template the legend could not fill */
 function iconImage(layer: EvaluatedLayer, ctx: RenderContext): FoundImage | undefined {
 	const template = layer.unresolvedTokens['icon-image']?.template;
-	if (template !== undefined) return findImageByTemplate(ctx.images, template);
+	if (template !== undefined) return findImageByTemplate(ctx.images, template, layer.id);
 	return findImage(ctx.images, layer.layout['icon-image']);
 }
 
@@ -46,21 +47,37 @@ export function rotatedBox(width: number, height: number, degrees: number) {
 	return { width: width * c + height * s, height: width * s + height * c };
 }
 
-/** The URL of the image: an SDF image tinted with `icon-color` and the halo */
-function iconUrl(layer: EvaluatedLayer, ctx: RenderContext, found: FoundImage, scale: number) {
+/**
+ * The URL of the image. An SDF image is tinted with `icon-color` and the halo at the size it is
+ * shown, `display` CSS pixels at the output pixel ratio.
+ */
+function iconUrl(
+	layer: EvaluatedLayer,
+	ctx: RenderContext,
+	found: FoundImage,
+	scale: number,
+	display: { width: number; height: number }
+) {
 	const { cache, encode } = ctx.images;
-	if (!found.image.sdf)
+	if (!found.image.sdf) {
 		return imageUrl(cache, encode, { id: found.id, variant: 'plain' }, found.image);
-	const tint = {
+	}
+	const style = {
 		color: toRgba(layer.paint['icon-color']),
 		haloColor: toRgba(layer.paint['icon-halo-color']),
 		haloWidth: Math.max(0, numberOf(layer.paint['icon-halo-width'], 0)),
 		haloBlur: Math.max(0, numberOf(layer.paint['icon-halo-blur'], 0)),
-		size: scale
+		scale
 	};
-	const variant = `sdf|${JSON.stringify(tint)}`;
-	return imageUrl(cache, encode, { id: found.id, variant }, found.image, () =>
-		tintSdf(found.image, tint)
+	const out = outputSize(display.width, display.height, ctx.pixelRatio);
+	const variant = `sdf|${JSON.stringify(style)}|${out.pixelRatio}`;
+	return imageUrl(
+		cache,
+		encode,
+		{ id: found.id, variant },
+		found.image,
+		() => tintSdf(found.image, style, out),
+		out
 	);
 }
 
@@ -82,7 +99,7 @@ export async function iconPart(
 		? displaySize(found.image)
 		: { width: PLACEHOLDER_SIZE, height: PLACEHOLDER_SIZE };
 	const size = iconSize(base.width, base.height, scale, ctx.swatch.maxSize);
-	const href = found ? await iconUrl(layer, ctx, found, scale) : undefined;
+	const href = found ? await iconUrl(layer, ctx, found, scale, size) : undefined;
 	const content = href
 		? [
 				el(doc, 'image', {

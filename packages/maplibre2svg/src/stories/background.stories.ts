@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/html-vite';
 import { layerStory, typeMetaArgs, type TypeStoryArgs } from './expression-stories';
-import { storyImages } from './sprite';
+import { withImages } from './sprite';
 
 export default { title: 'Layers/background', ...typeMetaArgs } satisfies Meta<TypeStoryArgs>;
 
@@ -14,7 +14,7 @@ export const Pattern = layerStory(
 	'background',
 	'Pattern',
 	{ paint: { 'background-color': '#ffffff', 'background-pattern': 'hatch' } },
-	storyImages
+	withImages
 );
 
 /** background-opacity 0.4 */

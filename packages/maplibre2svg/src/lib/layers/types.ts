@@ -1,4 +1,5 @@
 import type { EvaluatedLayer } from '../expression';
+import type { GlyphFetcher } from '../glyphs';
 import type { ImageContext } from '../images';
 import type { SwatchOptions } from '../types';
 
@@ -13,6 +14,19 @@ export interface RenderContext {
 	siblings: EvaluatedLayer[];
 	/** the images of the style, for icons and patterns */
 	images: ImageContext;
+	/** device pixels per CSS pixel which raster parts (tinted icons, text) are drawn at */
+	pixelRatio: number;
+	/** how labels are drawn */
+	text: TextContext;
+}
+
+/** Where the glyphs of labels come from */
+export interface TextContext {
+	/** `style.glyphs`; undefined to draw labels with CSS fonts */
+	glyphs?: string;
+	fetchGlyphs: GlyphFetcher;
+	/** the sample of a label which gives no text */
+	sampleText: string;
 }
 
 /** A symbol of the legend: an `<svg>` with `width`, `height` and `viewBox` */

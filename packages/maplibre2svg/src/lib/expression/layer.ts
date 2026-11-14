@@ -1,6 +1,6 @@
 import type { LayerSpecification } from 'maplibre-gl';
 import { hasSpecType } from './check';
-import { evaluateValue, geometryTypeOf, type EvaluationInput } from './evaluate';
+import { evaluateValue, geometryTypeOf, type EvaluationInput, type GeometryType } from './evaluate';
 import { toPlain } from './plain';
 import {
 	isColorRamp,
@@ -46,6 +46,8 @@ export interface EvaluateLayerOptions {
 	properties?: Record<string, unknown>;
 	/** values to use in place of the ones of the layer */
 	overrides?: PropertyOverrides;
+	/** geometry type of the feature, when the filter of the layer tells it; else by layer type */
+	geometryType?: GeometryType;
 }
 
 function rawValue(layer: LayerSpecification, group: PropertyGroup, name: string) {
@@ -74,12 +76,15 @@ export function evaluateProperty(
 	layer: LayerSpecification,
 	group: PropertyGroup,
 	name: string,
-	input: Omit<EvaluationInput, 'geometryType'>,
+	input: EvaluationInput,
 	override?: unknown
 ): unknown {
 	const spec = propertySpec(layer.type, group, name);
 	if (!spec) return undefined;
-	const full: EvaluationInput = { ...input, geometryType: geometryTypeOf(layer.type) };
+	const full: EvaluationInput = {
+		...input,
+		geometryType: input.geometryType ?? geometryTypeOf(layer.type)
+	};
 	const rootKey = `layers.${layer.id}.${group}.${name}`;
 	let value = override !== undefined ? override : rawValue(layer, group, name);
 	if (isTokenString(value, spec)) value = resolveTokens(value, input.properties ?? {}).text;
@@ -100,14 +105,14 @@ function evaluateGroup(
 ): Record<string, unknown> {
 	const values: Record<string, unknown> = {};
 	const properties = options.properties ?? {};
-	const input = { zoom: options.zoom, properties };
+	const input = { zoom: options.zoom, properties, geometryType: options.geometryType };
 	for (const [name, spec] of Object.entries(propertySpecs(layer.type, group))) {
 		if (isColorRamp(spec)) continue;
 		const override = options.overrides?.[group]?.[name];
 		const raw = override !== undefined ? override : rawValue(layer, group, name);
 		if (isTokenString(raw, spec)) {
-			const { missing } = resolveTokens(raw, properties);
-			if (missing.length > 0) unresolved[name] = { template: raw, fields: missing };
+			const { missing, partial } = resolveTokens(raw, properties);
+			if (missing.length > 0) unresolved[name] = { template: partial, fields: missing };
 		}
 		const value = evaluateProperty(layer, group, name, input, override);
 		if (value !== undefined) values[name] = value;

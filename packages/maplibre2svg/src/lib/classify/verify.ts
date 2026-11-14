@@ -5,6 +5,8 @@ import type { FeatureProperties } from './types';
 export interface ClassifyContext {
 	zoom: number;
 	geometryType: GeometryType;
+	/** properties which the filter of the layer gives every feature; the class's own win */
+	base?: FeatureProperties;
 }
 
 /** Drop the fields marked as absent */
@@ -23,7 +25,7 @@ export function evaluatePart(
 ): { value: unknown } | undefined {
 	return evaluateExpression(expr, {
 		zoom: ctx.zoom,
-		properties: cleanProperties(properties),
+		properties: cleanProperties({ ...ctx.base, ...properties }),
 		geometryType: ctx.geometryType
 	});
 }

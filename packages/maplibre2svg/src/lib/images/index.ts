@@ -1,10 +1,10 @@
 import type { ImageEncoder, LegendCache, LegendImage } from '../types';
 import { matchTemplate } from './match';
 
-export { imageUrl } from './data-url';
+export { encodedUrl, imageFingerprint, imageUrl, isImageUrl } from './data-url';
 export { matchTemplate } from './match';
 export { patternOf } from './pattern';
-export { tintSdf, sdfThresholds, type Rgba, type SdfTint } from './sdf-icon';
+export { outputSize, tintSdf } from './sdf-icon';
 
 /** Where images come from, and how they are encoded */
 export interface ImageContext {
@@ -45,22 +45,28 @@ export function findImage(images: ImageContext, id: unknown): FoundImage | undef
 	}
 }
 
+/** The ids of the images there are; anything but an array of strings counts as none */
+function listedIds(images: ImageContext): string[] {
+	try {
+		const ids: unknown = images.listImages?.();
+		return Array.isArray(ids) ? ids.filter((id): id is string => typeof id === 'string') : [];
+	} catch {
+		return [];
+	}
+}
+
 /**
  * An image which a `{token}` template stands for, chosen among the images there are, since the
- * legend has no feature to fill the tokens with
+ * legend has no feature to fill the tokens with. An id which shares a word with `hint` (the
+ * layer id) is preferred, e.g. `railway_11` for `{class}_11` in `poi-railway`.
  */
 export function findImageByTemplate(
 	images: ImageContext,
-	template: string
+	template: string,
+	hint = ''
 ): FoundImage | undefined {
-	let ids: string[];
-	try {
-		ids = images.listImages?.() ?? [];
-	} catch {
-		return undefined;
-	}
-	const available = ids.filter((id) => findImage(images, id));
-	const id = matchTemplate(template, available);
+	const available = listedIds(images).filter((id) => findImage(images, id));
+	const id = matchTemplate(template, available, hint);
 	return id === undefined ? undefined : findImage(images, id);
 }
 

@@ -2,7 +2,10 @@ import type { StylePropertySpecification } from 'maplibre-gl';
 
 /** A `{token}` template whose fields the representative feature does not have */
 export interface UnresolvedTokens {
-	/** the value as it is in the style, e.g. `mark_{kind}` */
+	/**
+	 * the value with the tokens the feature could fill filled, and the others kept, e.g.
+	 * `us-interstate_{ref_length}` for `{network}_{ref_length}` and a feature with `network`
+	 */
 	template: string;
 	/** the fields which were filled with an empty string, e.g. `['kind']` */
 	fields: string[];
@@ -28,10 +31,14 @@ export function isTokenString(value: unknown, spec: StylePropertySpecification):
  */
 export function resolveTokens(template: string, properties: Record<string, unknown>) {
 	const missing: string[] = [];
+	const has = (key: string) => Object.prototype.hasOwnProperty.call(properties, key);
 	const text = template.replace(TOKEN, (_match, key: string) => {
-		if (Object.prototype.hasOwnProperty.call(properties, key)) return String(properties[key]);
+		if (has(key)) return String(properties[key]);
 		if (!missing.includes(key)) missing.push(key);
 		return '';
 	});
-	return { text, missing };
+	const partial = template.replace(TOKEN, (match, key: string) =>
+		has(key) ? String(properties[key]) : match
+	);
+	return { text, missing, partial };
 }

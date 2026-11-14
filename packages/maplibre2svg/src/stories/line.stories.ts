@@ -1,7 +1,7 @@
 import type { Meta } from '@storybook/html-vite';
 import type { ExpressionSpecification } from 'maplibre-gl';
 import type { TypeStory } from './expression-stories';
-import { storyImages } from './sprite';
+import { withImages } from './sprite';
 import {
 	expressionStories,
 	layerStory,
@@ -101,7 +101,7 @@ export const Pattern = layerStory(
 	'line',
 	'Pattern',
 	{ paint: { 'line-width': 8, 'line-pattern': 'oneway' } },
-	storyImages
+	withImages
 );
 
 /** legacy zoom stops for the width: move the zoom control */

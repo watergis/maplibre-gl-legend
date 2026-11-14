@@ -10,9 +10,17 @@ describe('legacy {token} strings', () => {
 	it('fills tokens, and missing fields with an empty string', () => {
 		expect(resolveTokens('{name} {id}', { name: 'A', id: 3 })).toEqual({
 			text: 'A 3',
-			missing: []
+			missing: [],
+			partial: 'A 3'
 		});
-		expect(resolveTokens('mark_{k}{k}', {})).toEqual({ text: 'mark_', missing: ['k'] });
+		expect(resolveTokens('mark_{k}{k}', {})).toEqual({
+			text: 'mark_',
+			missing: ['k'],
+			partial: 'mark_{k}{k}'
+		});
+		expect(resolveTokens('{network}_{ref_length}', { network: 'us' }).partial).toBe(
+			'us_{ref_length}'
+		);
 	});
 
 	it('resolves text-field and icon-image for the representative feature', () => {
@@ -30,7 +38,8 @@ describe('legacy {token} strings', () => {
 		expect(evaluated.layout['text-field']).toBe(' 7');
 		expect(evaluated.unresolvedTokens).toEqual({
 			'icon-image': { template: 'mark_{k}', fields: ['k'] },
-			'text-field': { template: '{name} {id}', fields: ['name'] }
+			// the template keeps the tokens which could not be filled, the others filled
+			'text-field': { template: '{name} 7', fields: ['name'] }
 		});
 	});
 

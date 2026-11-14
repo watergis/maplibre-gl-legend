@@ -5,7 +5,7 @@ import {
 	typeMetaArgs,
 	type TypeStoryArgs
 } from './expression-stories';
-import { storyImages } from './sprite';
+import { withImages } from './sprite';
 import {
 	categorical,
 	categoricalCase,
@@ -30,7 +30,7 @@ export const Pattern = layerStory(
 	'fill-extrusion',
 	'Pattern',
 	{ paint: { 'fill-extrusion-color': '#9ecae1', 'fill-extrusion-pattern': 'hatch' } },
-	storyImages
+	withImages
 );
 
 /** fill-extrusion-opacity 0.5 */

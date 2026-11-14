@@ -16,7 +16,7 @@ import {
 	typeMetaArgs,
 	type TypeStoryArgs
 } from './expression-stories';
-import { storyImages } from './sprite';
+import { withImages } from './sprite';
 
 const OUTLINES = ['#7f0000', '#0b3c6b', '#1b5e20', '#4a148c'];
 
@@ -35,7 +35,7 @@ export const Pattern = layerStory(
 	'fill',
 	'Pattern',
 	{ paint: { 'fill-color': '#cccccc', 'fill-pattern': 'hatch', 'fill-opacity': 0.8 } },
-	storyImages
+	withImages
 );
 
 /** fill-opacity 0.4, which the outline shares */

@@ -6,11 +6,11 @@ import {
 	legendArgTypes,
 	renderLegend,
 	type LegendStoryArgs,
-	type StoryOptions
+	type StorySetup
 } from './render';
 
-/** Options of the stories of a type, loaded for each render, such as the images of a sprite */
-export type OptionsLoader = () => StoryOptions | Promise<StoryOptions>;
+/** What the stories of a type render with, made for each render (such as sprite images) */
+export type SetupLoader = () => StorySetup;
 
 /** Args of the stories of a layer type */
 export type TypeStoryArgs = LegendStoryArgs & { showDefault: boolean };
@@ -64,9 +64,9 @@ export function layerStory(
 	type: string,
 	name: string,
 	parts: LayerParts,
-	options: OptionsLoader = () => ({})
+	setup: SetupLoader = () => ({})
 ): TypeStory {
-	return { name, render: (args) => renderLegend(storyLayer(type, name, parts), args, options()) };
+	return { name, render: (args) => renderLegend(storyLayer(type, name, parts), args, setup()) };
 }
 
 /**
@@ -76,9 +76,9 @@ export function layerStory(
 export function expressionStories(
 	type: string,
 	cases: ExpressionCases,
-	options: OptionsLoader = () => ({})
+	setup: SetupLoader = () => ({})
 ) {
-	const story = (name: string, parts: LayerParts) => layerStory(type, name, parts, options);
+	const story = (name: string, parts: LayerParts) => layerStory(type, name, parts, setup);
 	return {
 		Categorical: story('Categorical', cases.Categorical),
 		CategoricalCase: story('CategoricalCase', cases.CategoricalCase),
@@ -98,7 +98,7 @@ export function expressionStories(
 						customLabelsMetadata(args.showDefault)
 					),
 					args,
-					options()
+					setup()
 				)
 		} satisfies TypeStory
 	};

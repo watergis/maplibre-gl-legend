@@ -17,7 +17,9 @@ export async function renderSymbolLayer(
 	layer: EvaluatedLayer,
 	ctx: RenderContext
 ): Promise<RenderedSymbol> {
-	const parts = [await iconPart(layer, ctx), textPart(layer, ctx)].filter((p) => p !== undefined);
+	const parts = [await iconPart(layer, ctx), await textPart(layer, ctx)].filter(
+		(p) => p !== undefined
+	);
 	if (parts.length === 0) return renderDefault(layer, ctx);
 	const contentWidth = parts.reduce((sum, p) => sum + p.width, 0) + GAP * (parts.length - 1);
 	const contentHeight = Math.max(...parts.map((p) => p.height));

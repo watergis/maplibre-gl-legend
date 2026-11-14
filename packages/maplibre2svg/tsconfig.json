@@ -20,5 +20,11 @@
 		"skipLibCheck": true
 	},
 	"include": ["src/lib"],
-	"exclude": ["src/lib/**/*.test.ts", "src/lib/test-utils.ts", "src/stories", "src/**/*.stories.ts"]
+	"exclude": [
+		"src/lib/**/*.test.ts",
+		"src/lib/test-utils.ts",
+		"src/lib/**/fixture.ts",
+		"src/stories",
+		"src/**/*.stories.ts"
+	]
 }

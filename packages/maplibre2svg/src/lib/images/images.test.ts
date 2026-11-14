@@ -64,7 +64,7 @@ describe('imageUrl', () => {
 		const a = await imageUrl(cache, encode, { id: 'x', variant: 'plain' }, image);
 		const b = await imageUrl(cache, encode, { id: 'x', variant: 'plain' }, image);
 		await imageUrl(cache, encode, { id: 'x', variant: 'tint' }, image);
-		expect(a).toBe('data:test/2x1/255,0,0,255');
+		expect(a).toBe('data:image/x-test,2x1/255,0,0,255');
 		expect(b).toBe(a);
 		expect(calls).toHaveLength(2);
 	});

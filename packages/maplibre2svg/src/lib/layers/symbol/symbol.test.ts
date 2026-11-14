@@ -31,7 +31,11 @@ describe('renderSymbolLayer', () => {
 	it('draws the image at its display size, centered', async () => {
 		const result = await render(symbol({ 'icon-image': 'pin', 'icon-size': 1.5 }), { pin });
 		const image = attrsOf(result.svg, 'image');
-		expect(image).toMatchObject({ width: '24', height: '12', href: 'data:test/32x16/0,128,0,255' });
+		expect(image).toMatchObject({
+			width: '24',
+			height: '12',
+			href: 'data:image/x-test,32x16/0,128,0,255'
+		});
 		expect([result.width, result.height]).toEqual([30, 20]);
 		expect(attrsOf(result.svg, 'g', 1).transform).toContain('translate(12 6)');
 	});
@@ -57,11 +61,11 @@ describe('renderSymbolLayer', () => {
 		const tinted = await render(symbol({ 'icon-image': 'sdf' }, { 'icon-color': '#0000ff' }), {
 			sdf
 		});
-		expect(attrsOf(tinted.svg, 'image').href).toBe('data:test/2x2/0,0,255,255');
+		expect(attrsOf(tinted.svg, 'image').href).toBe('data:image/x-test,2x2/0,0,255,255');
 		const plain = await render(symbol({ 'icon-image': 'pin' }, { 'icon-color': '#0000ff' }), {
 			pin
 		});
-		expect(attrsOf(plain.svg, 'image').href).toBe('data:test/32x16/0,128,0,255');
+		expect(attrsOf(plain.svg, 'image').href).toBe('data:image/x-test,32x16/0,128,0,255');
 	});
 
 	it('draws a placeholder for a missing image, or when it cannot be encoded', async () => {
@@ -84,16 +88,19 @@ describe('renderSymbolLayer', () => {
 			meter_avg: solidImage(4, 4, [9, 9, 9, 255])
 		};
 		const result = await render(symbol({ 'icon-image': 'meter_{status}' }), images);
-		expect(attrsOf(result.svg, 'image').href).toBe('data:test/4x4/9,9,9,255');
+		expect(attrsOf(result.svg, 'image').href).toBe('data:image/x-test,4x4/9,9,9,255');
 	});
 
-	it('draws a text placeholder for text only, and the text beside the icon', async () => {
+	it('draws text only, and the text beside the icon, in a CSS font without glyphs', async () => {
 		const text = await render(symbol({ 'text-field': 'Name' }));
-		expect(text.svg.querySelector('text')?.textContent).toBe('Aa');
+		expect(text.svg.querySelector('text')?.textContent).toBe('Name');
 		const both = await render(symbol({ 'icon-image': 'pin', 'text-field': '{name}' }), { pin });
 		expect(both.svg.querySelector('image')).not.toBeNull();
-		expect(both.svg.querySelector('text')).not.toBeNull();
-		expect(both.width).toBe(40);
+		expect(both.svg.querySelector('text')?.textContent).toBe('Aa');
+		const [image, label] = [...both.svg.querySelectorAll(':scope > g')];
+		expect(image.getAttribute('transform')).toMatch(/^translate\(/);
+		expect(label.getAttribute('transform')).toMatch(/^translate\(/);
+		expect(both.width).toBeGreaterThan(40);
 	});
 });
 
@@ -120,9 +127,9 @@ describe('a match on icon-image', () => {
 		expect(
 			legend.entries.map((e) => [e.label, e.svg.querySelector('image')?.getAttribute('href')])
 		).toEqual([
-			['ON', 'data:test/4x4/0,255,0,255'],
-			['C/O', 'data:test/4x4/255,0,0,255'],
-			['Other', 'data:test/4x4/128,128,128,255']
+			['ON', 'data:image/x-test,4x4/0,255,0,255'],
+			['C/O', 'data:image/x-test,4x4/255,0,0,255'],
+			['Other', 'data:image/x-test,4x4/128,128,128,255']
 		]);
 	});
 });

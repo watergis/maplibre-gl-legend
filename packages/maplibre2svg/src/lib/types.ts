@@ -114,6 +114,18 @@ export interface LegendOptions {
 	swatch?: Partial<SwatchOptions>;
 	/** draw labels with the glyphs of the style, true by default. False uses CSS fonts only */
 	glyphs?: boolean;
+	/**
+	 * Get the bytes of a glyph PBF, so that the host can route the requests (MapLibre's
+	 * `transformRequest`, custom protocols). `fetch` by default
+	 */
+	fetchGlyphs?: (url: string) => Promise<ArrayBuffer>;
+	/** the sample of a label whose `text-field` gives no text for the legend, `Aa` by default */
+	sampleText?: string;
+	/**
+	 * Device pixels per CSS pixel to draw tinted icons and label text at, from 1 to 3:
+	 * `devicePixelRatio` by default
+	 */
+	pixelRatio?: number;
 	cache?: LegendCache;
 	/** document to create the SVG elements with, the global `document` by default */
 	document?: Document;

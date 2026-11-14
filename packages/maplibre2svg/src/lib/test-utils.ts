@@ -44,7 +44,7 @@ export function solidImage(
 export function fakeEncoder() {
 	const calls: string[] = [];
 	const encode: ImageEncoder = (rgba, width, height) => {
-		const url = `data:test/${width}x${height}/${[...rgba.slice(0, 4)].join(',')}`;
+		const url = `data:image/x-test,${width}x${height}/${[...rgba.slice(0, 4)].join(',')}`;
 		calls.push(url);
 		return url;
 	};
@@ -65,6 +65,12 @@ export const renderContext = (
 		listImages: () => Object.keys(images),
 		encode: fakeEncoder().encode,
 		cache: createLegendCache()
+	},
+	pixelRatio: 1,
+	text: {
+		glyphs: undefined,
+		fetchGlyphs: () => Promise.reject(new Error('no glyphs in tests')),
+		sampleText: 'Aa'
 	}
 });
 

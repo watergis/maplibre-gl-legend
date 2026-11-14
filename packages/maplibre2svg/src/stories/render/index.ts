@@ -53,20 +53,41 @@ export function legendPane(
 /** Options of a story besides the ones of its args, such as the images of a sprite */
 export type StoryOptions = Omit<LegendOptions, 'zoom' | 'defaultLabel'>;
 
-const withArgs = (options: StoryOptions | Promise<StoryOptions>, shown: LegendOptions) =>
-	Promise.resolve(options).then((resolved) => ({ ...resolved, ...shown }));
+/** What a story renders with besides its args */
+export interface StorySetup {
+	options?: StoryOptions | Promise<StoryOptions>;
+	/** root properties of the style, such as `glyphs` */
+	style?: Partial<StyleSpecification>;
+}
+
+const withArgs = (options: StorySetup['options'], shown: LegendOptions) =>
+	Promise.resolve(options ?? {}).then((resolved) => ({ ...resolved, ...shown }));
+
+/** The options shown next to the layer: those of the args, `style.glyphs` and `glyphs: false` */
+function displayed(shown: LegendOptions, setup: StorySetup) {
+	const display: Record<string, unknown> = { ...shown };
+	if (setup.style?.glyphs) display['style.glyphs'] = setup.style.glyphs;
+	const options = setup.options as StoryOptions | undefined;
+	if (options && !(options instanceof Promise) && options.glyphs === false) display.glyphs = false;
+	return display;
+}
+
+const styleWith = (setup: StorySetup, layers: LayerSpecification[]): StyleSpecification => ({
+	...EMPTY_STYLE,
+	...setup.style,
+	layers
+});
 
 /** Render the legend of a layer next to the definition of the layer */
 export function renderLegend(
 	layer: LayerSpecification,
 	args: Partial<LegendStoryArgs>,
-	options: StoryOptions | Promise<StoryOptions> = {},
-	style?: StyleSpecification
+	setup: StorySetup = {}
 ): HTMLElement {
 	const shown = legendOptions(args);
 	const root = sideBySide(
-		legendPane(layer, withArgs(options, shown), style),
-		definitionPane(layer, shown)
+		legendPane(layer, withArgs(setup.options, shown), styleWith(setup, [layer])),
+		definitionPane(layer, displayed(shown, setup))
 	);
 	root.style.fontFamily = 'sans-serif';
 	root.style.fontSize = '14px';
@@ -80,16 +101,16 @@ export function renderLegend(
 export function renderLayers(
 	layers: LayerSpecification[],
 	args: Partial<LegendStoryArgs>,
-	options: StoryOptions | Promise<StoryOptions> = {}
+	setup: StorySetup = {}
 ): HTMLElement {
 	const shown = legendOptions(args);
-	const style: StyleSpecification = { ...EMPTY_STYLE, layers };
+	const style = styleWith(setup, layers);
 	const root = document.createElement('div');
 	root.style.fontFamily = 'sans-serif';
 	root.style.fontSize = '14px';
 	for (const layer of layers) {
-		const legend = legendPane(layer, withArgs(options, shown), style);
-		root.append(layerDetails(layer, legend, shown, true));
+		const legend = legendPane(layer, withArgs(setup.options, shown), style);
+		root.append(layerDetails(layer, legend, displayed(shown, setup), true));
 	}
 	return root;
 }
