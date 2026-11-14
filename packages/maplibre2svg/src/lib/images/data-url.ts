@@ -1,4 +1,5 @@
 import type { ImageEncoder, LegendCache, LegendImage } from '../types';
+import { hasNoControls } from '../url-safety';
 
 /** How many bytes the checksum of an image samples at most */
 const CHECKSUM_SAMPLES = 1024;
@@ -21,7 +22,9 @@ export function imageFingerprint(image: LegendImage): string {
 
 /** Whether the encoder gave an image URL which can go into `href` */
 export const isImageUrl = (url: unknown): url is string =>
-	typeof url === 'string' && (url.startsWith('data:image/') || url.startsWith('blob:'));
+	typeof url === 'string' &&
+	hasNoControls(url) &&
+	(url.startsWith('data:image/') || url.startsWith('blob:'));
 
 /**
  * The URL of `width × height` RGBA pixels, encoded once per key and kept in the cache.

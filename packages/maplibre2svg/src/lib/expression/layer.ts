@@ -107,8 +107,9 @@ function evaluateGroup(
 	const properties = options.properties ?? {};
 	const input = { zoom: options.zoom, properties, geometryType: options.geometryType };
 	for (const [name, spec] of Object.entries(propertySpecs(layer.type, group))) {
-		if (isColorRamp(spec)) continue;
 		const override = options.overrides?.[group]?.[name];
+		// a ramp has no single value, unless a class substitutes one branch of it for the node
+		if (isColorRamp(spec) && override === undefined) continue;
 		const raw = override !== undefined ? override : rawValue(layer, group, name);
 		if (isTokenString(raw, spec)) {
 			const { missing, partial } = resolveTokens(raw, properties);

@@ -7,6 +7,10 @@ import { renderFill } from './fill';
 import { renderFillExtrusion } from './fill-extrusion';
 import { renderLine } from './line';
 import { renderSymbolLayer } from './symbol';
+import { renderRaster } from './raster';
+import { renderHillshade } from './hillshade';
+import { renderHeatmap } from './heatmap';
+import { renderColorRelief } from './color-relief';
 import type { RenderContext, RenderedSymbol, Renderer } from './types';
 
 export type { RenderContext, RenderedSymbol, Renderer } from './types';
@@ -18,7 +22,11 @@ export const RENDERERS: Record<string, Renderer> = {
 	circle: renderCircle,
 	'fill-extrusion': renderFillExtrusion,
 	background: renderBackground,
-	symbol: renderSymbolLayer
+	symbol: renderSymbolLayer,
+	raster: renderRaster,
+	hillshade: renderHillshade,
+	heatmap: renderHeatmap,
+	'color-relief': renderColorRelief
 };
 
 /** Draw the symbol of one class with the renderer of its layer type */

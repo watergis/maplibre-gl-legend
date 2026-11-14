@@ -96,7 +96,8 @@ describe('the seed in the classes', () => {
 		} as unknown as LayerSpecification;
 		expect(classifyLayer(layer, { zoom: 0 }).map((c) => c.properties)).toEqual([
 			{ class: 'primary', kind: 'a' },
-			{ class: 'primary', kind: 'x' }
+			// `kind` is what the classes decide: the filter's value is not inherited
+			{ class: 'primary' }
 		]);
 	});
 

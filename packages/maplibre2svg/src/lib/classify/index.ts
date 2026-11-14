@@ -8,7 +8,13 @@ import {
 	type PropertyGroup
 } from '../expression';
 import { caseClasses } from './case';
-import { findClassifierNodes, type ClassifierKind, type ClassifierNode } from './find-node';
+import { fieldsRead } from './accessor';
+import {
+	findClassifierNodes,
+	inputIndex,
+	type ClassifierKind,
+	type ClassifierNode
+} from './find-node';
 import { interpolateClasses } from './interpolate';
 import { matchClasses } from './match';
 import { stepClasses } from './step';
@@ -46,7 +52,17 @@ export const CLASSIFICATION_AXES: Record<string, [PropertyGroup, string][]> = {
 		['layout', 'icon-size'],
 		['layout', 'text-size']
 	],
-	'fill-extrusion': [['paint', 'fill-extrusion-color']]
+	'fill-extrusion': [['paint', 'fill-extrusion-color']],
+	'color-relief': [['paint', 'color-relief-color']]
+};
+
+/**
+ * Inputs which classify a layer type besides the feature: `color-relief` is classified by
+ * `elevation`. Such classes have no representative feature: the output of each branch stands
+ * in for the node (branch substitution).
+ */
+const CLASSIFYING_INPUTS: Record<string, ReadonlySet<string>> = {
+	'color-relief': new Set(['elevation'])
 };
 
 const CLASSIFIERS: Record<
@@ -75,7 +91,7 @@ function findAxis(layer: LayerSpecification, zoom: number) {
 		if (value === undefined || !spec || !isValidValue(value, spec)) continue;
 		try {
 			const expression = toExpression(value, spec);
-			const nodes = findClassifierNodes(expression, zoom);
+			const nodes = findClassifierNodes(expression, zoom, CLASSIFYING_INPUTS[layer.type]);
 			if (nodes.length > 0)
 				return { axis: { group, name, expression } as ClassificationAxis, nodes };
 		} catch {
@@ -85,9 +101,32 @@ function findAxis(layer: LayerSpecification, zoom: number) {
 	return undefined;
 }
 
-function candidatesOf(layer: LayerSpecification, zoom: number, seed: FilterSeed) {
-	const target = findAxis(layer, zoom);
-	if (!target) return undefined;
+/**
+ * The seed without the fields which the classifying nodes read: each class decides those, and
+ * the default class must not inherit the value of another class from the filter
+ */
+function seedWithout(seed: FilterSeed, nodes: ClassifierNode[]): FilterSeed {
+	const read = new Set<string>();
+	for (const node of nodes) {
+		const index = inputIndex(node.resolved[0] as string);
+		const inputs =
+			index === undefined
+				? node.resolved.slice(1, -1).filter((_, i) => i % 2 === 0)
+				: [node.resolved[index]];
+		for (const input of inputs) fieldsRead(input, read);
+	}
+	const properties = Object.fromEntries(
+		Object.entries(seed.properties).filter(([field]) => !read.has(field))
+	);
+	return { ...seed, properties };
+}
+
+function candidatesOf(
+	layer: LayerSpecification,
+	zoom: number,
+	target: NonNullable<ReturnType<typeof findAxis>>,
+	seed: FilterSeed
+) {
 	const ctx: ClassifyContext = {
 		zoom,
 		geometryType: seed.geometryType ?? geometryTypeOf(layer.type),
@@ -108,9 +147,11 @@ function candidatesOf(layer: LayerSpecification, zoom: number, seed: FilterSeed)
  */
 export function classifyLayer(layer: LayerSpecification, options: ClassifyOptions): LegendClass[] {
 	const { zoom } = options;
-	const seed = seedFromFilter((layer as { filter?: unknown }).filter);
-	const { geometryType } = seed;
-	const target = candidatesOf(layer, zoom, seed);
+	const filterSeed = seedFromFilter((layer as { filter?: unknown }).filter);
+	const { geometryType } = filterSeed;
+	const axis = findAxis(layer, zoom);
+	const seed = axis ? seedWithout(filterSeed, axis.nodes) : filterSeed;
+	const target = axis ? candidatesOf(layer, zoom, axis, seed) : undefined;
 	if (!target) {
 		const properties = { ...seed.properties };
 		const evaluated = evaluateLayer(layer, { zoom, properties, geometryType });

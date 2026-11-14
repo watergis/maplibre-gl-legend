@@ -31,11 +31,19 @@ export interface TextImageRequest {
 	fetchGlyphs: GlyphFetcher;
 }
 
-/** The glyphs of all ranges the code points need, or undefined when one cannot be loaded */
+/**
+ * The glyphs of all ranges the code points need, or undefined when one cannot be loaded. When
+ * the whole font stack fails and it has several fonts, the first font alone is tried: glyph
+ * servers often have no file for a combined stack.
+ */
 async function glyphsFor(request: TextImageRequest, codePoints: number[]) {
-	const urls = [
-		...new Set(codePoints.map((cp) => glyphUrl(request.template, request.fontStack, cp)))
-	];
+	const glyphs = await glyphsOfStack(request, request.fontStack, codePoints);
+	if (glyphs || request.fontStack.length < 2) return glyphs;
+	return glyphsOfStack(request, request.fontStack.slice(0, 1), codePoints);
+}
+
+async function glyphsOfStack(request: TextImageRequest, fontStack: string[], codePoints: number[]) {
+	const urls = [...new Set(codePoints.map((cp) => glyphUrl(request.template, fontStack, cp)))];
 	const ranges = await Promise.all(
 		urls.map((url) => loadGlyphRange(request.cache, request.fetchGlyphs, url))
 	);

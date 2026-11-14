@@ -47,15 +47,19 @@ function caseConditions(node: unknown[]) {
 	return conditions;
 }
 
-function classify(node: unknown[], scope: Scope): ClassifierKind | undefined {
+function classify(
+	node: unknown[],
+	scope: Scope,
+	inputs: ReadonlySet<string>
+): ClassifierKind | undefined {
 	const op = node[0] as string;
 	const index = inputIndex(op);
 	if (index !== undefined) {
-		if (!isFeatureDependent(node[index], scope)) return undefined;
+		if (!isFeatureDependent(node[index], scope, inputs)) return undefined;
 		return op === 'match' ? 'match' : op === 'step' ? 'step' : 'interpolate';
 	}
 	if (op === 'case') {
-		const dependent = caseConditions(node).filter((c) => isFeatureDependent(c, scope));
+		const dependent = caseConditions(node).filter((c) => isFeatureDependent(c, scope, inputs));
 		if (dependent.length > 0 && !dependent.every(isTypeGuard)) return 'case';
 	}
 	return undefined;
@@ -83,10 +87,14 @@ function walkLet(expr: unknown[], path: number[], scope: Scope, walk: Walk) {
  * outputs classify the same input the same way, so that the classes of both can be shown.
  * Gives none when nothing depends on the feature.
  */
-export function findClassifierNodes(expr: unknown, zoom: number): ClassifierNode[] {
+export function findClassifierNodes(
+	expr: unknown,
+	zoom: number,
+	inputs: ReadonlySet<string> = new Set()
+): ClassifierNode[] {
 	const walk: Walk = (node, path, scope) => {
 		if (!isOperator(node) || node[0] === 'literal') return [];
-		const kind = classify(node, scope);
+		const kind = classify(node, scope, inputs);
 		if (kind) return [{ kind, node, resolved: resolveVars(node, scope) as unknown[], path }];
 		if (node[0] === 'let') return walkLet(node, path, scope, walk);
 

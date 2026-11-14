@@ -24,6 +24,6 @@ describe('renderBackground', () => {
 	it('fills with background-pattern', async () => {
 		const layer = evaluatedLayer('background', { 'background-pattern': 'p' });
 		const symbol = await renderBackground(layer, renderContext([], { p: solidImage(4, 4) }));
-		expect(attrsOf(symbol.svg, 'rect').fill).toMatch(/^url\(#m2s-pattern-\d+\)$/);
+		expect(attrsOf(symbol.svg, 'rect').fill).toMatch(/^url\(#m2s-[a-z0-9]+-pattern-\d+\)$/);
 	});
 });

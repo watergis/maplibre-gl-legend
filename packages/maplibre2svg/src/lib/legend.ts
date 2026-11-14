@@ -1,10 +1,10 @@
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
 import { createLegendCache } from './cache';
-import { DEFAULT_SAMPLE } from './glyphs';
 import { classifyLayer } from './classify';
 import { labelClasses, layerLabelOf } from './label';
 import { renderSymbols } from './layers';
 import { resolveOptions } from './options';
+import { renderContextOf } from './render-context';
 import type { LayerLegend, LegendEntry, LegendOptions } from './types';
 
 /**
@@ -13,7 +13,7 @@ import type { LayerLegend, LegendEntry, LegendOptions } from './types';
  */
 export async function createLayerLegend(
 	layer: LayerSpecification,
-	// the style gives the glyphs, and later the sources
+	// the style gives the glyphs and the sources
 	style: StyleSpecification,
 	options: LegendOptions = {}
 ): Promise<LayerLegend> {
@@ -22,28 +22,13 @@ export async function createLayerLegend(
 	const labelled = labelClasses(layer, classes, { defaultLabel: resolved.defaultLabel });
 	const symbols = await renderSymbols(
 		labelled.map((cls) => cls.layer),
-		{
-			document: resolved.document,
-			swatch: resolved.swatch,
-			images: {
-				getImage: resolved.getImage,
-				listImages: resolved.listImages,
-				encode: resolved.imageEncoder,
-				cache: resolved.cache
-			},
-			pixelRatio: resolved.pixelRatio,
-			text: {
-				glyphs: resolved.glyphs && typeof style.glyphs === 'string' ? style.glyphs : undefined,
-				fetchGlyphs: resolved.fetchGlyphs,
-				sampleText: resolved.sampleText ?? DEFAULT_SAMPLE
-			}
-		}
+		renderContextOf(resolved, style)
 	);
-	const entries: LegendEntry[] = labelled.map((cls, i) => ({
-		label: cls.text,
-		kind: cls.kind,
-		...symbols[i]
-	}));
+	const entries: LegendEntry[] = labelled.map((cls, i) => {
+		const symbol = symbols[i];
+		// a ramp (heatmap) is one entry, labelled with the layer
+		return { label: cls.text, kind: symbol.ramp ? 'ramp' : cls.kind, ...symbol };
+	});
 	return { layerId: layer.id, type: layer.type, label: layerLabelOf(layer), entries };
 }
 

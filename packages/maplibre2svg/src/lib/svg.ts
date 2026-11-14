@@ -1,5 +1,4 @@
 export const SVG_NS = 'http://www.w3.org/2000/svg';
-export const XLINK_NS = 'http://www.w3.org/1999/xlink';
 
 export type Attrs = Record<string, string | number | undefined>;
 
@@ -13,10 +12,6 @@ export function setAttrs(node: Element, attrs: Attrs) {
 	for (const [name, value] of Object.entries(attrs)) {
 		if (value === undefined) continue;
 		const text = typeof value === 'number' ? fmt(value) : value;
-		if (name === 'href') {
-			// `xlink:href` is still what most editors and converters read
-			node.setAttributeNS(XLINK_NS, 'xlink:href', text);
-		}
 		node.setAttribute(name, text);
 	}
 }
@@ -45,6 +40,11 @@ export function createSvg(doc: Document, width: number, height: number, children
 }
 
 let counter = 0;
+/**
+ * A token of this copy of the module, so that ids stay unique when SVGs made by different pages
+ * or copies of the library end up in one document
+ */
+const SESSION = Math.random().toString(36).slice(2, 7);
 
 /**
  * An id which is unique on the page, for `<linearGradient>`, `<pattern>` and the like: many
@@ -52,5 +52,5 @@ let counter = 0;
  */
 export function uniqueId(prefix: string) {
 	counter += 1;
-	return `m2s-${prefix}-${counter}`;
+	return `m2s-${SESSION}-${prefix}-${counter}`;
 }

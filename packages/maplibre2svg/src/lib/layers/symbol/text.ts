@@ -82,7 +82,8 @@ export async function textPart(
 ): Promise<SymbolPart | undefined> {
 	if (!hasText(layer)) return undefined;
 	const look = lookOf(layer, ctx);
-	const part = (await glyphPart(layer, ctx, look)) ?? cssTextPart(ctx.document, look);
+	const part =
+		(await glyphPart(layer, ctx, look)) ?? cssTextPart(ctx.document, look, ctx.text.measure);
 	const group = el(
 		ctx.document,
 		'g',

@@ -71,7 +71,8 @@ export const renderContext = (
 		glyphs: undefined,
 		fetchGlyphs: () => Promise.reject(new Error('no glyphs in tests')),
 		sampleText: 'Aa'
-	}
+	},
+	raster: { sources: {}, center: [0, 0], zoom: 0, pixelRatio: 1, cache: createLegendCache() }
 });
 
 /** The attributes of the first element of the name in a symbol */

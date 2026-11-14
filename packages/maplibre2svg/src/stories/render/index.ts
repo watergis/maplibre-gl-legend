@@ -67,8 +67,12 @@ const withArgs = (options: StorySetup['options'], shown: LegendOptions) =>
 function displayed(shown: LegendOptions, setup: StorySetup) {
 	const display: Record<string, unknown> = { ...shown };
 	if (setup.style?.glyphs) display['style.glyphs'] = setup.style.glyphs;
+	if (setup.style?.sources) display['style.sources'] = setup.style.sources;
 	const options = setup.options as StoryOptions | undefined;
-	if (options && !(options instanceof Promise) && options.glyphs === false) display.glyphs = false;
+	if (options && !(options instanceof Promise)) {
+		if (options.glyphs === false) display.glyphs = false;
+		if (options.center) display.center = options.center;
+	}
 	return display;
 }
 

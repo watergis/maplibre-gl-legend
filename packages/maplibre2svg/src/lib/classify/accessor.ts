@@ -49,14 +49,24 @@ export function fieldOf(expr: unknown): string | undefined {
 	return undefined;
 }
 
-/** Whether the expression depends on the feature (not only on the zoom or constants) */
-export function isFeatureDependent(expr: unknown, scope: Scope = new Map()): boolean {
+const NO_INPUTS: ReadonlySet<string> = new Set();
+
+/**
+ * Whether the expression depends on the feature (not only on the zoom or constants), or on one
+ * of the further `inputs`, such as `elevation` for `color-relief-color`
+ */
+export function isFeatureDependent(
+	expr: unknown,
+	scope: Scope = new Map(),
+	inputs: ReadonlySet<string> = NO_INPUTS
+): boolean {
 	if (!isOperator(expr) || expr[0] === 'literal') return false;
 	const op = expr[0] as string;
-	if (op === 'var') return isFeatureDependent(scope.get(expr[1] as string), scope);
+	if (inputs.has(op)) return true;
+	if (op === 'var') return isFeatureDependent(scope.get(expr[1] as string), scope, inputs);
 	if ((op === 'get' || op === 'has') && readsFeature(expr)) return true;
 	if (FEATURE_OPERATORS.has(op)) return true;
-	return expr.slice(1).some((child) => isFeatureDependent(child, scope));
+	return expr.slice(1).some((child) => isFeatureDependent(child, scope, inputs));
 }
 
 /** Replace `["var", name]` with the expression bound to the name */
@@ -72,4 +82,21 @@ export function replaceAt(expr: unknown, path: readonly number[], value: unknown
 	if (!Array.isArray(expr)) return expr;
 	const [head, ...rest] = path;
 	return expr.map((child, i) => (i === head ? replaceAt(child, rest, value) : child));
+}
+
+/**
+ * The fields of the feature which an expression reads with `get` or `has`, such as the input
+ * of a `match` or the conditions of a `case`
+ */
+export function fieldsRead(expr: unknown, found: Set<string> = new Set()): Set<string> {
+	if (!isOperator(expr) || expr[0] === 'literal') return found;
+	if (
+		(expr[0] === 'get' || expr[0] === 'has') &&
+		expr.length === 2 &&
+		typeof expr[1] === 'string'
+	) {
+		found.add(expr[1]);
+	}
+	for (const child of expr.slice(1)) fieldsRead(child, found);
+	return found;
 }

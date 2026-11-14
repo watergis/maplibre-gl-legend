@@ -14,7 +14,7 @@ const legendOf = async (layer: unknown) => {
 
 describe('renderSymbol', () => {
 	it('falls back to the neutral symbol for types without a renderer', async () => {
-		const symbol = await renderSymbol(evaluatedLayer('raster'), renderContext());
+		const symbol = await renderSymbol(evaluatedLayer('no-such-type'), renderContext());
 		expect(symbol.svg.querySelector('rect')?.getAttribute('fill')).toBe('#cccccc');
 	});
 

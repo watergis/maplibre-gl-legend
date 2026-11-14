@@ -1,5 +1,5 @@
 import type { GeometryType } from '../expression';
-import { fieldOf, isOperator, literalValue } from './accessor';
+import { isOperator, literalValue } from './accessor';
 import type { FeatureProperties } from './types';
 
 /** What the filter of a layer says for certain about the features it draws */
@@ -20,6 +20,29 @@ const GEOMETRY: Record<string, GeometryType> = {
 const isScalar = (value: unknown) =>
 	typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
 
+/** Type assertions, which keep the value as it is when it has their type */
+const ASSERTIONS: Record<string, string> = {
+	number: 'number',
+	string: 'string',
+	boolean: 'boolean'
+};
+
+/**
+ * The field which an expression reads when the value compared to it is certainly the value of
+ * the field, with its type: a plain `get`, or a type assertion of the value's type around it.
+ * Conversions (`to-string`, `to-number`, `downcase`, …) leave the field's own value unknown.
+ */
+function certainField(expr: unknown, value: unknown): string | undefined {
+	if (isOperator(expr, 'get') && expr.length === 2 && typeof expr[1] === 'string') return expr[1];
+	if (isOperator(expr) && ASSERTIONS[expr[0] as string] === typeof value) {
+		return certainField(expr[1], value);
+	}
+	return undefined;
+}
+
+/** Legacy filter keys which are not properties: the id and the geometry type */
+const LEGACY_SPECIAL = new Set(['$id', '$type']);
+
 /** Record that the field has the value; `$type` and `geometry-type` set the geometry */
 function set(seed: FilterSeed, field: string | undefined, value: unknown, geometry: boolean) {
 	if (!isScalar(value)) return;
@@ -34,7 +57,8 @@ function set(seed: FilterSeed, field: string | undefined, value: unknown, geomet
 /** `["==", a, b]`, legacy (`["==", "class", "railway"]`) or expression (`["==", ["get", "class"], …]`) */
 function equality(seed: FilterSeed, [, a, b]: unknown[]) {
 	if (typeof a === 'string' && !Array.isArray(b)) {
-		set(seed, a, b, a === '$type');
+		if (a === '$type') set(seed, undefined, b, true);
+		else if (!LEGACY_SPECIAL.has(a)) set(seed, a, b, false);
 		return;
 	}
 	for (const [side, other] of [
@@ -42,10 +66,9 @@ function equality(seed: FilterSeed, [, a, b]: unknown[]) {
 		[b, a]
 	]) {
 		if (isOperator(side, 'geometry-type')) return set(seed, undefined, literalValue(other), true);
-		const field = fieldOf(side);
-		if (field !== undefined && !Array.isArray(literalValue(other))) {
-			return set(seed, field, literalValue(other), false);
-		}
+		const value = literalValue(other);
+		const field = certainField(side, value);
+		if (field !== undefined && !Array.isArray(value)) return set(seed, field, value, false);
 	}
 }
 
@@ -53,13 +76,14 @@ function equality(seed: FilterSeed, [, a, b]: unknown[]) {
 function membership(seed: FilterSeed, filter: unknown[]) {
 	const [, needle, ...rest] = filter;
 	if (typeof needle === 'string') {
-		set(seed, needle, rest[0], needle === '$type');
+		if (needle === '$type') set(seed, undefined, rest[0], true);
+		else if (!LEGACY_SPECIAL.has(needle)) set(seed, needle, rest[0], false);
 		return;
 	}
 	const haystack = literalValue(rest[0]);
 	if (!Array.isArray(haystack)) return;
 	if (isOperator(needle, 'geometry-type')) return set(seed, undefined, haystack[0], true);
-	set(seed, fieldOf(needle), haystack[0], false);
+	set(seed, certainField(needle, haystack[0]), haystack[0], false);
 }
 
 /** `["match", input, labels, true, …, false]`: the first label whose output is `true` */
@@ -68,7 +92,7 @@ function matchMembership(seed: FilterSeed, filter: unknown[]) {
 		if (filter[i + 1] !== true) continue;
 		const value = Array.isArray(filter[i]) ? (filter[i] as unknown[])[0] : filter[i];
 		if (isOperator(filter[1], 'geometry-type')) return set(seed, undefined, value, true);
-		return set(seed, fieldOf(filter[1]), value, false);
+		return set(seed, certainField(filter[1], value), value, false);
 	}
 }
 

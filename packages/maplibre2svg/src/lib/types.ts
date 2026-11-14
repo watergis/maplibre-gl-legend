@@ -13,15 +13,34 @@ export type { LayerSpecification, StyleSpecification };
  */
 export type LegendEntryKind = 'single' | 'category' | 'range' | 'stop' | 'default' | 'ramp';
 
+/**
+ * A continuous color ramp: the domain and the colors along it, so that a host can draw ticks
+ * or print the range
+ */
+export interface LegendRamp {
+	min: number;
+	max: number;
+	/** sampled colors, CSS `rgba()`, by value from `min` to `max` */
+	stops: { value: number; color: string }[];
+	unit?: string;
+}
+
 /** One row of the legend of a layer: a symbol and its label */
 export interface LegendEntry {
-	/** label of the class, or the label of the layer when it is the only entry */
+	/**
+	 * Label of the class, or the label of the layer when it is the only entry. A `heatmap`
+	 * has one `ramp` entry labelled with the layer: a host shows the layer's `label`, then the
+	 * ramp with `ramp.min` / `ramp.max` (density 0 – 1) as ticks. `color-relief` has rows per
+	 * elevation class like other classified layers.
+	 */
 	label: string;
 	kind: LegendEntryKind;
 	/** the symbol, with `width` and `height` attributes */
 	svg: SVGSVGElement;
 	width: number;
 	height: number;
+	/** the ramp of a `ramp` entry (heatmap) */
+	ramp?: LegendRamp;
 }
 
 /** The legend of one layer of a style */
@@ -106,8 +125,25 @@ export interface LegendOptions {
 	 * `OffscreenCanvas`, by default; without either, images are drawn as placeholders
 	 */
 	imageEncoder?: ImageEncoder;
-	/** sources which override the ones of the style, e.g. with the `tiles` of TileJSON resolved */
+	/**
+	 * Sources which override the ones of the style, e.g. with the `tiles` of TileJSON resolved:
+	 * a raster source with only a TileJSON `url` is shown as a placeholder
+	 */
 	sources?: StyleSpecification['sources'];
+	/**
+	 * Map the tile or image URL of a raster source to one the browser can load, such as a custom
+	 * protocol or a signed URL. Undefined keeps the URL. Only `http(s):`, `data:image/`, `blob:` and
+	 * relative URLs are shown; others give the placeholder
+	 */
+	/**
+	 * Check that a raster tile loads before showing it; a tile which does not gives the
+	 * placeholder. The `Image` of the document's window by default (none in Node)
+	 */
+	loadImage?: (url: string) => Promise<boolean>;
+	resolveRasterUrl?: (
+		url: string,
+		source: unknown
+	) => string | undefined | Promise<string | undefined>;
 	/** label of the fallback class of a `match` or a `case`, `Other` by default */
 	defaultLabel?: string;
 	/** size of a symbol */
@@ -119,8 +155,16 @@ export interface LegendOptions {
 	 * `transformRequest`, custom protocols). `fetch` by default
 	 */
 	fetchGlyphs?: (url: string) => Promise<ArrayBuffer>;
-	/** the sample of a label whose `text-field` gives no text for the legend, `Aa` by default */
+	/**
+	 * The text drawn as the sample of a label when the layer's own `text-field` gives no text
+	 * for the legend (e.g. `{name}` without a feature). `Aa` by default
+	 */
 	sampleText?: string;
+	/**
+	 * Measure text in a CSS font shorthand, for labels drawn with CSS fonts and for
+	 * `legendToSvg`. A canvas of the document by default; without one, widths are estimated
+	 */
+	measureText?: (text: string, font: string) => number | undefined;
 	/**
 	 * Device pixels per CSS pixel to draw tinted icons and label text at, from 1 to 3:
 	 * `devicePixelRatio` by default

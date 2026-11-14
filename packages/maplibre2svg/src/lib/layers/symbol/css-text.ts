@@ -1,5 +1,6 @@
 import { cssFont } from '../../glyphs';
 import { el } from '../../svg';
+import { charWidth, fontShorthand, type TextMeasurer } from '../../text-measure';
 import type { SymbolPart } from './part';
 
 /** What a label is drawn with */
@@ -17,46 +18,35 @@ const LINE_HEIGHT = 1.25;
 const ASCENT = 0.95;
 
 /**
- * Rough advance of a character in ems, for the box of a CSS label: wide for CJK and full-width
- * forms, narrow for spaces and slim letters, wider for capitals
+ * The width of the text, measured with the measurer when it can, else estimated from the
+ * characters. `estimated` tells which: an estimate is fitted with `textLength`, spacing only.
  */
-export function charWidth(ch: string): number {
-	const cp = ch.codePointAt(0) ?? 0;
-	if (
-		cp >= 0x1100 &&
-		(cp <= 0x115f ||
-			(cp >= 0x2e80 && cp <= 0xa4cf) ||
-			(cp >= 0xac00 && cp <= 0xd7a3) ||
-			(cp >= 0xf900 && cp <= 0xfaff) ||
-			(cp >= 0xff00 && cp <= 0xff60) ||
-			cp >= 0x20000)
-	) {
-		return 1;
-	}
-	if (/[\s.,:;'|!il]/.test(ch)) return 0.3;
-	if (/[A-Z0-9mwMW]/.test(ch)) return 0.68;
-	return 0.56;
+export function textWidth(look: TextLook, measure?: TextMeasurer) {
+	const chars = [...look.text];
+	const spacing = look.letterSpacing * look.size * Math.max(0, chars.length - 1);
+	const measured = measure?.(look.text, fontShorthand(cssFont(look.fontStack), look.size));
+	if (measured !== undefined) return { width: measured + spacing, estimated: false };
+	const advance = chars.reduce((sum, ch) => sum + charWidth(ch), 0);
+	return { width: look.size * advance + spacing, estimated: true };
 }
 
 /**
  * The label as SVG `<text>` in a CSS font: the family from the first font of `text-font`
  * (weight and style words into `font-weight` / `font-style`), the halo as a stroke beneath the
- * fill (`paint-order`). The box is estimated, halo included, like the box of a glyph image,
- * and the text is fitted to it (`textLength`) so that no font of the browser overflows it.
+ * fill (`paint-order`). The box is the measured width (or an estimate, which `textLength` with
+ * `lengthAdjust="spacing"` then enforces), with the halo, like the box of a glyph image.
  */
-export function cssTextPart(doc: Document, look: TextLook): SymbolPart {
+export function cssTextPart(doc: Document, look: TextLook, measure?: TextMeasurer): SymbolPart {
 	const font = cssFont(look.fontStack);
 	const halo = Math.max(0, look.halo.width);
-	const chars = [...look.text];
-	const advance = chars.reduce((sum, ch) => sum + charWidth(ch), 0);
-	const textWidth = look.size * (advance + look.letterSpacing * Math.max(0, chars.length - 1));
-	const width = textWidth + 2 * halo;
+	const text = textWidth(look, measure);
+	const width = text.width + 2 * halo;
 	const height = look.size * LINE_HEIGHT + 2 * halo;
-	const text = el(doc, 'text', {
+	const node = el(doc, 'text', {
 		x: halo,
 		y: halo + look.size * ASCENT,
-		textLength: textWidth > 0 ? textWidth : undefined,
-		lengthAdjust: 'spacingAndGlyphs',
+		textLength: text.estimated && text.width > 0 ? text.width : undefined,
+		lengthAdjust: text.estimated ? 'spacing' : undefined,
 		'font-family': font.family,
 		'font-weight': font.weight,
 		'font-style': font.style,
@@ -70,6 +60,6 @@ export function cssTextPart(doc: Document, look: TextLook): SymbolPart {
 		'stroke-linejoin': halo > 0 ? 'round' : undefined,
 		'paint-order': halo > 0 ? 'stroke' : undefined
 	});
-	text.textContent = look.text;
-	return { nodes: [text], defs: [], width, height };
+	node.textContent = look.text;
+	return { nodes: [node], defs: [], width, height };
 }

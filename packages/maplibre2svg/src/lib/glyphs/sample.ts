@@ -1,4 +1,4 @@
-/** The longest sample of a label, in code points */
+/** The longest sample of a label, in graphemes */
 export const MAX_SAMPLE_LENGTH = 12;
 /** The sample when the label gives none */
 export const DEFAULT_SAMPLE = 'Aa';
@@ -10,11 +10,24 @@ export function transformText(text: string, transform: unknown): string {
 	return text;
 }
 
+/** The first `max` user-perceived characters (graphemes) of a text; code points without `Intl.Segmenter` */
+export function truncateText(text: string, max: number): string {
+	const Segmenter = (Intl as { Segmenter?: typeof Intl.Segmenter }).Segmenter;
+	if (Segmenter) {
+		const parts = [...new Segmenter(undefined, { granularity: 'grapheme' }).segment(text)];
+		return parts
+			.slice(0, max)
+			.map((part) => part.segment)
+			.join('');
+	}
+	return [...text].slice(0, max).join('');
+}
+
 /**
  * The text to draw as the sample of a label: the evaluated `text-field` (a constant, an
  * expression or `{tokens}`, already resolved for the representative feature), its first
- * non-empty line, cut to `MAX_SAMPLE_LENGTH` code points; `fallback` when that is empty.
- * `text-transform` is applied.
+ * non-empty line, cut to `MAX_SAMPLE_LENGTH` graphemes. `fallback` (the `sampleText` option)
+ * is used only when the layer's own text is empty. `text-transform` is applied.
  */
 export function sampleText(
 	textField: unknown,
@@ -26,6 +39,6 @@ export function sampleText(
 		.split(/\r?\n/)
 		.map((part) => part.trim())
 		.find((part) => part !== '');
-	const sample = line ? [...line].slice(0, MAX_SAMPLE_LENGTH).join('').trim() : '';
+	const sample = line ? truncateText(line, MAX_SAMPLE_LENGTH).trim() : '';
 	return transformText(sample || fallback, transform);
 }

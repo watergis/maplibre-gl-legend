@@ -8,6 +8,8 @@ export type {
 	LegendEntryKind,
 	LegendImage,
 	LegendOptions,
+	LegendRamp,
 	StyleSpecification,
 	SwatchOptions
 } from './types';
+export { legendToSvg, type LegendSvgOptions } from './legend-svg';
