@@ -266,10 +266,6 @@ importers:
         version: 8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.107.1)(terser@5.51.2)(yaml@2.9.1)
 
   packages/maplibre-gl-legend:
-    dependencies:
-      '@watergis/legend-symbol':
-        specifier: ^0.2.3
-        version: 0.2.3
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -286,6 +282,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.72.1
         version: 8.72.1(eslint@10.14.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
+      '@watergis/maplibre2svg':
+        specifier: workspace:*
+        version: link:../maplibre2svg
       autoprefixer:
         specifier: ^10.6.2
         version: 10.6.2(postcss@8.5.32)

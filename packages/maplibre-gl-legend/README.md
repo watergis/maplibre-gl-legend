@@ -4,7 +4,7 @@
 
 This module adds legend control which is able to create legend panel from mapbox style to maplibre-gl. It was forked from [mapbox-gl-legend](https://github.com/watergis/mapbox-gl-legend).
 
-This module is using source code of [orangemug/legend-symbol](https://github.com/orangemug/legend-symbol). I just adopted this library to normal Mapbox GL Plugin. Thanks so much to develop this library!
+Legend symbols are drawn as SVG from the map's style by [maplibre2svg](../maplibre2svg) (bundled in this package).
 
 ## Installation:
 
