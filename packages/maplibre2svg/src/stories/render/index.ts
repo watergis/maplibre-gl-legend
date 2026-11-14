@@ -1,6 +1,6 @@
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
 import { createLayerLegend, type LegendOptions } from '../../lib';
-import { definitionPane, sideBySide } from './definition';
+import { definitionPane, layerDetails, sideBySide } from './definition';
 import { legendRows } from './rows';
 
 export { definitionPane, layerDetails, sideBySide } from './definition';
@@ -63,5 +63,26 @@ export function renderLegend(
 	);
 	root.style.fontFamily = 'sans-serif';
 	root.style.fontSize = '14px';
+	return root;
+}
+
+/**
+ * Render several layers, one collapsible block each with its legend and its definition,
+ * such as the variants of one property
+ */
+export function renderLayers(
+	layers: LayerSpecification[],
+	args: Partial<LegendStoryArgs>,
+	options: Omit<LegendOptions, 'zoom' | 'defaultLabel'> = {}
+): HTMLElement {
+	const shown = legendOptions(args);
+	const style: StyleSpecification = { ...EMPTY_STYLE, layers };
+	const root = document.createElement('div');
+	root.style.fontFamily = 'sans-serif';
+	root.style.fontSize = '14px';
+	for (const layer of layers) {
+		const legend = legendPane(layer, { ...options, ...shown }, style);
+		root.append(layerDetails(layer, legend, shown, true));
+	}
 	return root;
 }

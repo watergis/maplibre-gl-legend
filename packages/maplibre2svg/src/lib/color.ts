@@ -33,3 +33,11 @@ export function toCssColor(value: unknown, fallback = '#000000'): CssColor {
 	if (a <= 0) return { color: '#000000', opacity: 0 };
 	return { color: `#${toHex(r)}${toHex(g)}${toHex(b)}`, opacity: a };
 }
+
+/** A darker (factor < 1) or lighter (factor > 1) shade of an opaque CSS color */
+export function shade(color: string, factor: number): string {
+	const parsed = Color.parse(color) ?? Color.black;
+	const [r, g, b] = parsed.rgb;
+	const f = (v: number) => toHex(Math.min(1, v * factor));
+	return `#${f(r)}${f(g)}${f(b)}`;
+}

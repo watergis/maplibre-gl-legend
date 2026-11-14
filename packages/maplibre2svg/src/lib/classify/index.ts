@@ -11,8 +11,8 @@ import { caseClasses } from './case';
 import { findClassifierNodes, type ClassifierKind, type ClassifierNode } from './find-node';
 import { interpolateClasses } from './interpolate';
 import { matchClasses } from './match';
-import { mergeCandidates } from './merge';
 import { stepClasses } from './step';
+import { candidatesOfNodes } from './zoom-merge';
 import { substitutionOverrides, type ClassificationAxis } from './substitute';
 import type { ClassCandidate, LegendClass } from './types';
 import { cleanProperties, type ClassifyContext } from './verify';
@@ -89,10 +89,7 @@ function candidatesOf(layer: LayerSpecification, zoom: number) {
 	if (!target) return undefined;
 	const ctx: ClassifyContext = { zoom, geometryType: geometryTypeOf(layer.type) };
 	try {
-		const lists = target.nodes.map((found) =>
-			CLASSIFIERS[found.kind](found, ctx).map((candidate) => ({ ...candidate, found }))
-		);
-		const candidates = mergeCandidates(lists);
+		const candidates = candidatesOfNodes(target.nodes, ctx, CLASSIFIERS);
 		return candidates.length > 0 ? { axis: target.axis, candidates } : undefined;
 	} catch {
 		return undefined;

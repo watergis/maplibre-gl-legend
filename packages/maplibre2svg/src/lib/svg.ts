@@ -43,3 +43,14 @@ export function createSvg(doc: Document, width: number, height: number, children
 		children
 	) as SVGSVGElement;
 }
+
+let counter = 0;
+
+/**
+ * An id which is unique on the page, for `<linearGradient>`, `<pattern>` and the like: many
+ * legends, each with its own SVG, can share one page
+ */
+export function uniqueId(prefix: string) {
+	counter += 1;
+	return `m2s-${prefix}-${counter}`;
+}

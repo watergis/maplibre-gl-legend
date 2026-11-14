@@ -1,7 +1,7 @@
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
 import { classifyLayer } from './classify';
 import { labelClasses, layerLabelOf } from './label';
-import { renderDefault, type RenderContext } from './layers/default';
+import { renderSymbols } from './layers';
 import { resolveOptions } from './options';
 import type { LayerLegend, LegendEntry, LegendOptions } from './types';
 
@@ -16,14 +16,17 @@ export async function createLayerLegend(
 	options: LegendOptions = {}
 ): Promise<LayerLegend> {
 	const resolved = resolveOptions(options);
-	const ctx: RenderContext = { document: resolved.document, swatch: resolved.swatch };
 	const classes = classifyLayer(layer, { zoom: resolved.zoom });
 	const labelled = labelClasses(layer, classes, { defaultLabel: resolved.defaultLabel });
-	const entries: LegendEntry[] = labelled.map((cls) => {
-		// TODO: dispatch to the renderer of the layer type (step 2)
-		const symbol = renderDefault(cls.layer, ctx);
-		return { label: cls.text, kind: cls.kind, ...symbol };
-	});
+	const symbols = renderSymbols(
+		labelled.map((cls) => cls.layer),
+		{ document: resolved.document, swatch: resolved.swatch }
+	);
+	const entries: LegendEntry[] = labelled.map((cls, i) => ({
+		label: cls.text,
+		kind: cls.kind,
+		...symbols[i]
+	}));
 	return { layerId: layer.id, type: layer.type, label: layerLabelOf(layer), entries };
 }
 

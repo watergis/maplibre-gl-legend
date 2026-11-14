@@ -61,7 +61,57 @@ describe('classifyLayer: classes active at the zoom', () => {
 				]
 			}
 		};
-		expect(labels(legacy, 5)).toEqual(['< 10', '≥ 10', '< 50', '≥ 50']);
+		expect(labels(legacy, 5)).toEqual(['< 10', '10 – 50', '≥ 50']);
 		expect(labels(legacy, 12)).toEqual(['< 50', '≥ 50']);
+	});
+
+	it('joins the thresholds of steps on the same input into one partition', () => {
+		const layer = testLayer('fill', {
+			'fill-opacity': [
+				'interpolate',
+				['linear'],
+				['zoom'],
+				10,
+				['step', ['get', 'n'], 0, 10, 1],
+				20,
+				['step', ['get', 'n'], 0, 50, 1]
+			]
+		});
+		const classes = classifyLayer(layer, { zoom: 15 });
+		expect(labelClasses(layer, classes).map((c) => c.text)).toEqual(['< 10', '10 – 50', '≥ 50']);
+		expect(classes.map((c) => c.properties)).toEqual([{ n: -10 }, { n: 30 }, { n: 70 }]);
+		// halfway between the zooms: n = 30 is above 10 but below 50
+		expect(classes.map((c) => c.layer.paint['fill-opacity'])).toEqual([0, 0.5, 1]);
+	});
+
+	it('joins the stops of interpolates on the same input', () => {
+		const paint = {
+			'fill-opacity': [
+				'interpolate',
+				['linear'],
+				['zoom'],
+				10,
+				['interpolate', ['linear'], ['get', 'n'], 0, 0, 10, 1],
+				20,
+				['interpolate', ['linear'], ['get', 'n'], 5, 0, 10, 1, 20, 1]
+			]
+		};
+		expect(labels(paint, 15)).toEqual(['≤ 0', '5', '10', '≥ 20']);
+	});
+
+	it('takes the lower stop when the zoom is as far from both and they differ', () => {
+		const paint = {
+			'fill-color': [
+				'interpolate',
+				['linear'],
+				['zoom'],
+				10,
+				['match', k, 'a', '#f00', '#888'],
+				20,
+				['step', ['get', 'n'], '#000', 5, '#fff']
+			]
+		};
+		expect(labels(paint, 15)).toEqual(['a', 'Other']);
+		expect(labels(paint, 15.5)).toEqual(['< 5', '≥ 5']);
 	});
 });

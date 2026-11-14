@@ -1,23 +1,11 @@
 import type { EvaluatedLayer } from '../expression';
-import { createSvg, el } from '../svg';
-import type { SwatchOptions } from '../types';
-
-/** What a renderer of a layer type is given besides the evaluated layer */
-export interface RenderContext {
-	document: Document;
-	swatch: SwatchOptions;
-}
-
-/** A symbol of the legend */
-export interface RenderedSymbol {
-	svg: SVGSVGElement;
-	width: number;
-	height: number;
-}
+import { el } from '../svg';
+import { swatch } from './common';
+import type { RenderContext, RenderedSymbol } from './types';
 
 /**
  * A neutral symbol, for the layer types which have no renderer: a grey rectangle the size
- * of the swatch.
+ * of the swatch
  */
 export function renderDefault(_layer: EvaluatedLayer, ctx: RenderContext): RenderedSymbol {
 	const { width, height } = ctx.swatch;
@@ -30,5 +18,5 @@ export function renderDefault(_layer: EvaluatedLayer, ctx: RenderContext): Rende
 		stroke: '#999999',
 		'stroke-width': 1
 	});
-	return { svg: createSvg(ctx.document, width, height, [rect]), width, height };
+	return swatch(ctx, width, height, [rect]);
 }

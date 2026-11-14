@@ -12,6 +12,11 @@ export interface ClassifierNode {
 	resolved: unknown[];
 	/** position of the node in the expression, as indices of the nested arrays */
 	path: number[];
+	/**
+	 * How far the zoom is from the zoom stop whose output holds the node, when the node is one
+	 * of the two found around the zoom in a zoom `interpolate`
+	 */
+	distance?: number;
 }
 
 const INTERPOLATE = new Set(['interpolate', 'interpolate-hcl', 'interpolate-lab']);
@@ -112,7 +117,8 @@ function signature(found: ClassifierNode) {
 
 /**
  * Of the nodes found in the active outputs of a zoom `step` / `interpolate`: both when they
- * agree on kind and input, else those of the output nearest to the zoom.
+ * agree on kind and input, else those of the output nearest to the zoom (the lower stop on
+ * a tie).
  */
 function pickZoomBranch(found: { distance: number; nodes: ClassifierNode[] }[]) {
 	const withNodes = found.filter((f) => f.nodes.length > 0);
@@ -123,7 +129,10 @@ function pickZoomBranch(found: { distance: number; nodes: ClassifierNode[] }[]) 
 		b.nodes.length === 1 &&
 		signature(a.nodes[0]) === signature(b.nodes[0])
 	) {
-		return [...a.nodes, ...b.nodes];
+		return [
+			{ ...a.nodes[0], distance: a.distance },
+			{ ...b.nodes[0], distance: b.distance }
+		];
 	}
 	return b.distance < a.distance ? b.nodes : a.nodes;
 }

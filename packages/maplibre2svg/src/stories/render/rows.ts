@@ -3,6 +3,8 @@ import type { LayerLegend } from '../../lib';
 function row(symbol: Element, text: string, indent: boolean) {
 	const div = document.createElement('div');
 	div.style.cssText = `display:flex;align-items:center;gap:8px;margin:4px 0 4px ${indent ? 16 : 0}px`;
+	// the symbol keeps its size when a long label wraps
+	(symbol as SVGElement).style.flex = 'none';
 	const label = document.createElement('span');
 	label.textContent = text;
 	div.append(symbol, label);
