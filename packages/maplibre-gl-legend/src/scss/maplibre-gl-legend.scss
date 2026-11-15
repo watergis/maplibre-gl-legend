@@ -30,9 +30,10 @@
 
 	/* line between layers */
 	--maplibregl-legend-divider: 1px solid #e5e5e5;
-
-	/* indent of the layers in a group */
-	--maplibregl-legend-group-indent: 16px;
+	/* line between the layers in a group (shorter than the line between layers and groups) */
+	--maplibregl-legend-group-divider: var(--maplibregl-legend-divider);
+	/* how much shorter the line between the layers in a group is, on each side */
+	--maplibregl-legend-group-divider-inset: 8px;
 
 	--maplibregl-legend-text-color: #1c1c1c;
 	--maplibregl-legend-focus-color: #3b82f6;
@@ -184,20 +185,44 @@ table.legend-table {
 	width: 100%;
 }
 
-/* a line between layers (a layer's rows, including its class rows, share one tbody) and groups. No line between the layers in a group */
+/* a line between layers (a layer's rows, including its class rows, share one tbody) and groups */
 tbody.maplibregl-legend-layer + tbody.maplibregl-legend-layer:not(.maplibregl-legend-group-member),
 tbody.maplibregl-legend-layer + tbody.maplibregl-legend-group,
 tbody.maplibregl-legend-group + tbody.maplibregl-legend-group {
 	border-top: var(--maplibregl-legend-divider);
 }
 
-/* layers in a group are indented under the group title */
-tbody.maplibregl-legend-group-member > tr > td:first-child {
-	padding-left: calc(2px + var(--maplibregl-legend-group-indent));
+/* a shorter line between the layers in a group: inset from both sides */
+tbody.maplibregl-legend-group-member + tbody.maplibregl-legend-group-member {
+	position: relative;
 }
 
-tbody.maplibregl-legend-group td.legend-table-td > label {
+tbody.maplibregl-legend-group-member + tbody.maplibregl-legend-group-member::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: var(--maplibregl-legend-group-divider-inset);
+	right: var(--maplibregl-legend-group-divider-inset);
+	border-top: var(--maplibregl-legend-group-divider);
+	pointer-events: none;
+}
+
+/* group title, and the button collapsing the group at its right end */
+.maplibregl-legend-group-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 4px;
+}
+
+tr.maplibregl-legend-group-header {
+	cursor: pointer;
+}
+
+.maplibregl-legend-group-title > label {
 	font-weight: bold;
+	color: var(--maplibregl-legend-text-color);
+	cursor: pointer;
 }
 
 /* the button collapsing a group (Lucide "chevron-down") */
@@ -229,8 +254,9 @@ tbody.maplibregl-legend-group td.legend-table-td > label {
 	transform: rotate(-90deg);
 }
 
+/* no hover style: the whole group row is clickable (overrides the hover background of MapLibre control buttons) */
 .maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-group-collapse:hover {
-	background-color: rgba(0, 0, 0, 0.05);
+	background-color: transparent;
 }
 
 .maplibregl-legend-group-collapse:focus-visible {

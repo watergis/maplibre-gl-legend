@@ -100,11 +100,11 @@ Specify your layers which you want to add the legend by the control.
   - default: "Only rendered"
 - groups
   - groups of layers: an object of the group title and the IDs of the layers in the group. e.g. `{ 'Pipeline': ['pipeline', 'pipeline_annotation'] }`
-  - the layers of a group are listed under the group title. The checkbox of the group switches all of its layers on/off, and each layer still has its own checkbox. The group can be collapsed.
+  - the layers of a group are listed under the group title. The checkbox of the group switches all of its layers on/off, and each layer still has its own checkbox. Click the group row (title or chevron) to collapse or expand the group.
   - layers in the groups are shown even if they are not in `targets`. A layer belongs to the first group listing it.
   - default: no group
 - groupBySourceLayer
-  - true: layers not in `groups` which share the same source and `source-layer` are grouped automatically, titled by the source-layer name. A source-layer used by only one layer is not grouped.
+  - true: layers not in `groups` which share the same source and `source-layer` are grouped automatically, titled by the source-layer name. They are grouped only while 2 or more of them are listed (e.g. with `onlyRendered`, a layer not rendered at the current zoom is not counted).
   - false: layers are not grouped automatically.
   - default value is `true`.
 - collapseGroups
@@ -135,7 +135,8 @@ The icons (layer visibility eye / eye-off, close button) and the "Only rendered"
 | `--maplibregl-legend-switch-off-color` | `#c4c4c4` | switch color when off |
 | `--maplibregl-legend-switch-thumb-color` | `#ffffff` | color of the switch knob |
 | `--maplibregl-legend-divider` | `1px solid #e5e5e5` | line between layers |
-| `--maplibregl-legend-group-indent` | `16px` | indent of the layers in a group |
+| `--maplibregl-legend-group-divider` | `--maplibregl-legend-divider` | line between the layers in a group |
+| `--maplibregl-legend-group-divider-inset` | `8px` | how much shorter the line between the layers in a group is, on each side |
 | `--maplibregl-legend-text-color` | `#1c1c1c` | text color |
 | `--maplibregl-legend-focus-color` | `#3b82f6` | keyboard focus outline color |
 

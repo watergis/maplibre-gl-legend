@@ -22,7 +22,14 @@ export interface LegendOptions {
 /** a row of the legend: a single layer, or a group of layers */
 type LegendItem =
 	| { type: 'layer'; layer: LayerSpecification }
-	| { type: 'group'; key: string; title: string; layers: LayerSpecification[] };
+	| {
+			type: 'group';
+			key: string;
+			title: string;
+			layers: LayerSpecification[];
+			/** true: grouped automatically by source-layer */
+			auto: boolean;
+	  };
 
 /**
  * Mapbox GL Legend Control.
@@ -291,8 +298,15 @@ export class MaplibreLegendControl implements IControl {
 			tr.appendChild(td0);
 		}
 
+		// the title spans the symbol and label columns, with the collapse button at its right end
 		const td1 = document.createElement('TD');
 		td1.className = 'legend-table-td';
+		td1.setAttribute('colspan', '2');
+		const titleContainer = document.createElement('div');
+		titleContainer.className = 'maplibregl-legend-group-title';
+		const label = document.createElement('label');
+		label.textContent = item.title;
+		titleContainer.appendChild(label);
 		const collapseButton = document.createElement('button');
 		collapseButton.type = 'button';
 		collapseButton.classList.add('maplibregl-legend-group-collapse');
@@ -308,18 +322,15 @@ export class MaplibreLegendControl implements IControl {
 				member.hidden = collapsed;
 			}
 		};
-		collapseButton.addEventListener('click', () => {
+		// clicking anywhere on the group row (title, button or empty space) expands / collapses the group, except the visibility toggle
+		tr.classList.add('maplibregl-legend-group-header');
+		tr.addEventListener('click', (e) => {
+			if (e.target instanceof HTMLInputElement) return;
 			setCollapsed(!this.isGroupCollapsed(item.key));
 		});
-		td1.appendChild(collapseButton);
+		titleContainer.appendChild(collapseButton);
+		td1.appendChild(titleContainer);
 		tr.appendChild(td1);
-
-		const td2 = document.createElement('TD');
-		td2.className = 'legend-table-td';
-		const label = document.createElement('label');
-		label.textContent = item.title;
-		td2.appendChild(label);
-		tr.appendChild(td2);
 
 		// the attributes of the button are set here, the members are hidden after they are added
 		setCollapsed(this.isGroupCollapsed(item.key));
@@ -423,7 +434,13 @@ export class MaplibreLegendControl implements IControl {
 			}
 			let group = groups.get(key);
 			if (!group) {
-				group = { type: 'group', key, title: titles.get(key) ?? key, layers: [] };
+				group = {
+					type: 'group',
+					key,
+					title: titles.get(key) ?? key,
+					layers: [],
+					auto: key.startsWith('source-layer:')
+				};
 				groups.set(key, group);
 				items.push(group);
 			}
@@ -490,6 +507,12 @@ export class MaplibreLegendControl implements IControl {
 
 			const shownLayers = item.layers.filter(isShown);
 			if (shownLayers.length === 0) continue;
+			if (item.auto && shownLayers.length < 2) {
+				// a source-layer group with only one layer listed now (e.g. its other layers are not rendered at this zoom) is shown as a single layer
+				const legend = this.getLayerLegend(shownLayers[0]);
+				if (legend) this.legendTable.appendChild(legend.tbody);
+				continue;
+			}
 			// the group checkbox switches all layers of the group, including layers not rendered now
 			this.groupLayers.set(
 				item.key,
