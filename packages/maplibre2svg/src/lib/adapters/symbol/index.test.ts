@@ -98,16 +98,23 @@ describe('renderSymbolLayer', () => {
 		expect(attrsOf(result.svg, 'image').href).toBe('data:image/x-test,4x4/9,9,9,255');
 	});
 
-	it('draws text only, and the text beside the icon, in a CSS font without glyphs', async () => {
+	it('draws the label in a CSS font without glyphs when the layer has no icon', async () => {
 		const text = await render(symbol({ 'text-field': 'Name' }));
 		expect(text.svg.querySelector('text')?.textContent).toBe('Name');
+	});
+
+	it('draws only the icon when the layer has both an icon and a label', async () => {
 		const both = await render(symbol({ 'icon-image': 'pin', 'text-field': '{name}' }), { pin });
+		const iconOnly = await render(symbol({ 'icon-image': 'pin' }), { pin });
 		expect(both.svg.querySelector('image')).not.toBeNull();
-		expect(both.svg.querySelector('text')?.textContent).toBe('Aa');
-		const [image, label] = [...both.svg.querySelectorAll(':scope > g')];
-		expect(image.getAttribute('transform')).toMatch(/^translate\(/);
-		expect(label.getAttribute('transform')).toMatch(/^translate\(/);
-		expect(both.width).toBeGreaterThan(40);
+		expect(both.svg.querySelector('text')).toBeNull();
+		expect([both.width, both.height]).toEqual([iconOnly.width, iconOnly.height]);
+	});
+
+	it('draws the icon placeholder, not the label, for a missing image', async () => {
+		const result = await render(symbol({ 'icon-image': 'nope', 'text-field': 'Name' }));
+		expect(result.svg.querySelector('text')).toBeNull();
+		expect(result.svg.querySelectorAll('rect, circle').length).toBeGreaterThan(0);
 	});
 });
 

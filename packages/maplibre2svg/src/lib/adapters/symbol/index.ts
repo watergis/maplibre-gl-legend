@@ -14,8 +14,8 @@ export { hasText, TextDrawer } from './text';
 const GAP = 4;
 
 /**
- * `symbol`: the icon, then the text beside it, centered in the swatch, which grows to fit
- * them. A layer with neither gets the neutral symbol.
+ * `symbol`: the icon, or a sample of the label when the layer has no icon, centered in the
+ * swatch, which grows to fit it. A layer with neither gets the neutral symbol.
  */
 export class SymbolAdapter extends LayerAdapter {
 	readonly type = 'symbol';
@@ -28,14 +28,20 @@ export class SymbolAdapter extends LayerAdapter {
 		['layout', 'text-size']
 	] as const;
 
-	/** the parts of the symbol, from left to right */
+	/**
+	 * The candidate parts of the symbol, in order of priority: the first one the layer draws is
+	 * the symbol, so the label is drawn only for a layer without an icon
+	 */
 	protected readonly parts: readonly SymbolPartDrawer[] = [new IconDrawer(), new TextDrawer()];
 
 	async render(layer: EvaluatedLayer, ctx: RenderContext): Promise<RenderedSymbol> {
 		const parts = [];
 		for (const drawer of this.parts) {
 			const part = await drawer.draw(layer, ctx);
-			if (part) parts.push(part);
+			if (part) {
+				parts.push(part);
+				break;
+			}
 		}
 		if (parts.length === 0) return neutralSymbol(ctx);
 		const contentWidth = parts.reduce((sum, p) => sum + p.width, 0) + GAP * (parts.length - 1);

@@ -3228,7 +3228,7 @@ exports[`the SVG of every story > Layers/raster / TwoSources #1 (../stori… 1`]
 
 exports[`the SVG of every story > Layers/symbol / Categorical #0 (../stor… 1`] = `
 {
-  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="200.8" height="128.8" viewBox="0 0 200.8 128.8" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="0 0 48 20" x="20" y="28.8"><g transform="translate(1.25 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/408dc2ad" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/408dc2ad"></image></g></g><g transform="translate(11.25 6.75)"><g opacity="1"><image href="data:image/x-test,71x13/c3fff635" x="0" y="0" width="35.5" height="6.5" preserveAspectRatio="none" xlink:href="data:image/x-test,71x13/c3fff635"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-0.5 0 48 20" x="20" y="52.8"><g transform="translate(1 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/260de62d" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/260de62d"></image></g></g><g transform="translate(11 6.75)"><g opacity="1"><image href="data:image/x-test,70x13/e9bb2325" x="0" y="0" width="35" height="6.5" preserveAspectRatio="none" xlink:href="data:image/x-test,70x13/e9bb2325"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-1.5 0 48 20" x="20" y="76.8"><g transform="translate(1.25 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f0b1d845" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/f0b1d845"></image></g></g><g transform="translate(11.25 6.75)"><g opacity="1"><image href="data:image/x-test,65x13/9db096d5" x="0" y="0" width="32.5" height="6.5" preserveAspectRatio="none" xlink:href="data:image/x-test,65x13/9db096d5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-9 0 48 20" x="20" y="100.8"><g transform="translate(6 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/8e68bb1d"></image></g></g><g transform="translate(16 6.75)"><g opacity="1"><image href="data:image/x-test,16x13/bb5a06c5" x="0" y="0" width="8" height="6.5" preserveAspectRatio="none" xlink:href="data:image/x-test,16x13/bb5a06c5"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="8" y="16.4" dominant-baseline="central" font-weight="bold">symbol-categorical</text><text x="74" y="38.8" dominant-baseline="central">residential</text><text x="74" y="62.8" dominant-baseline="central">commercial, retail</text><text x="74" y="86.8" dominant-baseline="central">industrial</text><text x="74" y="110.8" dominant-baseline="central">Other</text></g></svg>",
+  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="182.8" height="128.8" viewBox="0 0 182.8 128.8" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="28.8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/408dc2ad" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/408dc2ad"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="52.8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/260de62d" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/260de62d"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="76.8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f0b1d845" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/f0b1d845"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="100.8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/8e68bb1d"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="8" y="16.4" dominant-baseline="central" font-weight="bold">symbol-categorical</text><text x="56" y="38.8" dominant-baseline="central">residential</text><text x="56" y="62.8" dominant-baseline="central">commercial, retail</text><text x="56" y="86.8" dominant-baseline="central">industrial</text><text x="56" y="110.8" dominant-baseline="central">Other</text></g></svg>",
   "entries": [
     {
       "entries": [
@@ -3237,32 +3237,32 @@ exports[`the SVG of every story > Layers/symbol / Categorical #0 (../stor… 1`]
           "kind": "category",
           "label": "residential",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="0 0 48 20"><g transform="translate(1.25 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/408dc2ad" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(11.25 6.75)"><g opacity="1"><image href="data:image/x-test,71x13/c3fff635" x="0" y="0" width="35.5" height="6.5" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 48,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/408dc2ad" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "category",
           "label": "commercial, retail",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-0.5 0 48 20"><g transform="translate(1 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/260de62d" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(11 6.75)"><g opacity="1"><image href="data:image/x-test,70x13/e9bb2325" x="0" y="0" width="35" height="6.5" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 48,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/260de62d" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "category",
           "label": "industrial",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-1.5 0 48 20"><g transform="translate(1.25 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f0b1d845" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(11.25 6.75)"><g opacity="1"><image href="data:image/x-test,65x13/9db096d5" x="0" y="0" width="32.5" height="6.5" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 48,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f0b1d845" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "default",
           "label": "Other",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-9 0 48 20"><g transform="translate(6 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(16 6.75)"><g opacity="1"><image href="data:image/x-test,16x13/bb5a06c5" x="0" y="0" width="8" height="6.5" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 48,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
       ],
       "label": "symbol-categorical",
@@ -3330,7 +3330,7 @@ exports[`the SVG of every story > Layers/symbol / CategoricalCase #0 (../… 1`]
 
 exports[`the SVG of every story > Layers/symbol / CustomLabels #0 (../sto… 1`] = `
 {
-  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="181" height="128.8" viewBox="0 0 181 128.8" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="0 0 48 20" x="20" y="28.8"><g transform="translate(1.25 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/408dc2ad" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/408dc2ad"></image></g></g><g transform="translate(11.25 6.75)"><g opacity="1"><image href="data:image/x-test,71x13/c3fff635" x="0" y="0" width="35.5" height="6.5" preserveAspectRatio="none" xlink:href="data:image/x-test,71x13/c3fff635"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-0.5 0 48 20" x="20" y="52.8"><g transform="translate(1 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/260de62d" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/260de62d"></image></g></g><g transform="translate(11 6.75)"><g opacity="1"><image href="data:image/x-test,70x13/e9bb2325" x="0" y="0" width="35" height="6.5" preserveAspectRatio="none" xlink:href="data:image/x-test,70x13/e9bb2325"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-1.5 0 48 20" x="20" y="76.8"><g transform="translate(1.25 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f0b1d845" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/f0b1d845"></image></g></g><g transform="translate(11.25 6.75)"><g opacity="1"><image href="data:image/x-test,65x13/9db096d5" x="0" y="0" width="32.5" height="6.5" preserveAspectRatio="none" xlink:href="data:image/x-test,65x13/9db096d5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-9 0 48 20" x="20" y="100.8"><g transform="translate(6 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/8e68bb1d"></image></g></g><g transform="translate(16 6.75)"><g opacity="1"><image href="data:image/x-test,16x13/bb5a06c5" x="0" y="0" width="8" height="6.5" preserveAspectRatio="none" xlink:href="data:image/x-test,16x13/bb5a06c5"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="8" y="16.4" dominant-baseline="central" font-weight="bold">Land use</text><text x="74" y="38.8" dominant-baseline="central">Homes</text><text x="74" y="62.8" dominant-baseline="central">Shops</text><text x="74" y="86.8" dominant-baseline="central">industrial</text><text x="74" y="110.8" dominant-baseline="central">Everything el…</text></g></svg>",
+  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="163" height="128.8" viewBox="0 0 163 128.8" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="28.8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/408dc2ad" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/408dc2ad"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="52.8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/260de62d" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/260de62d"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="76.8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f0b1d845" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/f0b1d845"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="100.8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/8e68bb1d"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="8" y="16.4" dominant-baseline="central" font-weight="bold">Land use</text><text x="56" y="38.8" dominant-baseline="central">Homes</text><text x="56" y="62.8" dominant-baseline="central">Shops</text><text x="56" y="86.8" dominant-baseline="central">industrial</text><text x="56" y="110.8" dominant-baseline="central">Everything el…</text></g></svg>",
   "entries": [
     {
       "entries": [
@@ -3339,32 +3339,32 @@ exports[`the SVG of every story > Layers/symbol / CustomLabels #0 (../sto… 1`]
           "kind": "category",
           "label": "Homes",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="0 0 48 20"><g transform="translate(1.25 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/408dc2ad" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(11.25 6.75)"><g opacity="1"><image href="data:image/x-test,71x13/c3fff635" x="0" y="0" width="35.5" height="6.5" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 48,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/408dc2ad" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "category",
           "label": "Shops",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-0.5 0 48 20"><g transform="translate(1 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/260de62d" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(11 6.75)"><g opacity="1"><image href="data:image/x-test,70x13/e9bb2325" x="0" y="0" width="35" height="6.5" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 48,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/260de62d" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "category",
           "label": "industrial",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-1.5 0 48 20"><g transform="translate(1.25 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f0b1d845" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(11.25 6.75)"><g opacity="1"><image href="data:image/x-test,65x13/9db096d5" x="0" y="0" width="32.5" height="6.5" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 48,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f0b1d845" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "default",
           "label": "Everything else",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="48" height="20" viewBox="-9 0 48 20"><g transform="translate(6 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(16 6.75)"><g opacity="1"><image href="data:image/x-test,16x13/bb5a06c5" x="0" y="0" width="8" height="6.5" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 48,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
       ],
       "label": "Land use",
@@ -3377,7 +3377,7 @@ exports[`the SVG of every story > Layers/symbol / CustomLabels #0 (../sto… 1`]
 
 exports[`the SVG of every story > Layers/symbol / Graduated #0 (../storie… 1`] = `
 {
-  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="147.2" height="128.8" viewBox="0 0 147.2 128.8" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="34" height="20" viewBox="-2 0 34 20" x="20" y="28.8"><g transform="translate(1.53 8.8)"><g transform="translate(1.7999999999999998 1.2) translate(-1.7999999999999998 -1.2)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="3.6" height="2.4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g><g transform="translate(9.13 5.67)"><g opacity="1"><image href="data:image/x-test,39x18/12d1da25" x="0" y="0" width="19.33" height="8.67" preserveAspectRatio="none" xlink:href="data:image/x-test,39x18/12d1da25"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="34" height="20" viewBox="-2 0 34 20" x="20" y="52.8"><g transform="translate(3.6 8.4)"><g transform="translate(2.4000000000000004 1.6) translate(-2.4000000000000004 -1.6)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="4.8" height="3.2" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g><g transform="translate(12.4 5.67)"><g opacity="1"><image href="data:image/x-test,28x18/59ad3745" x="0" y="0" width="14" height="8.67" preserveAspectRatio="none" xlink:href="data:image/x-test,28x18/59ad3745"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="34" height="20" viewBox="-2 0 34 20" x="20" y="76.8"><g transform="translate(1.33 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g><g transform="translate(11.33 5.67)"><g opacity="1"><image href="data:image/x-test,35x18/33726fa5" x="0" y="0" width="17.33" height="8.67" preserveAspectRatio="none" xlink:href="data:image/x-test,35x18/33726fa5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="34" height="20" viewBox="0 0 34 20" x="20" y="100.8"><g transform="translate(1.07 7.6)"><g transform="translate(3.5999999999999996 2.4) translate(-3.5999999999999996 -2.4)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="7.2" height="4.8" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g><g transform="translate(12.27 5.67)"><g opacity="1"><image href="data:image/x-test,42x18/b9d97c05" x="0" y="0" width="20.67" height="8.67" preserveAspectRatio="none" xlink:href="data:image/x-test,42x18/b9d97c05"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="8" y="16.4" dominant-baseline="central" font-weight="bold">symbol-graduated</text><text x="60" y="38.8" dominant-baseline="central">&lt; 100</text><text x="60" y="62.8" dominant-baseline="central">100 – 1000</text><text x="60" y="86.8" dominant-baseline="central">1000 – 100…</text><text x="60" y="110.8" dominant-baseline="central">≥ 10000</text></g></svg>",
+  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="143.2" height="128.8" viewBox="0 0 143.2 128.8" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="28.8"><g transform="translate(13.2 8.8)"><g transform="translate(1.7999999999999998 1.2) translate(-1.7999999999999998 -1.2)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="3.6" height="2.4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="52.8"><g transform="translate(12.6 8.4)"><g transform="translate(2.4000000000000004 1.6) translate(-2.4000000000000004 -1.6)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="4.8" height="3.2" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="76.8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="100.8"><g transform="translate(11.4 7.6)"><g transform="translate(3.5999999999999996 2.4) translate(-3.5999999999999996 -2.4)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="7.2" height="4.8" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="8" y="16.4" dominant-baseline="central" font-weight="bold">symbol-graduated</text><text x="56" y="38.8" dominant-baseline="central">&lt; 100</text><text x="56" y="62.8" dominant-baseline="central">100 – 1000</text><text x="56" y="86.8" dominant-baseline="central">1000 – 100…</text><text x="56" y="110.8" dominant-baseline="central">≥ 10000</text></g></svg>",
   "entries": [
     {
       "entries": [
@@ -3386,32 +3386,32 @@ exports[`the SVG of every story > Layers/symbol / Graduated #0 (../storie… 1`]
           "kind": "range",
           "label": "< 100",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="34" height="20" viewBox="-2 0 34 20"><g transform="translate(1.53 8.8)"><g transform="translate(1.7999999999999998 1.2) translate(-1.7999999999999998 -1.2)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="3.6" height="2.4" preserveAspectRatio="none"></image></g></g><g transform="translate(9.13 5.67)"><g opacity="1"><image href="data:image/x-test,39x18/12d1da25" x="0" y="0" width="19.33" height="8.67" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 34,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(13.2 8.8)"><g transform="translate(1.7999999999999998 1.2) translate(-1.7999999999999998 -1.2)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="3.6" height="2.4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "range",
           "label": "100 – 1000",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="34" height="20" viewBox="-2 0 34 20"><g transform="translate(3.6 8.4)"><g transform="translate(2.4000000000000004 1.6) translate(-2.4000000000000004 -1.6)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="4.8" height="3.2" preserveAspectRatio="none"></image></g></g><g transform="translate(12.4 5.67)"><g opacity="1"><image href="data:image/x-test,28x18/59ad3745" x="0" y="0" width="14" height="8.67" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 34,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12.6 8.4)"><g transform="translate(2.4000000000000004 1.6) translate(-2.4000000000000004 -1.6)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="4.8" height="3.2" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "range",
           "label": "1000 – 10000",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="34" height="20" viewBox="-2 0 34 20"><g transform="translate(1.33 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(11.33 5.67)"><g opacity="1"><image href="data:image/x-test,35x18/33726fa5" x="0" y="0" width="17.33" height="8.67" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 34,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "range",
           "label": "≥ 10000",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="34" height="20" viewBox="0 0 34 20"><g transform="translate(1.07 7.6)"><g transform="translate(3.5999999999999996 2.4) translate(-3.5999999999999996 -2.4)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="7.2" height="4.8" preserveAspectRatio="none"></image></g></g><g transform="translate(12.27 5.67)"><g opacity="1"><image href="data:image/x-test,42x18/b9d97c05" x="0" y="0" width="20.67" height="8.67" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 34,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(11.4 7.6)"><g transform="translate(3.5999999999999996 2.4) translate(-3.5999999999999996 -2.4)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="7.2" height="4.8" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
       ],
       "label": "symbol-graduated",
@@ -3424,7 +3424,7 @@ exports[`the SVG of every story > Layers/symbol / Graduated #0 (../storie… 1`]
 
 exports[`the SVG of every story > Layers/symbol / IconAndText #0 (../stor… 1`] = `
 {
-  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="184" height="36" viewBox="0 0 184 36" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="8" y="8"><g transform="translate(5.67 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/8e68bb1d"></image></g></g><g transform="translate(15.67 6.48)"><g opacity="1"><image href="data:image/x-test,18x15/aa081b25" x="0" y="0" width="8.67" height="7.04" preserveAspectRatio="none" xlink:href="data:image/x-test,18x15/aa081b25"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="44" y="18" dominant-baseline="central">symbol-icon-and-text</text></g></svg>",
+  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="184" height="36" viewBox="0 0 184 36" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="8" y="8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/8e68bb1d"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="44" y="18" dominant-baseline="central">symbol-icon-and-text</text></g></svg>",
   "entries": [
     {
       "entries": [
@@ -3433,7 +3433,7 @@ exports[`the SVG of every story > Layers/symbol / IconAndText #0 (../stor… 1`]
           "kind": "single",
           "label": "symbol-icon-and-text",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(5.67 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(15.67 6.48)"><g opacity="1"><image href="data:image/x-test,18x15/aa081b25" x="0" y="0" width="8.67" height="7.04" preserveAspectRatio="none"></image></g></g></svg>",
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/8e68bb1d" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
           "width": 30,
         },
       ],
@@ -3601,7 +3601,7 @@ exports[`the SVG of every story > Layers/symbol / LinearExponential #0 (.… 1`]
 
 exports[`the SVG of every story > Layers/symbol / LinearSize #0 (../stori… 1`] = `
 {
-  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="134.8" height="104.8" viewBox="0 0 134.8 104.8" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="42" height="20" viewBox="-6 0 42 20" x="20" y="28.8"><g transform="translate(4.63 9)"><g transform="translate(1.5 1) translate(-1.5 -1)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="3" height="2" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g><g transform="translate(11.63 7.29)"><g opacity="1"><image href="data:image/x-test,28x11/7d0e1005" x="0" y="0" width="13.75" height="5.42" preserveAspectRatio="none" xlink:href="data:image/x-test,28x11/7d0e1005"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="42" height="20" viewBox="-5.5 0 42 20" x="20" y="52.8"><g transform="translate(1.18 8.2)"><g transform="translate(2.7 1.8) translate(-2.7 -1.8)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="5.4" height="3.6" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g><g transform="translate(10.58 6.21)"><g opacity="1"><image href="data:image/x-test,39x16/e16bd8c5" x="0" y="0" width="19.25" height="7.58" preserveAspectRatio="none" xlink:href="data:image/x-test,39x16/e16bd8c5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="42" height="20" viewBox="0 0 42 20" x="20" y="76.8"><g transform="translate(1.05 7.2)"><g transform="translate(4.199999999999999 2.8) translate(-4.199999999999999 -2.8)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="8.4" height="5.6" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g><g transform="translate(13.45 4.58)"><g opacity="1"><image href="data:image/x-test,55x22/dc276e5" x="0" y="0" width="27.5" height="10.83" preserveAspectRatio="none" xlink:href="data:image/x-test,55x22/dc276e5"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="8" y="16.4" dominant-baseline="central" font-weight="bold">symbol-linear-size</text><text x="68" y="38.8" dominant-baseline="central">≤ 0</text><text x="68" y="62.8" dominant-baseline="central">5000</text><text x="68" y="86.8" dominant-baseline="central">≥ 20000</text></g></svg>",
+  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="134.8" height="104.8" viewBox="0 0 134.8 104.8" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="28.8"><g transform="translate(13.5 9)"><g transform="translate(1.5 1) translate(-1.5 -1)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="3" height="2" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="52.8"><g transform="translate(12.3 8.2)"><g transform="translate(2.7 1.8) translate(-2.7 -1.8)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="5.4" height="3.6" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="76.8"><g transform="translate(10.8 7.2)"><g transform="translate(4.199999999999999 2.8) translate(-4.199999999999999 -2.8)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="8.4" height="5.6" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="8" y="16.4" dominant-baseline="central" font-weight="bold">symbol-linear-size</text><text x="56" y="38.8" dominant-baseline="central">≤ 0</text><text x="56" y="62.8" dominant-baseline="central">5000</text><text x="56" y="86.8" dominant-baseline="central">≥ 20000</text></g></svg>",
   "entries": [
     {
       "entries": [
@@ -3610,24 +3610,24 @@ exports[`the SVG of every story > Layers/symbol / LinearSize #0 (../stori… 1`]
           "kind": "stop",
           "label": "≤ 0",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="42" height="20" viewBox="-6 0 42 20"><g transform="translate(4.63 9)"><g transform="translate(1.5 1) translate(-1.5 -1)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="3" height="2" preserveAspectRatio="none"></image></g></g><g transform="translate(11.63 7.29)"><g opacity="1"><image href="data:image/x-test,28x11/7d0e1005" x="0" y="0" width="13.75" height="5.42" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 42,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(13.5 9)"><g transform="translate(1.5 1) translate(-1.5 -1)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="3" height="2" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "stop",
           "label": "5000",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="42" height="20" viewBox="-5.5 0 42 20"><g transform="translate(1.18 8.2)"><g transform="translate(2.7 1.8) translate(-2.7 -1.8)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="5.4" height="3.6" preserveAspectRatio="none"></image></g></g><g transform="translate(10.58 6.21)"><g opacity="1"><image href="data:image/x-test,39x16/e16bd8c5" x="0" y="0" width="19.25" height="7.58" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 42,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12.3 8.2)"><g transform="translate(2.7 1.8) translate(-2.7 -1.8)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="5.4" height="3.6" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
         {
           "height": 20,
           "kind": "stop",
           "label": "≥ 20000",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="42" height="20" viewBox="0 0 42 20"><g transform="translate(1.05 7.2)"><g transform="translate(4.199999999999999 2.8) translate(-4.199999999999999 -2.8)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="8.4" height="5.6" preserveAspectRatio="none"></image></g></g><g transform="translate(13.45 4.58)"><g opacity="1"><image href="data:image/x-test,55x22/dc276e5" x="0" y="0" width="27.5" height="10.83" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 42,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(10.8 7.2)"><g transform="translate(4.199999999999999 2.8) translate(-4.199999999999999 -2.8)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="8.4" height="5.6" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
       ],
       "label": "symbol-linear-size",
@@ -3924,7 +3924,7 @@ exports[`the SVG of every story > Layers/symbol text / Halo #0 (../storie… 1`]
 
 exports[`the SVG of every story > Layers/symbol text / IconAndText #0 (..… 1`] = `
 {
-  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="192" height="36" viewBox="0 0 192 36" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="38" height="20" viewBox="0 0 38 20" x="8" y="8"><g transform="translate(1.17 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f414fdbd" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/f414fdbd"></image></g></g><g transform="translate(11.17 6.5)"><g opacity="1"><image href="data:image/x-test,52x14/8fafb104" x="0" y="0" width="25.67" height="7" preserveAspectRatio="none" xlink:href="data:image/x-test,52x14/8fafb104"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="52" y="18" dominant-baseline="central">symbol-icon-and-text</text></g></svg>",
+  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="184" height="36" viewBox="0 0 184 36" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="8" y="8"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f414fdbd" x="0" y="0" width="6" height="4" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/f414fdbd"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="44" y="18" dominant-baseline="central">symbol-icon-and-text</text></g></svg>",
   "entries": [
     {
       "entries": [
@@ -3933,8 +3933,8 @@ exports[`the SVG of every story > Layers/symbol text / IconAndText #0 (..… 1`]
           "kind": "single",
           "label": "symbol-icon-and-text",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="38" height="20" viewBox="0 0 38 20"><g transform="translate(1.17 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f414fdbd" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g><g transform="translate(11.17 6.5)"><g opacity="1"><image href="data:image/x-test,52x14/8fafb104" x="0" y="0" width="25.67" height="7" preserveAspectRatio="none"></image></g></g></svg>",
-          "width": 38,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(12 8)"><g transform="translate(3 2) translate(-3 -2)" opacity="1"><image href="data:image/x-test,6x4/f414fdbd" x="0" y="0" width="6" height="4" preserveAspectRatio="none"></image></g></g></svg>",
+          "width": 30,
         },
       ],
       "label": "symbol-icon-and-text",

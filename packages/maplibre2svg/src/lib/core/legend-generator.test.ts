@@ -25,9 +25,13 @@ describe('one cache per createLegend call', () => {
 	it('encodes an image once and loads a glyph range once for all layers', async () => {
 		const { encode, calls } = fakeEncoder();
 		const fetchGlyphs = vi.fn(async () => pbf.slice().buffer);
-		const layers = ['a', 'b', 'c'].map((id) =>
-			symbol(id, { 'icon-image': 'pin', 'text-field': 'Name', 'text-font': ['Test Regular'] })
-		);
+		// a symbol with an icon draws only the icon, so the labels come from text-only layers
+		const layers = [
+			...['a', 'b', 'c'].map((id) => symbol(id, { 'icon-image': 'pin' })),
+			...['d', 'e', 'f'].map((id) =>
+				symbol(id, { 'text-field': 'Name', 'text-font': ['Test Regular'] })
+			)
+		];
 		await createLegend(styleOf(layers, GLYPHS), {
 			getImage: () => solidImage(4, 4),
 			imageEncoder: encode,
