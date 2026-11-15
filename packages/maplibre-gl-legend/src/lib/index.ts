@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ControlPosition, IControl, LayerSpecification, Map as MaplibreMap } from 'maplibre-gl';
 import { createLayerLegend, createLegendCache, legendToSvg } from '@watergis/maplibre2svg';
 
@@ -9,7 +8,28 @@ export interface LegendOptions {
 	onlyRendered: boolean;
 	title?: string;
 	onlyRenderedLabel?: string;
+	/**
+	 * Groups of layers shown (and switched on/off) together: group title and the layer IDs in it.
+	 * A layer belongs to the first group listing it.
+	 */
+	groups?: { [title: string]: string[] };
+	/** Layers not in `groups` which share the same source and source-layer are grouped by the source-layer name. Default is false. */
+	groupBySourceLayer?: boolean;
+	/** true: groups are collapsed as default. Default is false. */
+	collapseGroups?: boolean;
 }
+
+/** a row of the legend: a single layer, or a group of layers */
+type LegendItem =
+	| { type: 'layer'; layer: LayerSpecification }
+	| {
+			type: 'group';
+			key: string;
+			title: string;
+			layers: LayerSpecification[];
+			/** true: grouped automatically by source-layer */
+			auto: boolean;
+	  };
 
 /**
  * Mapbox GL Legend Control.
@@ -20,6 +40,9 @@ export interface LegendOptions {
  * @param {boolean} options.onlyRendered true: only rendered layers will be shown on legend as default. false: all layers' legend will be shown as default. If not specified, default value will be true.
  * @param {string} options.title the text shown above the legend. Default is 'Legend'.
  * @param {string} options.onlyRenderedLabel the text of the "Only rendered" checkbox label. Default is 'Only rendered'.
+ * @param {Object} options.groups groups of layers shown and switched on/off together: group title and the layer IDs in it.
+ * @param {boolean} options.groupBySourceLayer true: layers sharing the same source-layer are grouped. Default is false.
+ * @param {boolean} options.collapseGroups true: groups are collapsed as default. Default is false.
  */
 
 export class MaplibreLegendControl implements IControl {
@@ -38,12 +61,20 @@ export class MaplibreLegendControl implements IControl {
 		reverseOrder: true,
 		onlyRendered: true,
 		title: undefined,
-		onlyRenderedLabel: undefined
+		onlyRenderedLabel: undefined,
+		groups: undefined,
+		groupBySourceLayer: false,
+		collapseGroups: false
 	};
 	// keeps the glyphs and tiles loaded for the legend between redraws
 	private legendCache = createLegendCache();
+	// collapsed state of each group (by group key), kept between redraws
+	private collapsedGroups: Map<string, boolean> = new Map();
+	// layer IDs of each group (by group key) in the current legend
+	private groupLayers: Map<string, string[]> = new Map();
+	private redrawScheduled = false;
 
-	constructor(targets: { [key: string]: string }, options: LegendOptions) {
+	constructor(targets: { [key: string]: string }, options?: Partial<LegendOptions>) {
 		this.targets = targets;
 		if (options) {
 			this.options = Object.assign(this.options, options);
@@ -57,6 +88,29 @@ export class MaplibreLegendControl implements IControl {
 		return defaultPosition;
 	}
 
+	private isLayerVisible(layerId: string): boolean {
+		return this.map?.getLayoutProperty(layerId, 'visibility') !== 'none';
+	}
+
+	/**
+	 * switch a layer's visibility, and update its checkboxes
+	 * @param layerId layer ID
+	 * @param visible true: show the layer. false: hide the layer
+	 */
+	private setLayerVisibility(layerId: string, visible: boolean) {
+		if (visible) {
+			if (this.uncheckedLayers[layerId]) delete this.uncheckedLayers[layerId];
+			this.map?.setLayoutProperty(layerId, 'visibility', 'visible');
+		} else {
+			this.uncheckedLayers[layerId] = layerId;
+			this.map?.setLayoutProperty(layerId, 'visibility', 'none');
+		}
+		// a layer can be shown in other legend controls too
+		document.getElementsByName(layerId).forEach((checkbox) => {
+			if (checkbox instanceof HTMLInputElement) checkbox.checked = visible;
+		});
+	}
+
 	/**
 	 * create checkbox for switching layer visibility
 	 * @param layer mapboxgl.Layer object
@@ -64,22 +118,6 @@ export class MaplibreLegendControl implements IControl {
 	 */
 	private createLayerCheckbox(layer: LayerSpecification): HTMLElement | undefined {
 		if (!this.options.showCheckbox) return;
-
-		const changeLayerVisibility = (layer_id: string, checked) => {
-			if (checked) {
-				if (this.uncheckedLayers[layer_id]) delete this.uncheckedLayers[layer_id];
-				this.map?.setLayoutProperty(layer_id, 'visibility', 'visible');
-			} else {
-				this.uncheckedLayers[layer_id] = layer_id;
-				this.map?.setLayoutProperty(layer_id, 'visibility', 'none');
-			}
-			const checkboxes: NodeListOf<HTMLElement> = document.getElementsByName(layer_id);
-			for (const i in checkboxes) {
-				if (typeof checkboxes[i] === 'number') continue;
-				// @ts-ignore
-				checkboxes[i].checked = checked;
-			}
-		};
 
 		// create checkbox for switching layer visibility
 		const td = document.createElement('TD');
@@ -92,29 +130,14 @@ export class MaplibreLegendControl implements IControl {
 		const layerTitle = this.targets?.[layer.id] ?? layer.id;
 		checklayer.setAttribute('aria-label', `Toggle visibility of ${layerTitle}`);
 		checklayer.title = 'Toggle visibility';
-		const visibility = this.map?.getLayoutProperty(layer.id, 'visibility');
-		if (!visibility) {
-			checklayer.checked = true;
-		} else {
-			let _checked = true;
-			switch (visibility) {
-				case 'none':
-					_checked = false;
-					break;
-				case 'visible':
-					_checked = true;
-					checklayer.checked = true;
-					break;
-			}
-			changeLayerVisibility(layer.id, _checked);
-		}
+		const visible = this.isLayerVisible(layer.id);
+		checklayer.checked = visible;
+		if (!visible) this.uncheckedLayers[layer.id] = layer.id;
 
-		checklayer.addEventListener('click', function (e) {
-			// @ts-ignore
-			const _id = e.target?.value;
-			// @ts-ignore
-			const _checked = e.target?.checked;
-			changeLayerVisibility(_id, _checked);
+		checklayer.addEventListener('click', () => {
+			this.setLayerVisibility(layer.id, checklayer.checked);
+			this.updateGroupStates();
+			this.redrawWhenIdle();
 		});
 		td.appendChild(checklayer);
 
@@ -124,15 +147,23 @@ export class MaplibreLegendControl implements IControl {
 	/**
 	 * Create and return a layer's legend rows
 	 * @param layer mapboxgl.Layer object
-	 * @returns HTMLElement | undefined return TBODY Element holding the layer's rows
+	 * @param groupKey the key of the group the layer belongs to
+	 * @returns the TBODY Element holding the layer's rows, and a promise resolved with false when the layer has no legend (the TBODY is removed)
 	 */
-	private getLayerLegend(layer: LayerSpecification): HTMLElement | undefined {
+	private getLayerLegend(
+		layer: LayerSpecification,
+		groupKey?: string
+	): { tbody: HTMLElement; ready: Promise<boolean> } | undefined {
 		const map = this.map;
 		if (!map) return;
 
 		// all rows of a layer (the layer row and its class row) share a tbody, so they are separated from other layers as a group
 		const tbody = document.createElement('TBODY');
 		tbody.className = 'maplibregl-legend-layer';
+		if (groupKey !== undefined) {
+			tbody.classList.add('maplibregl-legend-group-member');
+			tbody.dataset.group = groupKey;
+		}
 		const tr = document.createElement('TR');
 		tbody.appendChild(tr);
 
@@ -184,7 +215,7 @@ export class MaplibreLegendControl implements IControl {
 		td2.appendChild(label1);
 
 		// draw the legend symbol(s) with maplibre2svg; the row is shown first and filled when ready
-		createLayerLegend(layer, map.getStyle(), {
+		const ready = createLayerLegend(layer, map.getStyle(), {
 			zoom: map.getZoom(),
 			center: map.getCenter().toArray(),
 			getImage: (id) => {
@@ -205,6 +236,7 @@ export class MaplibreLegendControl implements IControl {
 			.then((legend) => {
 				if (legend.entries.length === 0) {
 					tbody.remove();
+					return false;
 				} else if (legend.entries.length === 1) {
 					td1.appendChild(legend.entries[0].svg);
 				} else {
@@ -220,17 +252,206 @@ export class MaplibreLegendControl implements IControl {
 					td1.remove();
 					td2.setAttribute('colspan', '2');
 				}
+				return true;
 			})
-			.catch(() => appendFallbackIcon());
+			.catch(() => {
+				appendFallbackIcon();
+				return true;
+			});
 
 		tr.appendChild(td1);
 		tr.appendChild(td2);
+		return { tbody, ready };
+	}
+
+	/**
+	 * create the header row of a group: a checkbox switching all layers of the group, a button to collapse the group, and its title
+	 * @param item the group
+	 * @returns HTMLElement return TBODY Element holding the header row
+	 */
+	private createGroupHeader(item: Extract<LegendItem, { type: 'group' }>): HTMLElement {
+		const tbody = document.createElement('TBODY');
+		tbody.className = 'maplibregl-legend-group';
+		tbody.dataset.group = item.key;
+		const tr = document.createElement('TR');
+		tbody.appendChild(tr);
+
+		if (this.options.showCheckbox) {
+			const td0 = document.createElement('TD');
+			td0.className = 'legend-table-td';
+			const checkbox = document.createElement('input');
+			checkbox.setAttribute('type', 'checkbox');
+			checkbox.classList.add('maplibregl-legend-visibility-toggle');
+			checkbox.classList.add('maplibregl-legend-group-toggle');
+			checkbox.setAttribute('aria-label', `Toggle visibility of ${item.title}`);
+			checkbox.title = 'Toggle visibility';
+			checkbox.addEventListener('click', () => {
+				// a partially visible group becomes visible
+				const visible = checkbox.checked;
+				for (const layer of item.layers) {
+					this.setLayerVisibility(layer.id, visible);
+				}
+				this.updateGroupStates();
+				this.redrawWhenIdle();
+			});
+			td0.appendChild(checkbox);
+			tr.appendChild(td0);
+		}
+
+		// the title spans the symbol and label columns, with the collapse button at its right end
+		const td1 = document.createElement('TD');
+		td1.className = 'legend-table-td';
+		td1.setAttribute('colspan', '2');
+		const titleContainer = document.createElement('div');
+		titleContainer.className = 'maplibregl-legend-group-title';
+		const label = document.createElement('label');
+		label.textContent = item.title;
+		titleContainer.appendChild(label);
+		const collapseButton = document.createElement('button');
+		collapseButton.type = 'button';
+		collapseButton.classList.add('maplibregl-legend-group-collapse');
+		const setCollapsed = (collapsed: boolean) => {
+			this.collapsedGroups.set(item.key, collapsed);
+			collapseButton.setAttribute('aria-expanded', String(!collapsed));
+			collapseButton.setAttribute(
+				'aria-label',
+				`${collapsed ? 'Expand' : 'Collapse'} ${item.title}`
+			);
+			collapseButton.title = collapsed ? 'Expand' : 'Collapse';
+			for (const member of this.getGroupMembers(item.key)) {
+				member.hidden = collapsed;
+			}
+		};
+		// clicking anywhere on the group row (title, button or empty space) expands / collapses the group, except the visibility toggle
+		tr.classList.add('maplibregl-legend-group-header');
+		tr.addEventListener('click', (e) => {
+			if (e.target instanceof HTMLInputElement) return;
+			setCollapsed(!this.isGroupCollapsed(item.key));
+		});
+		titleContainer.appendChild(collapseButton);
+		td1.appendChild(titleContainer);
+		tr.appendChild(td1);
+
+		// the attributes of the button are set here, the members are hidden after they are added
+		setCollapsed(this.isGroupCollapsed(item.key));
 		return tbody;
 	}
 
 	/**
-    update legend contents
-    */
+	 * redraw the legend after the map is rendered, so that layers just shown are listed as rendered layers
+	 */
+	private redrawWhenIdle() {
+		const map = this.map;
+		if (!map || this.redrawScheduled) return;
+		this.redrawScheduled = true;
+		map.once('idle', () => {
+			this.redrawScheduled = false;
+			this.updateLegendControl();
+		});
+	}
+
+	private isGroupCollapsed(key: string): boolean {
+		return this.collapsedGroups.get(key) ?? this.options.collapseGroups ?? false;
+	}
+
+	/** the TBODY Elements of the layers in a group */
+	private getGroupMembers(key: string): HTMLElement[] {
+		if (!this.legendTable) return [];
+		return Array.from(this.legendTable.children).filter(
+			(el): el is HTMLElement =>
+				el instanceof HTMLElement &&
+				el.classList.contains('maplibregl-legend-group-member') &&
+				el.dataset.group === key
+		);
+	}
+
+	/** update the group checkboxes from the visibility of their layers: checked, unchecked, or indeterminate (partially visible) */
+	private updateGroupStates() {
+		if (!this.legendTable) return;
+		for (const el of Array.from(this.legendTable.children)) {
+			if (!(el instanceof HTMLElement) || !el.classList.contains('maplibregl-legend-group'))
+				continue;
+			const checkbox = el.querySelector('input.maplibregl-legend-group-toggle');
+			if (!(checkbox instanceof HTMLInputElement)) continue;
+			const layerIds = this.groupLayers.get(el.dataset.group ?? '') ?? [];
+			const visibleCount = layerIds.filter((id) => this.isLayerVisible(id)).length;
+			checkbox.checked = visibleCount > 0 && visibleCount === layerIds.length;
+			checkbox.indeterminate = visibleCount > 0 && visibleCount < layerIds.length;
+		}
+	}
+
+	/** whether a layer is shown in the legend (regardless of whether it is rendered) */
+	private isTarget(layerId: string): boolean {
+		if (this.targets === undefined || Object.keys(this.targets).length === 0) return true;
+		if (layerId in this.targets) return true;
+		// layers in the groups are shown even if they are not in the targets
+		return Object.values(this.options.groups ?? {}).some((ids) => ids.includes(layerId));
+	}
+
+	/**
+	 * put layers into groups: the groups in the options first, then layers sharing source and source-layer
+	 * @param layers layers in the order shown in the legend
+	 * @returns the rows of the legend. A group is placed at the position of its first layer
+	 */
+	private createLegendItems(layers: LayerSpecification[]): LegendItem[] {
+		const groupKeys: Map<string, string> = new Map();
+		const titles: Map<string, string> = new Map();
+		const layerIds = new Set(layers.map((l) => l.id));
+
+		for (const [title, ids] of Object.entries(this.options.groups ?? {})) {
+			const key = `group:${title}`;
+			for (const id of ids) {
+				if (!layerIds.has(id) || groupKeys.has(id)) continue;
+				groupKeys.set(id, key);
+				titles.set(key, title);
+			}
+		}
+
+		if (this.options.groupBySourceLayer) {
+			const sourceLayerGroups: Map<string, LayerSpecification[]> = new Map();
+			for (const layer of layers) {
+				if (groupKeys.has(layer.id)) continue;
+				const sourceLayer = 'source-layer' in layer ? layer['source-layer'] : undefined;
+				if (!sourceLayer || !('source' in layer)) continue;
+				const key = `source-layer:${layer.source}/${sourceLayer}`;
+				sourceLayerGroups.set(key, [...(sourceLayerGroups.get(key) ?? []), layer]);
+				titles.set(key, sourceLayer);
+			}
+			for (const [key, members] of sourceLayerGroups) {
+				// a source-layer used by only one layer is not grouped
+				if (members.length < 2) continue;
+				for (const layer of members) groupKeys.set(layer.id, key);
+			}
+		}
+
+		const items: LegendItem[] = [];
+		const groups: Map<string, Extract<LegendItem, { type: 'group' }>> = new Map();
+		for (const layer of layers) {
+			const key = groupKeys.get(layer.id);
+			if (key === undefined) {
+				items.push({ type: 'layer', layer });
+				continue;
+			}
+			let group = groups.get(key);
+			if (!group) {
+				group = {
+					type: 'group',
+					key,
+					title: titles.get(key) ?? key,
+					layers: [],
+					auto: key.startsWith('source-layer:')
+				};
+				groups.set(key, group);
+				items.push(group);
+			}
+			group.layers.push(layer);
+		}
+		return items;
+	}
+
+	/**
+	 * update legend contents
+	 */
 	private updateLegendControl() {
 		const map = this.map;
 
@@ -244,55 +465,76 @@ export class MaplibreLegendControl implements IControl {
 		}
 
 		let layers = map?.getStyle().layers;
-		if (layers) {
-			if (!this.legendTable) {
-				this.legendTable = document.createElement('TABLE');
-				this.legendTable.className = 'legend-table';
-				// only the table scrolls, so the scrollbar does not overlap the close button
-				const tableWrapper = document.createElement('div');
-				tableWrapper.className = 'maplibregl-legend-table-wrapper';
-				tableWrapper.appendChild(this.legendTable);
-				this.legendContainer.appendChild(tableWrapper);
+		if (!layers) return;
+
+		if (!this.legendTable) {
+			this.legendTable = document.createElement('TABLE');
+			this.legendTable.className = 'legend-table';
+			// only the table scrolls, so the scrollbar does not overlap the close button
+			const tableWrapper = document.createElement('div');
+			tableWrapper.className = 'maplibregl-legend-table-wrapper';
+			tableWrapper.appendChild(this.legendTable);
+			this.legendContainer.appendChild(tableWrapper);
+		}
+
+		while (this.legendTable.firstChild) {
+			this.legendTable.removeChild(this.legendTable.firstChild);
+		}
+		if (this.options.reverseOrder) {
+			layers = layers.reverse();
+		}
+
+		const targetLayers = layers.filter((l) => {
+			if (visibleLayers[l.id] && this.uncheckedLayers[l.id]) {
+				delete this.uncheckedLayers[l.id];
+			} else if (this.uncheckedLayers[l.id]) {
+				// hidden by the checkbox: keep it in the legend so that it can be shown again
+				visibleLayers[l.id] = l;
+			}
+			return this.isTarget(l.id);
+		});
+		// with onlyRendered, only rendered layers are listed
+		const isShown = (l: LayerSpecification) => !this.onlyRendered || !!visibleLayers[l.id];
+
+		this.groupLayers = new Map();
+		for (const item of this.createLegendItems(targetLayers)) {
+			if (item.type === 'layer') {
+				if (!isShown(item.layer)) continue;
+				const legend = this.getLayerLegend(item.layer);
+				if (legend) this.legendTable.appendChild(legend.tbody);
+				continue;
 			}
 
-			while (this.legendTable.firstChild) {
-				this.legendTable.removeChild(this.legendTable.firstChild);
+			const shownLayers = item.layers.filter(isShown);
+			if (shownLayers.length === 0) continue;
+			if (item.auto && shownLayers.length < 2) {
+				// a source-layer group with only one layer listed now (e.g. its other layers are not rendered at this zoom) is shown as a single layer
+				const legend = this.getLayerLegend(shownLayers[0]);
+				if (legend) this.legendTable.appendChild(legend.tbody);
+				continue;
 			}
-			if (this.options.reverseOrder) {
-				layers = layers.reverse();
+			// the group checkbox switches all layers of the group, including layers not rendered now
+			this.groupLayers.set(
+				item.key,
+				item.layers.map((l) => l.id)
+			);
+			const header = this.createGroupHeader(item);
+			this.legendTable.appendChild(header);
+			const collapsed = this.isGroupCollapsed(item.key);
+			const ready: Promise<boolean>[] = [];
+			for (const layer of shownLayers) {
+				const legend = this.getLayerLegend(layer, item.key);
+				if (!legend) continue;
+				legend.tbody.hidden = collapsed;
+				this.legendTable.appendChild(legend.tbody);
+				ready.push(legend.ready);
 			}
-			layers.forEach((l) => {
-				if (visibleLayers[l.id] && this.uncheckedLayers[l.id]) {
-					delete this.uncheckedLayers[l.id];
-				} else if (this.uncheckedLayers[l.id]) {
-					visibleLayers[l.id] = l;
-				}
-
-				if (
-					this.targets === undefined ||
-					// if target option is undefined, show all layers.
-					(this.targets && Object.keys(this.targets).length === 0) ||
-					// if no layer is specified, show all layers.
-					(this.targets &&
-						Object.keys(this.targets)
-							.map((id: string) => {
-								return id;
-							})
-							.includes(l.id))
-					// if layers are speficied, only show these specific layers.
-				) {
-					if (this.onlyRendered) {
-						// only show rendered layer
-						if (!visibleLayers[l.id]) return;
-					}
-					const tbody = this.getLayerLegend(l);
-					if (!tbody) return;
-					this.legendTable.appendChild(tbody);
-				} else {
-					return;
-				}
+			// remove the group when none of its layers has a legend
+			Promise.all(ready).then((results) => {
+				if (!results.some((r) => r)) header.remove();
 			});
 		}
+		this.updateGroupStates();
 	}
 
 	public onAdd(map: MaplibreMap): HTMLElement {
@@ -361,7 +603,12 @@ export class MaplibreLegendControl implements IControl {
 				map.off('idle', afterLoadListener);
 			}
 		};
-		this.map.on('idle', afterLoadListener);
+		if (map.loaded()) {
+			// the control is added after the map is loaded: 'idle' might not be fired until the map is changed
+			this.updateLegendControl();
+		} else {
+			this.map.on('idle', afterLoadListener);
+		}
 
 		if (this.options && this.options.showDefault == true) {
 			this.legendContainer.style.display = 'block';

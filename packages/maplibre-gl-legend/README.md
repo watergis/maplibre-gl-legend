@@ -61,6 +61,14 @@ map.addControl(new MaplibreLegendControl(targets, {showDefault: true}), 'bottom-
 // add legend control with all layers, and it reverse layer order
 map.addControl(new MaplibreLegendControl({}, {reverseOrder: false}), 'bottom-left');
 
+// group layers: layers in a group are listed under the group title, and switched on/off together
+map.addControl(new MaplibreLegendControl(targets, {
+  groups: {
+    'Pipeline': ['pipeline', 'pipeline_annotation'],
+    'Water Facilities': ['wtp', 'wtp_annotation', 'tank', 'tank_annotation'],
+  },
+}), 'top-left');
+
 // if you want to use basemap from Mapbox in v2
 map.addControl(new MaplibreLegendControl({}, {accesstoken: 'your mapbox accesstoken'}));
 ```
@@ -90,6 +98,19 @@ Specify your layers which you want to add the legend by the control.
 - onlyRenderedLabel
   - the label text of the "Only rendered" checkbox. Use it to translate the label into other languages.
   - default: "Only rendered"
+- groups
+  - groups of layers: an object of the group title and the IDs of the layers in the group. e.g. `{ 'Pipeline': ['pipeline', 'pipeline_annotation'] }`
+  - the layers of a group are listed under the group title. The checkbox of the group switches all of its layers on/off, and each layer still has its own checkbox. Click the group row (title or chevron) to collapse or expand the group.
+  - layers in the groups are shown even if they are not in `targets`. A layer belongs to the first group listing it.
+  - default: no group
+- groupBySourceLayer
+  - true: layers not in `groups` which share the same source and `source-layer` are grouped automatically, titled by the source-layer name. They are grouped only while 2 or more of them are listed (e.g. with `onlyRendered`, a layer not rendered at the current zoom is not counted).
+  - false: layers are not grouped automatically.
+  - default value is `false`.
+- collapseGroups
+  - true: groups are collapsed as default.
+  - false: groups are expanded as default.
+  - default value is `false`.
 
 ### Customizing styles
 
@@ -100,9 +121,11 @@ The icons (layer visibility eye / eye-off, close button) and the "Only rendered"
 | `--maplibregl-legend-icon-visible` | Lucide `eye` | icon of a visible layer |
 | `--maplibregl-legend-icon-hidden` | Lucide `eye-off` | icon of a hidden layer |
 | `--maplibregl-legend-icon-close` | Lucide `x` | icon of the close button |
+| `--maplibregl-legend-icon-chevron` | Lucide `chevron-down` | icon of the button collapsing a group |
 | `--maplibregl-legend-icon-size` | `16px` | size of the visibility icons |
 | `--maplibregl-legend-icon-color` | `#1c1c1c` | color of the visible icon |
 | `--maplibregl-legend-icon-hidden-color` | `#9a9a9a` | color of the hidden icon |
+| `--maplibregl-legend-icon-partial-color` | `#9a9a9a` | color of the visible icon of a partially visible group |
 | `--maplibregl-legend-close-icon-size` | `16px` | size of the close icon |
 | `--maplibregl-legend-close-icon-color` | `#1c1c1c` | color of the close icon |
 | `--maplibregl-legend-switch-width` | `28px` | width of the switch |
@@ -112,6 +135,8 @@ The icons (layer visibility eye / eye-off, close button) and the "Only rendered"
 | `--maplibregl-legend-switch-off-color` | `#c4c4c4` | switch color when off |
 | `--maplibregl-legend-switch-thumb-color` | `#ffffff` | color of the switch knob |
 | `--maplibregl-legend-divider` | `1px solid #e5e5e5` | line between layers |
+| `--maplibregl-legend-group-divider` | `--maplibregl-legend-divider` | line between the layers in a group |
+| `--maplibregl-legend-group-divider-inset` | `8px` | how much shorter the line between the layers in a group is, on each side |
 | `--maplibregl-legend-text-color` | `#1c1c1c` | text color |
 | `--maplibregl-legend-focus-color` | `#3b82f6` | keyboard focus outline color |
 

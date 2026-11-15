@@ -59,16 +59,33 @@ map.on('load', function () {
 		onlyRendered: true,
 		reverseOrder: false,
 		title: 'Custom title',
-		onlyRenderedLabel: 'Show only rendered'
+		onlyRenderedLabel: 'Show only rendered',
+		// layers in a group are listed under the group title, and switched on/off together
+		groups: {
+			'Water Facilities': [
+				'wtp',
+				'wtp_annotation',
+				'intake',
+				'intake_annotation',
+				'tank',
+				'tank_annotation'
+			],
+			Parcels: ['parcels', 'parcels-outline', 'parcels_annotation'],
+			Village: ['village', 'village_annotation'],
+			DMA: ['dma', 'dma-annotation']
+		}
 	};
 	map.addControl(new MaplibreLegendControl(targets, options), 'bottom-right');
 
-	// add legend control with all layers, and it reverse layer order
+	// add legend control with all layers, and it reverse layer order. Layers sharing a source-layer are grouped
 	options = {
 		showDefault: true,
 		showCheckbox: true,
 		onlyRendered: false,
 		reverseOrder: true
 	};
-	map.addControl(new MaplibreLegendControl({}, options), 'bottom-left');
+	map.addControl(
+		new MaplibreLegendControl({}, { ...options, groupBySourceLayer: true }),
+		'bottom-left'
+	);
 });
