@@ -6,13 +6,13 @@
 	import CodeBlock from '#lib/CodeBlock.svelte';
 	import {
 		CENTER,
-		DEFAULT_OPTIONS,
+		MAPBOX_DEFAULTS,
+		MAPLIBRE_DEFAULTS,
 		STYLE_URL,
 		TARGETS,
 		ZOOM,
-		optionsToSearchParams,
 		toLegendOptions,
-		type DemoOptions,
+		toMaplibreLegendOptions,
 		type MapLibrary
 	} from '#lib/demo.js';
 
@@ -30,7 +30,6 @@
 	let versions: Record<MapLibrary, string> = $state({ maplibre: 'latest', mapbox: 'latest' });
 	let cdnTemplates: Record<MapLibrary, string> = $state({ maplibre: '', mapbox: '' });
 
-	let options: DemoOptions = $state({ ...DEFAULT_OPTIONS });
 	let mapboxToken = $state('Your access token');
 	let packageManager = $state('npm');
 
@@ -40,29 +39,22 @@
 	];
 	let importType = $state('npm');
 
-	const booleanOptions: { key: keyof DemoOptions; label: string }[] = [
-		{ key: 'showDefault', label: 'showDefault' },
-		{ key: 'showCheckbox', label: 'showCheckbox' },
-		{ key: 'onlyRendered', label: 'onlyRendered' },
-		{ key: 'reverseOrder', label: 'reverseOrder' },
-		{ key: 'useTargets', label: 'Show only target layers' }
-	];
-
 	let isMapbox = $derived(library === 'mapbox');
 	let packageName = $derived(`@watergis/${library}-gl-legend`);
 	let controlName = $derived(isMapbox ? 'MapboxLegendControl' : 'MaplibreLegendControl');
 	let peerDependency = $derived(isMapbox ? 'mapbox-gl' : 'maplibre-gl');
 
-	let demoHref = $derived.by(() => {
-		const query = optionsToSearchParams(options).toString();
-		const path = isMapbox ? resolve('/mapbox') : resolve('/maplibre');
-		return query ? `${path}?${query}` : path;
-	});
-
 	const indent = (value: string, prefix: string) => value.replace(/\n/g, `\n${prefix}`);
 
-	let targetsCode = $derived(options.useTargets ? JSON.stringify(TARGETS, null, '\t') : '{}');
-	let optionsCode = $derived(JSON.stringify(toLegendOptions(options), null, '\t'));
+	// the code is generated with the default options of the demo. Each demo page has a panel to try options
+	let targetsCode = JSON.stringify(TARGETS, null, '\t');
+	let optionsCode = $derived(
+		JSON.stringify(
+			isMapbox ? toLegendOptions(MAPBOX_DEFAULTS) : toMaplibreLegendOptions(MAPLIBRE_DEFAULTS),
+			null,
+			'\t'
+		)
+	);
 
 	let installCommand = $derived.by(() => {
 		const packages = `${packageName} ${peerDependency}`;
@@ -148,6 +140,27 @@ map.on('load', () => {
 			description:
 				'The label text of the "Only rendered" checkbox. Use it to translate the label into other languages.'
 		},
+		...(!isMapbox
+			? [
+					{
+						name: 'groups',
+						default: 'undefined',
+						description:
+							'Groups of layers: an object of the group title and the IDs of its layers. The layers of a group are listed under the group title, and switched on/off together by the group checkbox. Each layer keeps its own checkbox. Layers in groups are shown even if they are not in targets.'
+					},
+					{
+						name: 'groupBySourceLayer',
+						default: 'true',
+						description:
+							'true: layers not in groups which share the same source and source-layer are grouped automatically by the source-layer name.'
+					},
+					{
+						name: 'collapseGroups',
+						default: 'false',
+						description: 'true: groups are collapsed as default.'
+					}
+				]
+			: []),
 		...(isMapbox
 			? [
 					{
@@ -213,49 +226,22 @@ map.on('load', () => {
 	</section>
 
 	<section class="space-y-4">
-		<h3 class="h3 pt-10">Try options</h3>
-		<p>Change the options below and open the demo. The usage code is updated as well.</p>
-
-		<div class="card preset-outlined-surface-200-800 p-4 grid gap-4 md:grid-cols-2">
-			<div class="space-y-2">
-				{#each booleanOptions as opt (opt.key)}
-					<label class="flex items-center space-x-2">
-						<input class="checkbox" type="checkbox" bind:checked={options[opt.key] as boolean} />
-						<span>{opt.label}</span>
-					</label>
-				{/each}
-			</div>
-			<div class="space-y-3">
-				<label class="label">
-					<span class="label-text">title</span>
-					<input class="input" type="text" bind:value={options.title} />
-				</label>
-				<label class="label">
-					<span class="label-text">onlyRenderedLabel</span>
-					<input class="input" type="text" bind:value={options.onlyRenderedLabel} />
-				</label>
-				{#if isMapbox}
-					<label class="label">
-						<span class="label-text">Mapbox access token (only used in the code below)</span>
-						<input class="input" type="text" bind:value={mapboxToken} />
-					</label>
-				{/if}
-			</div>
-		</div>
-
+		<h3 class="h3 pt-10">Try the demo</h3>
+		<p>Open the demo and change the options from the panel on the map.</p>
 		<div class="flex flex-wrap gap-2">
-			<!-- eslint-disable svelte/no-navigation-without-resolve -->
-			<a class="btn preset-filled-primary-500 btn-lg" href={demoHref}>
+			<a
+				class="btn preset-filled-primary-500 btn-lg"
+				href={resolve(isMapbox ? '/mapbox' : '/maplibre')}
+			>
 				Open {isMapbox ? 'Mapbox' : 'MapLibre'} GL JS DEMO
 			</a>
-			<button
-				type="button"
-				class="btn preset-outlined-surface-500 btn-lg"
-				onclick={() => (options = { ...DEFAULT_OPTIONS })}
-			>
-				Reset options
-			</button>
 		</div>
+		{#if isMapbox}
+			<label class="label max-w-md">
+				<span class="label-text">Mapbox access token (only used in the code below)</span>
+				<input class="input" type="text" bind:value={mapboxToken} />
+			</label>
+		{/if}
 	</section>
 
 	<section class="pt-10">

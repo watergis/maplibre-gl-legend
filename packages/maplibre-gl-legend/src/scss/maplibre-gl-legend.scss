@@ -10,9 +10,13 @@
 	--maplibregl-legend-icon-hidden: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49'/%3E%3Cpath d='M14.084 14.158a3 3 0 0 1-4.242-4.242'/%3E%3Cpath d='M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143'/%3E%3Cpath d='m2 2 20 20'/%3E%3C/svg%3E");
 	/* Lucide "x": the close button */
 	--maplibregl-legend-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18'/%3E%3Cpath d='m6 6 12 12'/%3E%3C/svg%3E");
+	/* Lucide "chevron-down": the button collapsing a group (rotated when collapsed) */
+	--maplibregl-legend-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 	--maplibregl-legend-icon-size: 16px;
 	--maplibregl-legend-icon-color: #1c1c1c;
 	--maplibregl-legend-icon-hidden-color: #9a9a9a;
+	/* color of the visible icon of a partially visible group */
+	--maplibregl-legend-icon-partial-color: #9a9a9a;
 	--maplibregl-legend-close-icon-size: 16px;
 	--maplibregl-legend-close-icon-color: #1c1c1c;
 
@@ -26,6 +30,9 @@
 
 	/* line between layers */
 	--maplibregl-legend-divider: 1px solid #e5e5e5;
+
+	/* indent of the layers in a group */
+	--maplibregl-legend-group-indent: 16px;
 
 	--maplibregl-legend-text-color: #1c1c1c;
 	--maplibregl-legend-focus-color: #3b82f6;
@@ -177,9 +184,58 @@ table.legend-table {
 	width: 100%;
 }
 
-/* a line between layers (a layer's rows, including its class rows, share one tbody) */
-tbody.maplibregl-legend-layer + tbody.maplibregl-legend-layer {
+/* a line between layers (a layer's rows, including its class rows, share one tbody) and groups. No line between the layers in a group */
+tbody.maplibregl-legend-layer + tbody.maplibregl-legend-layer:not(.maplibregl-legend-group-member),
+tbody.maplibregl-legend-layer + tbody.maplibregl-legend-group,
+tbody.maplibregl-legend-group + tbody.maplibregl-legend-group {
 	border-top: var(--maplibregl-legend-divider);
+}
+
+/* layers in a group are indented under the group title */
+tbody.maplibregl-legend-group-member > tr > td:first-child {
+	padding-left: calc(2px + var(--maplibregl-legend-group-indent));
+}
+
+tbody.maplibregl-legend-group td.legend-table-td > label {
+	font-weight: bold;
+}
+
+/* the button collapsing a group (Lucide "chevron-down") */
+.maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-group-collapse {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: calc(var(--maplibregl-legend-icon-size) + 4px);
+	height: calc(var(--maplibregl-legend-icon-size) + 4px);
+	padding: 0;
+	border: 0;
+	border-radius: 3px;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.maplibregl-legend-group-collapse::before {
+	content: '';
+	display: block;
+	width: var(--maplibregl-legend-icon-size);
+	height: var(--maplibregl-legend-icon-size);
+	background-color: var(--maplibregl-legend-icon-color);
+	-webkit-mask: var(--maplibregl-legend-icon-chevron) center / contain no-repeat;
+	mask: var(--maplibregl-legend-icon-chevron) center / contain no-repeat;
+	transition: transform 0.15s ease-in-out;
+}
+
+.maplibregl-legend-group-collapse[aria-expanded='false']::before {
+	transform: rotate(-90deg);
+}
+
+.maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-group-collapse:hover {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.maplibregl-legend-group-collapse:focus-visible {
+	outline: 2px solid var(--maplibregl-legend-focus-color);
+	outline-offset: -2px;
 }
 
 td.legend-table-td,
@@ -216,6 +272,13 @@ th.legend-table-th {
 
 .maplibregl-legend-visibility-toggle:checked::before {
 	background-color: var(--maplibregl-legend-icon-color);
+	-webkit-mask-image: var(--maplibregl-legend-icon-visible);
+	mask-image: var(--maplibregl-legend-icon-visible);
+}
+
+/* a partially visible group */
+.maplibregl-legend-visibility-toggle:indeterminate::before {
+	background-color: var(--maplibregl-legend-icon-partial-color);
 	-webkit-mask-image: var(--maplibregl-legend-icon-visible);
 	mask-image: var(--maplibregl-legend-icon-visible);
 }
