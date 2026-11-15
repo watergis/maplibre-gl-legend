@@ -1,6 +1,6 @@
 import type { LayerSpecification } from 'maplibre-gl';
 import { describe, expect, it } from 'vitest';
-import { classifyLayer } from '../classify';
+import { classifyLayer } from '../test-utils';
 import { describeCondition, generateLabel, labelClasses, layerLabelOf } from './index';
 
 const fillLayer = (fillColor: unknown, metadata?: unknown) =>

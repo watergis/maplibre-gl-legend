@@ -1,7 +1,7 @@
 import type { LayerSpecification } from 'maplibre-gl';
 import { describe, expect, it } from 'vitest';
 import { seedFromFilter } from './filter-seed';
-import { classifyLayer } from './index';
+import { classifyLayer } from '../test-utils';
 
 /** Filters of the unvt style (narwassco.github.io/mapbox-stylefiles/unvt/style.json) */
 const POI_RAILWAY = [

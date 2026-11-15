@@ -1,4 +1,4 @@
-import type { PropertyOverrides, PropertyGroup } from '../expression';
+import type { PropertyOverrides, PropertyGroup } from '../style';
 import { replaceAt } from './accessor';
 import type { ClassifierNode } from './find-node';
 import type { ClassCandidate } from './types';

@@ -1,5 +1,5 @@
-import type { EvaluatedLayer } from '../expression';
-import type { LegendEntryKind } from '../types';
+import type { EvaluatedLayer } from '../style';
+import type { LegendEntryKind } from '../core/types';
 
 /** Properties of a feature. `undefined` marks a field which must be absent */
 export type FeatureProperties = Record<string, unknown>;

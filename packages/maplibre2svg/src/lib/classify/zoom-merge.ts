@@ -1,11 +1,8 @@
 import type { ClassifierNode } from './find-node';
-import { interpolateClasses } from './interpolate';
 import { mergeCandidates, type NodeCandidate } from './merge';
-import { stepClasses } from './step';
+import type { NodeClassifiers } from './node-classifiers';
 import type { ClassCandidate } from './types';
 import type { ClassifyContext } from './verify';
-
-type Classifier = (found: ClassifierNode, ctx: ClassifyContext) => ClassCandidate[];
 
 const sortedUnique = (values: number[]) =>
 	[...new Set(values.filter((v) => Number.isFinite(v)))].sort((a, b) => a - b);
@@ -48,16 +45,16 @@ const withNode = (candidates: ClassCandidate[], found: ClassifierNode): NodeCand
 export function candidatesOfNodes(
 	nodes: ClassifierNode[],
 	ctx: ClassifyContext,
-	classifiers: Record<ClassifierNode['kind'], Classifier>
+	classifiers: NodeClassifiers
 ): NodeCandidate[] {
-	const own = (found: ClassifierNode) => withNode(classifiers[found.kind](found, ctx), found);
+	const own = (found: ClassifierNode) =>
+		withNode(classifiers[found.kind].classify(found, ctx), found);
 	if (nodes.length < 2) return mergeCandidates(nodes.map(own));
 	const [a, b] = nodes;
 	if (a.kind === 'match') return mergeCandidates([own(a), own(b)]);
 	if (a.kind === 'step' || a.kind === 'interpolate') {
 		const joined = joinedNode(a, b);
-		const classify = a.kind === 'step' ? stepClasses : interpolateClasses;
-		const candidates = classify(joined, ctx);
+		const candidates = classifiers[a.kind].classify(joined, ctx);
 		if (candidates.every((c) => !c.substitute)) return mergeCandidates([withNode(candidates, a)]);
 	}
 	const nearer = (b.distance ?? 0) < (a.distance ?? 0) ? b : a;

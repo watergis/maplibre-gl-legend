@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createSvg, el, fmt, SVG_NS } from './svg';
+import { createSvg, el, fmt, SVG_NS } from './render/svg';
 
 describe('svg helpers', () => {
 	it('formats numbers with 2 decimals at most', () => {

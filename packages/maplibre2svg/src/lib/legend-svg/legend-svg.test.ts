@@ -1,7 +1,7 @@
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
 import { describe, expect, it } from 'vitest';
-import { createLegend } from '../legend';
-import type { LayerLegend } from '../types';
+import { createLegend } from '../core/legend-generator';
+import type { LayerLegend } from '../core/types';
 import { legendToSvg } from './index';
 
 const layers = [

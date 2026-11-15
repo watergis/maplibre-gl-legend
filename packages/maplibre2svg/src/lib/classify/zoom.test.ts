@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { labelClasses } from '../label';
-import { classifyLayer } from './index';
+import { classifyLayer } from '../test-utils';
 import { testLayer } from '../test-utils';
 
 const k = ['get', 'k'];

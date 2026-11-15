@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { labelClasses } from '../label';
 import { classSummary, testLayer } from '../test-utils';
-import { classifyLayer } from './index';
+import { classifyLayer } from '../test-utils';
 
 const labels = (type: string, paint: Record<string, unknown>, zoom = 0) => {
 	const layer = testLayer(type, paint);

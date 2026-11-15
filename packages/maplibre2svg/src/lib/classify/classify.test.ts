@@ -1,6 +1,6 @@
 import type { LayerSpecification } from 'maplibre-gl';
 import { describe, expect, it } from 'vitest';
-import { classifyLayer } from './index';
+import { classifyLayer } from '../test-utils';
 
 const layer = (
 	type: string,

@@ -77,3 +77,26 @@ export function labelClasses<T extends { label: LabelInfo }>(
 	}
 	return labelled;
 }
+
+/**
+ * Labels the classes of a layer: generates a label from what each class stands for (the
+ * values of a `match` branch, the interval of a `step`, a stop, a `case` condition) and applies
+ * the overrides of `metadata.legend`
+ */
+export class LabelGenerator {
+	readonly #options: LabelOptions;
+
+	constructor(options: LabelOptions = {}) {
+		this.#options = options;
+	}
+
+	/** The label of a layer: `metadata.legend.label`, or the id of the layer */
+	layerLabel(layer: LayerSpecification): string {
+		return layerLabelOf(layer);
+	}
+
+	/** The classes with their labels; the default class is left out with `show-default: false` */
+	label<T extends { label: LabelInfo }>(layer: LayerSpecification, classes: T[]): Labelled<T>[] {
+		return labelClasses(layer, classes, this.#options);
+	}
+}

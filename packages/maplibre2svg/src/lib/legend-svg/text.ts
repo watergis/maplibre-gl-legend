@@ -1,4 +1,4 @@
-import { estimateTextWidth, type TextMeasurer } from '../text-measure';
+import { estimateTextWidth, type TextMeasurer } from '../util/text-measure';
 
 /** Measures text in the font of the legend */
 export type WidthOf = (text: string) => number;

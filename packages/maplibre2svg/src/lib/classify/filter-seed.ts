@@ -1,4 +1,4 @@
-import type { GeometryType } from '../expression';
+import type { GeometryType } from '../style';
 import { isOperator, literalValue } from './accessor';
 import type { FeatureProperties } from './types';
 

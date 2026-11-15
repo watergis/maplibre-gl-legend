@@ -1,4 +1,4 @@
-import { uniqueId } from '../svg';
+import { uniqueId } from '../render/svg';
 
 const REFERENCE = /url\(#([^)]+)\)/g;
 

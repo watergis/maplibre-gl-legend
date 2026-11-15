@@ -1,6 +1,6 @@
-import { createSvg, el, fmt } from '../svg';
-import { canvasMeasurer, safeMeasurer, type TextMeasurer } from '../text-measure';
-import type { LayerLegend } from '../types';
+import { createSvg, el, fmt } from '../render/svg';
+import { canvasMeasurer, safeMeasurer, type TextMeasurer } from '../util/text-measure';
+import type { LayerLegend } from '../core/types';
 import { cloneWithUniqueIds } from './ids';
 import { fitText, widthOf, type WidthOf } from './text';
 
@@ -118,84 +118,102 @@ function textNode(doc: Document, text: string, x: number, y: number, bold = fals
 }
 
 /**
- * One standalone SVG of the legends of several layers, stacked, like `render_all` of the Rust
- * maplibre-legend: per layer an optional title row, then the rows of symbol and label. The
- * symbols are copied (the entries are not changed), with ids made unique, into nested `<svg>`s.
+ * Lays the legends of several layers out as one standalone SVG, stacked, like `render_all` of
+ * the Rust maplibre-legend: per layer an optional title row, then the rows of symbol and label.
+ * The symbols are copied (the entries are not changed), with ids made unique, into nested
+ * `<svg>`s.
  */
-export function legendToSvg(legends: LayerLegend[], options: LegendSvgOptions = {}): SVGSVGElement {
-	const doc = options.document ?? legends[0]?.entries[0]?.svg.ownerDocument ?? globalThis.document;
-	const padding = sane(options.padding, 8, 200);
-	const rowGap = sane(options.rowGap, 4, 200);
-	const fontSize = sane(options.fontSize, 12, 200) || 12;
-	const fontFamily = options.fontFamily ?? 'sans-serif';
-	const lineHeight = fontSize * 1.4;
-	const ordered = options.reverse ? [...legends].reverse() : legends;
-	const rows = rowsOf(
-		ordered,
-		{ titles: options.titles ?? 'multi', separator: options.separator ?? false },
-		lineHeight
-	);
-	const measurer = safeMeasurer(options.measureText ?? canvasMeasurer(doc));
-	const measure = widthOf(measurer, `${fontSize}px ${fontFamily}`, fontSize);
-	const bold = widthOf(measurer, `bold ${fontSize}px ${fontFamily}`, fontSize);
-	const labelX = (row: Row) =>
-		row.kind === 'entry' ? padding + row.indent + row.column + GAP : padding;
-	const widthFor = (row: Row): WidthOf => (row.kind === 'title' ? bold : measure);
+export class LegendSvgRenderer {
+	readonly options: LegendSvgOptions;
 
-	const natural = Math.max(
-		2 * padding,
-		...rows.map((row) =>
-			row.kind === 'separator' ? 0 : labelX(row) + widthFor(row)(row.text) + padding
-		)
-	);
-	const maxWidth = sane(options.maxWidth, 480, MAX_WIDTH);
-	const width =
-		options.width !== undefined && Number.isFinite(options.width) && options.width > 0
-			? Math.min(options.width, MAX_WIDTH)
-			: Math.min(natural, maxWidth || 480);
-
-	const symbols: Element[] = [];
-	const texts: Element[] = [];
-	const lines: Element[] = [];
-	let y = padding;
-	for (const row of rows) {
-		if (row.kind === 'separator') {
-			lines.push(
-				el(doc, 'line', {
-					x1: padding,
-					x2: width - padding,
-					y1: y + 0.5,
-					y2: y + 0.5,
-					stroke: 'rgba(128,128,128,0.5)',
-					'stroke-width': 1
-				})
-			);
-		} else {
-			const text = fitText(row.text, Math.max(0, width - padding - labelX(row)), widthFor(row));
-			if (row.kind === 'entry') {
-				const symbol = cloneWithUniqueIds(row.svg);
-				symbol.setAttribute('x', fmt(padding + row.indent));
-				symbol.setAttribute(
-					'y',
-					fmt(y + (row.height - Number(symbol.getAttribute('height') ?? 0)) / 2)
-				);
-				symbols.push(symbol);
-			}
-			texts.push(textNode(doc, text, labelX(row), y + row.height / 2, row.kind === 'title'));
-		}
-		y += row.height + rowGap;
+	constructor(options: LegendSvgOptions = {}) {
+		this.options = options;
 	}
-	const height = Math.max(2 * padding, y - rowGap + padding);
-	const svg = createSvg(doc, width, height);
-	if (options.background) svg.append(el(doc, 'rect', { width, height, fill: options.background }));
-	// the font and color on the text only, so that the symbols do not inherit them
-	const labels = el(
-		doc,
-		'g',
-		{ 'font-family': fontFamily, 'font-size': fontSize, fill: options.color ?? '#222222' },
-		texts
-	);
-	svg.append(...lines, ...symbols, labels);
-	if (options.xlink ?? true) addXlink(svg);
-	return svg;
+
+	/** One SVG of the legends */
+	render(legends: LayerLegend[]): SVGSVGElement {
+		const options = this.options;
+		const doc =
+			options.document ?? legends[0]?.entries[0]?.svg.ownerDocument ?? globalThis.document;
+		const padding = sane(options.padding, 8, 200);
+		const rowGap = sane(options.rowGap, 4, 200);
+		const fontSize = sane(options.fontSize, 12, 200) || 12;
+		const fontFamily = options.fontFamily ?? 'sans-serif';
+		const lineHeight = fontSize * 1.4;
+		const ordered = options.reverse ? [...legends].reverse() : legends;
+		const rows = rowsOf(
+			ordered,
+			{ titles: options.titles ?? 'multi', separator: options.separator ?? false },
+			lineHeight
+		);
+		const measurer = safeMeasurer(options.measureText ?? canvasMeasurer(doc));
+		const measure = widthOf(measurer, `${fontSize}px ${fontFamily}`, fontSize);
+		const bold = widthOf(measurer, `bold ${fontSize}px ${fontFamily}`, fontSize);
+		const labelX = (row: Row) =>
+			row.kind === 'entry' ? padding + row.indent + row.column + GAP : padding;
+		const widthFor = (row: Row): WidthOf => (row.kind === 'title' ? bold : measure);
+
+		const natural = Math.max(
+			2 * padding,
+			...rows.map((row) =>
+				row.kind === 'separator' ? 0 : labelX(row) + widthFor(row)(row.text) + padding
+			)
+		);
+		const maxWidth = sane(options.maxWidth, 480, MAX_WIDTH);
+		const width =
+			options.width !== undefined && Number.isFinite(options.width) && options.width > 0
+				? Math.min(options.width, MAX_WIDTH)
+				: Math.min(natural, maxWidth || 480);
+
+		const symbols: Element[] = [];
+		const texts: Element[] = [];
+		const lines: Element[] = [];
+		let y = padding;
+		for (const row of rows) {
+			if (row.kind === 'separator') {
+				lines.push(
+					el(doc, 'line', {
+						x1: padding,
+						x2: width - padding,
+						y1: y + 0.5,
+						y2: y + 0.5,
+						stroke: 'rgba(128,128,128,0.5)',
+						'stroke-width': 1
+					})
+				);
+			} else {
+				const text = fitText(row.text, Math.max(0, width - padding - labelX(row)), widthFor(row));
+				if (row.kind === 'entry') {
+					const symbol = cloneWithUniqueIds(row.svg);
+					symbol.setAttribute('x', fmt(padding + row.indent));
+					symbol.setAttribute(
+						'y',
+						fmt(y + (row.height - Number(symbol.getAttribute('height') ?? 0)) / 2)
+					);
+					symbols.push(symbol);
+				}
+				texts.push(textNode(doc, text, labelX(row), y + row.height / 2, row.kind === 'title'));
+			}
+			y += row.height + rowGap;
+		}
+		const height = Math.max(2 * padding, y - rowGap + padding);
+		const svg = createSvg(doc, width, height);
+		if (options.background)
+			svg.append(el(doc, 'rect', { width, height, fill: options.background }));
+		// the font and color on the text only, so that the symbols do not inherit them
+		const labels = el(
+			doc,
+			'g',
+			{ 'font-family': fontFamily, 'font-size': fontSize, fill: options.color ?? '#222222' },
+			texts
+		);
+		svg.append(...lines, ...symbols, labels);
+		if (options.xlink ?? true) addXlink(svg);
+		return svg;
+	}
+}
+
+/** One standalone SVG of the legends of several layers; see `LegendSvgRenderer` */
+export function legendToSvg(legends: LayerLegend[], options: LegendSvgOptions = {}): SVGSVGElement {
+	return new LegendSvgRenderer(options).render(legends);
 }

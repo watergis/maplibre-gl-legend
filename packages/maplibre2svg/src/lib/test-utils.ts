@@ -1,9 +1,29 @@
 import type { LayerSpecification } from 'maplibre-gl';
-import { classifyLayer } from './classify';
-import { evaluateLayer, type EvaluatedLayer } from './expression';
-import type { RenderContext } from './layers';
-import { createLegendCache } from './cache';
-import type { ImageEncoder, LegendImage, SwatchOptions } from './types';
+import { AdapterRegistry } from './adapters';
+import { ImageStore } from './assets/images';
+import { RasterSourceResolver } from './assets/raster';
+import { LayerClassifier, type ClassifyOptions } from './classify';
+import { createLegendCache } from './core/cache';
+import type { ImageEncoder, LegendImage, SwatchOptions } from './core/types';
+import { RenderContext, type RenderContextInit } from './render';
+import { LayerEvaluator, type EvaluatedLayer, type EvaluateLayerOptions } from './style';
+
+/** The built-in adapters */
+export const adapters = AdapterRegistry.withDefaults();
+const evaluator = new LayerEvaluator(adapters.geometryTypeOf);
+const classifier = new LayerClassifier(adapters, evaluator);
+
+/** Evaluate a layer as the legend does */
+export const evaluateLayer = (layer: LayerSpecification, options: EvaluateLayerOptions) =>
+	evaluator.evaluate(layer, options);
+
+/** Classify a layer as the legend does */
+export const classifyLayer = (layer: LayerSpecification, options: ClassifyOptions) =>
+	classifier.classify(layer, options);
+
+/** Draw the symbol of an evaluated layer with the adapter of its type */
+export const renderSymbol = (layer: EvaluatedLayer, ctx: RenderContext) =>
+	adapters.get(layer.type).render(layer, ctx);
 
 /** A layer for tests */
 export const testLayer = (
@@ -56,24 +76,35 @@ export const renderContext = (
 	siblings: EvaluatedLayer[] = [],
 	images: Record<string, LegendImage> = {},
 	swatch: Partial<SwatchOptions> = {}
-): RenderContext => ({
-	document,
-	swatch: { width: 30, height: 20, maxSize: 40, frame: true, ...swatch },
-	siblings,
-	images: {
-		getImage: (id) => images[id],
-		listImages: () => Object.keys(images),
-		encode: fakeEncoder().encode,
-		cache: createLegendCache()
-	},
-	pixelRatio: 1,
-	text: {
-		glyphs: undefined,
-		fetchGlyphs: () => Promise.reject(new Error('no glyphs in tests')),
-		sampleText: 'Aa'
-	},
-	raster: { sources: {}, center: [0, 0], zoom: 0, pixelRatio: 1, cache: createLegendCache() }
-});
+): RenderContext =>
+	new RenderContext({
+		document,
+		swatch: { width: 30, height: 20, maxSize: 40, frame: true, ...swatch },
+		siblings,
+		images: new ImageStore({
+			getImage: (id) => images[id],
+			listImages: () => Object.keys(images),
+			encode: fakeEncoder().encode,
+			cache: createLegendCache()
+		}),
+		pixelRatio: 1,
+		text: { glyphs: undefined, sampleText: 'Aa' },
+		raster: new RasterSourceResolver({
+			sources: {},
+			center: [0, 0],
+			zoom: 0,
+			pixelRatio: 1,
+			cache: createLegendCache()
+		})
+	});
+
+/** A copy of a render context with some of its parts changed */
+export const withContext = (ctx: RenderContext, changes: Partial<RenderContextInit>) =>
+	new RenderContext({ ...ctx, document: ctx.document, ...changes });
+
+/** A copy of a render context whose encoder cannot encode, as without a canvas */
+export const withoutEncoder = (ctx: RenderContext) =>
+	withContext(ctx, { images: new ImageStore({ ...ctx.images, encode: () => undefined }) });
 
 /** The attributes of the first element of the name in a symbol */
 export function attrsOf(root: Element, selector: string, index = 0) {

@@ -1,4 +1,4 @@
-import { evaluateExpression, type GeometryType } from '../expression';
+import { evaluateExpression, type GeometryType } from '../style';
 import type { FeatureProperties } from './types';
 
 /** What a classifying node is evaluated for */

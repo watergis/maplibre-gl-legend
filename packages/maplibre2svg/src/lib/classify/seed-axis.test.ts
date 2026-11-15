@@ -1,7 +1,7 @@
 import type { LayerSpecification } from 'maplibre-gl';
 import { describe, expect, it } from 'vitest';
 import { seedFromFilter } from './filter-seed';
-import { classifyLayer } from './index';
+import { classifyLayer } from '../test-utils';
 
 const fill = (filter: unknown, paint: Record<string, unknown>) =>
 	({ id: 'f', type: 'fill', source: 's', filter, paint }) as unknown as LayerSpecification;
