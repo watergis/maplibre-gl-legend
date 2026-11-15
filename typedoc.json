@@ -22,7 +22,6 @@
 	"customJs": "./typedoc/typedoc.js",
 	"ignoredHighlightLanguages": ["mermaid"],
 	"navigationLinks": {
-		"Storybook": "../maplibre2svg/storybook/index.html",
-		"GitHub": "https://github.com/watergis/maplibre-gl-legend"
+		"Storybook": "/maplibre2svg/storybook/index.html",
 	}
 }
