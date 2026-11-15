@@ -69,7 +69,9 @@ Each text area has a button copying its text to the clipboard.
 
 - Apply sets the changed properties, and resets the removed ones to their defaults (see `diffProperties()` in `utils/manual-format.ts`).
 - Text which is not valid YAML or JSON, or not an object, shows an error and changes nothing.
+- Properties which are not valid against the MapLibre Style Specification (unknown properties, values of a wrong type, invalid expressions…) show the errors and change nothing (see `validateLayerProperties()` in `utils/spec.ts`).
 - Switching the format converts the text. Invalid text keeps the format and shows the error.
+- Apply is disabled while the properties in the text are the same as on the map (changing only the format or the spacing is not a change).
 - "Applied" is shown for a moment after Apply.
 - Checking Show full layer spec reads the layer from the map again, so it shows what was applied.
 - The copy button shows a check mark for a moment after the text has been copied.

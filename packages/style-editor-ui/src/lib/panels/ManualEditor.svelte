@@ -1,6 +1,7 @@
 <!--
 	Manual editor: the `paint` and `layout` properties of the layer as YAML or JSON, applied to the
-	map with the Apply button. Properties removed from the text are reset to their defaults. The
+	map with the Apply button once they are valid against the style specification. Properties
+	removed from the text are reset to their defaults. The
 	layout properties are shown only for the layer types whose fields edit one (see
 	`hasLayoutFields()`). "Show full layer spec" shows the whole layer instead, read-only.
 -->
@@ -20,6 +21,7 @@
 		type ManualFormat,
 		type Properties
 	} from '../utils/manual-format';
+	import { validateLayerProperties } from '../utils/spec';
 	import { hasLayoutFields } from './fields';
 
 	interface Props {
@@ -54,6 +56,21 @@
 	let fullText = $state(stringifyLayer(currentLayer(), format));
 	let error = $state<string>();
 	let applied = $state(false);
+
+	/** the properties on the map, refreshed after Apply; the text is compared with them */
+	const readBaseline = () => ({ paint: current('paint'), layout: current('layout') });
+	let baseline = $state.raw<Record<PropertyType, Properties | undefined>>(readBaseline());
+
+	/** whether the text differs from the properties on the map; invalid text counts as a change */
+	const changed = $derived(
+		types.some((type) => {
+			try {
+				return diffProperties(baseline[type], parseProperties(texts[type], format)).length > 0;
+			} catch {
+				return true;
+			}
+		})
+	);
 	let copied = $state<string>();
 
 	const describe = (type: PropertyType, e: unknown) =>
@@ -92,12 +109,26 @@
 				return;
 			}
 		}
+		// check the properties against the style specification before changing the map
+		const style = map.getStyle();
+		const target = style.layers.find((l) => l.id === layer.id);
+		if (target) {
+			const errors = validateLayerProperties(style, {
+				...target,
+				...next
+			} as typeof target).filter((message) => types.some((type) => message.startsWith(`${type}.`)));
+			if (errors.length > 0) {
+				error = errors.join('\n');
+				return;
+			}
+		}
 		for (const type of ['layout', 'paint'] as const) {
 			if (!types.includes(type)) continue;
 			for (const [property, value] of diffProperties(current(type), next[type])) {
 				context.setProperty(type, property, value);
 			}
 		}
+		baseline = readBaseline();
 		error = undefined;
 		applied = true;
 		setTimeout(() => (applied = false), 1500);
@@ -187,7 +218,14 @@
 			<span class="gl-style-editor-manual__status" aria-live="polite"
 				>{applied ? 'Applied' : ''}</span
 			>
-			<Button variant="primary" icon={Check} iconName="apply" label="Apply" onclick={apply} />
+			<Button
+				variant="primary"
+				icon={Check}
+				iconName="apply"
+				label="Apply"
+				disabled={!changed}
+				onclick={apply}
+			/>
 		</div>
 	{/if}
 </div>
@@ -257,6 +295,7 @@
 		color: var(--gl-style-editor-destructive);
 		font-size: 12px;
 		overflow-wrap: anywhere;
+		white-space: pre-line;
 	}
 
 	.gl-style-editor-manual__actions {
