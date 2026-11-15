@@ -6,7 +6,6 @@
 	const { Story } = defineMeta({
 		title: 'Components/Icon',
 		component: Icon,
-		tags: ['autodocs'],
 		args: { icon: Palette, name: 'title' },
 		argTypes: { icon: { control: false } }
 	});

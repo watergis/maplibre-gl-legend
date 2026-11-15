@@ -1,0 +1,61 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as HeatmapGeneratorStories from './HeatmapGenerator.stories.svelte';
+
+<Meta of={HeatmapGeneratorStories} />
+
+# HeatmapGenerator
+
+A switch which adds a heatmap layer made from the features of the layer, or removes it. The heatmap layer is named `{layer id} heatmap`, and the legend can edit it as any layer.
+
+## Where it is used
+
+The first field of the `line`, `symbol` and `circle` editors, through `PropertyField`.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'id'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The id of the switch, for its label.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- The switch is on when the map already has the heatmap layer.
+- The heatmap layer is added below the layer, with its `source`, `source-layer`, `filter`, `minzoom` and `maxzoom`.
+- Its paint is a blue to red `heatmap-color` ramp on `heatmap-density`, with radius 30, intensity 1, weight 1 and opacity 1.
+- A layer without a source (e.g. `background`) adds nothing.
+
+## Stories
+
+The stories put a `circle` layer named `points` on a mock map.
+
+- **Without heatmap**: the switch is off. Turning it on adds `points heatmap`.
+- **With heatmap**: the map already has `points heatmap`, so the switch is on.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

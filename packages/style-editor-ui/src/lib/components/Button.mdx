@@ -1,0 +1,125 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as ButtonStories from './Button.stories.svelte';
+
+<Meta of={ButtonStories} />
+
+# Button
+
+A text button with an optional leading icon. `primary` is for the action of a panel, `secondary` for the others.
+
+## Where it is used
+
+The Apply button of `ManualEditor`.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'variant'}</code>
+			</td>
+			<td>
+				<code>{"'primary' | 'secondary'"}</code>
+			</td>
+			<td></td>
+			<td>The look of the button: filled with the primary color, or outlined.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'label'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The text of the button.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'icon'}</code>
+			</td>
+			<td>
+				<code>{'LucideIcon'}</code>
+			</td>
+			<td></td>
+			<td>A Lucide icon shown before the label.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'iconName'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td>
+				<code>{"''"}</code>
+			</td>
+			<td>
+				Used in the class name of the icon, <code>{'gl-style-editor-icon--{iconName}'}</code>.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'title'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The tooltip.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'disabled'}</code>
+			</td>
+			<td>
+				<code>{'boolean'}</code>
+			</td>
+			<td>
+				<code>{'false'}</code>
+			</td>
+			<td>Disables the button.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onclick'}</code>
+			</td>
+			<td>
+				<code>{'() => void'}</code>
+			</td>
+			<td></td>
+			<td>Called when the button is clicked.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- The button is `type="button"`, so it never submits a form.
+- Its classes are `gl-style-editor-btn` and `gl-style-editor-btn--{variant}`.
+
+## Stories
+
+- **Primary**: the Apply button of the manual editor.
+- **Secondary**: an outlined button with the reset icon.
+- **Without icon**: the label only.
+- **Disabled**: a disabled primary button.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

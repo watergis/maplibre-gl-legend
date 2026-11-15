@@ -1,0 +1,62 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as ExpressionNoteStories from './ExpressionNote.stories.svelte';
+
+<Meta of={ExpressionNoteStories} />
+
+# ExpressionNote
+
+Shown instead of a control when the value of a property is an expression the fields cannot edit, e.g. a `case`, or an `interpolate` whose outputs are expressions. It shows the expression as JSON, and a button which opens the manual editor.
+
+## Where it is used
+
+`ColorProperty`, `NumberProperty` and `SelectProperty`, when their value is not editable.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'value'}</code>
+			</td>
+			<td>
+				<code>{'unknown'}</code>
+			</td>
+			<td></td>
+			<td>
+				The value of the property, shown as JSON. The full text is in the tooltip when it is cut.
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- The button calls `openManualEditor()` of the editor context: the dialog switches to the manual editor.
+
+## Stories
+
+- **Case**: a `case` on a feature property.
+- **Long expression**: an `interpolate` whose outputs are expressions, cut to the width of the field.
+
+## Controls
+
+The story controls are the `value` shown, and the `onmanualeditor` action called by the button.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

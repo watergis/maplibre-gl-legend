@@ -5,15 +5,7 @@
 	import HeatmapGenerator from './HeatmapGenerator.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Controls/HeatmapGenerator',
-		parameters: {
-			docs: {
-				description: {
-					component:
-						'Adds a heatmap layer `{layer id} heatmap` made from the features of the layer, below it, or removes it.'
-				}
-			}
-		}
+		title: 'Controls/HeatmapGenerator'
 	});
 </script>
 

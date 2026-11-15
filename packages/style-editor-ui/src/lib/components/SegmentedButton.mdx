@@ -1,0 +1,109 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as SegmentedButtonStories from './SegmentedButton.stories.svelte';
+
+<Meta of={SegmentedButtonStories} />
+
+# SegmentedButton
+
+A group of radio buttons styled as a segmented control, with an optional icon per option.
+
+## Where it is used
+
+The YAML / JSON switch of `ManualEditor`.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'name'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The name of the radio buttons; unique on the page.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'label'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The accessible name of the group.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'choices'}</code>
+			</td>
+			<td>
+				<code>{'{ value: T; label: string; icon?: LucideIcon }[]'}</code>
+			</td>
+			<td></td>
+			<td>The options. The value is also used in the class name of the icon.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'value'}</code>
+			</td>
+			<td>
+				<code>{'T extends string'}</code>
+			</td>
+			<td></td>
+			<td>The checked option. Bindable.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'compact'}</code>
+			</td>
+			<td>
+				<code>{'boolean'}</code>
+			</td>
+			<td>
+				<code>{'false'}</code>
+			</td>
+			<td>Smaller options, for long lists.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onchange'}</code>
+			</td>
+			<td>
+				<code>{'(value: T) => void'}</code>
+			</td>
+			<td></td>
+			<td>Called with the value of the option the user checked.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- It is a `radiogroup` of native radio buttons, so the arrow keys move between the options.
+
+## Stories
+
+- **Format**: the YAML / JSON switch of the manual editor.
+- **With icons**: options with icons.
+- **Compact**: the smaller options, with three values.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

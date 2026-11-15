@@ -1,0 +1,82 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as NumberPropertyStories from './NumberProperty.stories.svelte';
+
+<Meta of={NumberPropertyStories} />
+
+# NumberProperty
+
+The control of a numeric property. A constant is edited with one `NumberInput`. A zoom or data expression (`interpolate`, `step`, `match`) or a legacy function with `stops` whose outputs are numbers is edited output by output, with a `NumberInput` per output in `Stops`. Any other value shows `ExpressionNote`.
+
+## Where it is used
+
+`PropertyField`, for the fields of kind `number`.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'field'}</code>
+			</td>
+			<td>
+				<code>{'NumberFieldConfig'}</code>
+			</td>
+			<td></td>
+			<td>
+				The field: the property, its type, its label, the range of the slider (<code>{'min'}</code>,{' '}
+				<code>{'max'}</code>, <code>{'step'}</code>), its <code>{'unit'}</code>,{' '}
+				<code>{'percent'}</code> and the <code>{'linked'}</code> properties.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'value'}</code>
+			</td>
+			<td>
+				<code>{'unknown'}</code>
+			</td>
+			<td></td>
+			<td>The value of the property when the field is shown.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- With `percent`, the property is a fraction from 0 to 1 shown from 0 to 100 %; an opacity of `0.6` shows `60`.
+- Values are rounded to 6 decimals, to remove the floating point noise.
+- The `linked` properties get the same value, e.g. `text-opacity` with `icon-opacity`.
+- Writes to the map are debounced (60 ms, see `controls/write.ts`).
+
+## Stories
+
+Each story puts a `line` layer on a mock map.
+
+- **Constant**: `line-width` of 3 px.
+- **Percent**: `line-opacity` of 0.6, shown as 60 %.
+- **Zoom stops**: an `interpolate` on the zoom: one width per zoom.
+- **Data classes**: a `match` on `class`, with a list of values in one class.
+- **Expression**: a product of a feature property, left to the manual editor.
+
+## Controls
+
+The story controls are the args of the story, not the props of the component: the `layer` put on the mock map, the `field` of the editor (see `FIELDS` in `panels/fields.ts`) and the `onchange` action, called with the property and its new value whenever the control writes to the map.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

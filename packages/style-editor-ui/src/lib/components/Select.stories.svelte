@@ -6,7 +6,6 @@
 	const { Story } = defineMeta({
 		title: 'Components/Select',
 		component: Select,
-		tags: ['autodocs'],
 		args: {
 			id: 'story-select',
 			name: 'raster-resampling',

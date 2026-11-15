@@ -1,0 +1,130 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as StyleEditorDialogStories from './StyleEditorDialog.stories.svelte';
+
+<Meta of={StyleEditorDialogStories} />
+
+# StyleEditorDialog
+
+The style editor as maplibre-gl-legend opens it: a non-modal dialog over the map, editing the style of one layer. The map stays usable while the dialog is open, and every change is applied to it at once.
+
+The header shows the title, the layer type with a link to its specification and the layer id. Below it, the toolbar switches between the **Properties** (`LayerPanel`) and the **Manual editor** (`ManualEditor`), and **Reset** restores the style the layer had when the dialog was opened for it.
+
+## Where it is used
+
+Applications use the `StyleEditorDialog` class of `src/lib/style-editor-dialog.ts`, which mounts this component at the end of the document when it is opened and removes it once the dialog has been closed:
+
+```ts
+import { StyleEditorDialog } from '@watergis/style-editor-ui';
+
+const editor = new StyleEditorDialog({ map, position: 'top-left', container: map.getContainer() });
+editor.open({ layerId: 'water', title: 'Water' });
+```
+
+Opening it for another layer while it is open keeps the dialog where it is, in the same mode, and shows the other layer.
+
+## Props
+
+The options of the `StyleEditorDialog` class (`StyleEditorDialogOptions`):
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'map'}</code>
+			</td>
+			<td>
+				<code>{'StyleEditorMap'}</code>
+			</td>
+			<td></td>
+			<td>
+				The map whose layers are edited. A MapLibre GL JS <code>{'Map'}</code> has every method the
+				editor uses.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'position'}</code>
+			</td>
+			<td>
+				<code>{"'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'"}</code>
+			</td>
+			<td>
+				<code>{"'top-left'"}</code>
+			</td>
+			<td>
+				The corner of <code>{'container'}</code>, or of the window, where the dialog opens.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'container'}</code>
+			</td>
+			<td>
+				<code>{'HTMLElement'}</code>
+			</td>
+			<td></td>
+			<td>
+				The element the dialog stays in, usually the container of the map: the dialog is dragged
+				only inside it, follows it when the page scrolls, and is not higher than it (its body
+				scrolls).
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onChange'}</code>
+			</td>
+			<td>
+				<code>{'(layerId: string) => void'}</code>
+			</td>
+			<td></td>
+			<td>Called after the editor changed the style of a layer.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onClose'}</code>
+			</td>
+			<td>
+				<code>{'() => void'}</code>
+			</td>
+			<td></td>
+			<td>Called once the dialog has been closed.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- Drag the header to move the dialog. It stays inside `container`, or the window.
+- Escape or the close button closes the dialog.
+- On screens up to 480 px wide, the dialog is along the bottom of the screen.
+- A layer missing from the style shows a message instead of the fields.
+- The ids of the form elements are prefixed with `gl-style-editor-{n}`, so several dialogs can be on the page.
+
+## Stories
+
+Each story draws a MapLibre map from a style of `src/stories/layer-stories.ts`, made of data generated in the browser, and opens the editor for one layer. Once closed, the editor opens again with the button at the bottom of the map. The stories are not drawn on this page, since each one creates a map: open them from the sidebar.
+
+- **Background, Fill, Line, Circle, Fill extrusion, Raster, Hillshade, Color relief, Heatmap**: a layer of each type.
+- **Fill (expression)**: a fill color computed by an expression, left to the manual editor.
+- **Line (dashed)**: a dashed line: the line pattern field.
+- **Symbol (text), Symbol (SDF icon), Symbol (icon)**: the fields of a symbol layer with text, with a colorable SDF icon and with a plain icon.
+- **Bottom right**: the dialog opened in the bottom-right corner.
+- **Small map**: a map of 640 × 360 px: the dialog is dragged only inside it, and its body scrolls.
+
+## Controls
+
+`position` is the corner the dialog opens in, `size` the CSS size of the map, and the `onChange` / `onClose` actions are the callbacks of the dialog.
+
+## Primary story
+
+<Primary />
+
+<Controls />

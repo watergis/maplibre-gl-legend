@@ -15,14 +15,6 @@
 
 	const { Story } = defineMeta({
 		title: 'Panels/LayerPanel',
-		parameters: {
-			docs: {
-				description: {
-					component:
-						'The fields of the layer type of a layer (see `FIELDS` in `fields.ts`). Symbol layers show the icon fields only with `icon-image`, the icon colors only for SDF icons, and the text fields only with `text-field`.'
-				}
-			}
-		},
 		argTypes: { story: { control: false } },
 		args: { onchange: fn(), onmanualeditor: fn() }
 	});

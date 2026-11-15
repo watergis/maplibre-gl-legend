@@ -6,7 +6,6 @@
 	const { Story } = defineMeta({
 		title: 'Components/Switch',
 		component: Switch,
-		tags: ['autodocs'],
 		args: { id: 'story-switch', name: 'heatmap', checked: false, onchange: fn() }
 	});
 </script>

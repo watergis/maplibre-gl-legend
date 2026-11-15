@@ -20,7 +20,8 @@
 		"dist",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*",
-		"!dist/**/*.stories.*"
+		"!dist/**/*.stories.*",
+		"!dist/**/*.mdx"
 	],
 	"sideEffects": [
 		"**/*.css"

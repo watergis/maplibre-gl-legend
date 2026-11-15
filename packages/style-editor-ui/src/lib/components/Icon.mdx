@@ -1,0 +1,70 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as IconStories from './Icon.stories.svelte';
+
+<Meta of={IconStories} />
+
+# Icon
+
+A [Lucide](https://lucide.dev/icons/) icon, wrapped in `<span class="gl-style-editor-icon gl-style-editor-icon--{name}">` so that an application can resize it or replace it from CSS. The icon is hidden from assistive technologies: the button around it gives the accessible name.
+
+## Where it is used
+
+Every icon of the editor: the title, close, mode, reset and help icons of the dialog, and the icons of the buttons.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'icon'}</code>
+			</td>
+			<td>
+				<code>{'LucideIcon'}</code>
+			</td>
+			<td></td>
+			<td>The Lucide icon component.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'name'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>
+				Used in the class name, <code>{'gl-style-editor-icon--{name}'}</code>.
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- The size is `--gl-style-editor-icon-size`, and the color is `currentColor`.
+- To replace an icon, hide its SVG and draw another image with a mask: `.gl-style-editor-icon--reset svg { display: none; }` and `.gl-style-editor-icon--reset { background-color: currentColor; mask: url(my-icon.svg) center / contain no-repeat; }`.
+
+## Stories
+
+- **Default**: the title icon of the dialog.
+- **All icons**: the icons of the dialog, with the name used in their class name.
+- **Large**: an icon resized with `--gl-style-editor-icon-size` and colored by its parent.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

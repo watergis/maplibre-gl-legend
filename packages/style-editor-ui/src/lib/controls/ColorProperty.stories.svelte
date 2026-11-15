@@ -16,14 +16,6 @@
 
 	const { Story } = defineMeta({
 		title: 'Controls/ColorProperty',
-		parameters: {
-			docs: {
-				description: {
-					component:
-						'A color property: a constant, or each output of an `interpolate` / `step` / `match` expression or a legacy function with `stops`.'
-				}
-			}
-		},
 		args: { onchange: fn() }
 	});
 

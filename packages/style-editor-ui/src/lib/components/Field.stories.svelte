@@ -8,7 +8,6 @@
 	const { Story } = defineMeta({
 		title: 'Components/Field',
 		component: Field,
-		tags: ['autodocs'],
 		args: {
 			name: 'line-width',
 			label: 'Line width',

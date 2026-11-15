@@ -1,0 +1,95 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as IconButtonStories from './IconButton.stories.svelte';
+
+<Meta of={IconButtonStories} />
+
+# IconButton
+
+A round button showing only an icon. With `pressed` it is a toggle button (`aria-pressed`).
+
+## Where it is used
+
+The close button of the dialog, the Properties / Manual editor mode buttons, and the reset button.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'icon'}</code>
+			</td>
+			<td>
+				<code>{'LucideIcon'}</code>
+			</td>
+			<td></td>
+			<td>The Lucide icon.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'name'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>
+				Used in the class name of the icon, <code>{'gl-style-editor-icon--{name}'}</code>.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'label'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The accessible name and tooltip.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'pressed'}</code>
+			</td>
+			<td>
+				<code>{'boolean'}</code>
+			</td>
+			<td></td>
+			<td>Whether the toggle is pressed. Leave it unset for a plain button.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onclick'}</code>
+			</td>
+			<td>
+				<code>{'() => void'}</code>
+			</td>
+			<td></td>
+			<td>Called when the button is clicked.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+- **Default**: the close button of the dialog.
+- **Pressed**: the Properties mode button, while the fields are shown.
+- **Not pressed**: the Manual editor mode button, while the fields are shown.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

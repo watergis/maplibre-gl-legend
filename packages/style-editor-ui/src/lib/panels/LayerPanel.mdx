@@ -1,0 +1,47 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as LayerPanelStories from './LayerPanel.stories.svelte';
+
+<Meta of={LayerPanelStories} />
+
+# LayerPanel
+
+The Properties mode of the dialog: the fields of the layer type of the layer, each one a `PropertyField`. A layer type without fields shows a link to the manual editor instead.
+
+## Where it is used
+
+`StyleEditorDialog`, while the Properties mode is on.
+
+## Props
+
+`LayerPanel` has no props: it reads the map and the layer from the editor context set by the dialog.
+
+## Behaviour
+
+- The fields of each layer type are listed in `FIELDS` (`panels/fields.ts`) and picked by `getFields()`.
+- Symbol layers show the icon fields only with an `icon-image`, the icon colors and halo only for an SDF icon, and the text fields only with a `text-field`.
+- `line`, `symbol` and `circle` layers start with the heatmap switch.
+- Other properties are edited in the manual editor.
+
+## Stories
+
+Each story shows the panel for the layer of a Dialog story (`src/stories/layer-stories.ts`), on a mock map.
+
+- **Background, Fill, Line, Circle, Fill extrusion, Raster, Hillshade, Color relief, Heatmap**: the fields of each layer type.
+- **Symbol (text)**: the text fields only.
+- **Symbol (SDF icon)**: the icon fields with the icon colors and halo.
+- **Symbol (icon)**: the icon fields without the colors: the icon is not an SDF image.
+- **No field**: a layer type without fields: the link to the manual editor.
+
+## Controls
+
+The story controls are the `onchange` action, called with the property and its new value, and the `onmanualeditor` action, called by the links to the manual editor.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

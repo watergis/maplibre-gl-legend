@@ -1,0 +1,70 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as StopsStories from './Stops.stories.svelte';
+
+<Meta of={StopsStories} />
+
+# Stops
+
+The outputs of an expression as a list: each with its label, which tells when the output applies, and its control.
+
+## Where it is used
+
+`ColorProperty` and `NumberProperty`, for the outputs of `interpolate`, `step`, `match` and legacy functions with `stops`.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'stops'}</code>
+			</td>
+			<td>
+				<code>{'Stop<T>[]'}</code>
+			</td>
+			<td></td>
+			<td>
+				The outputs, <code>{'{ label, value }'}</code>, made by <code>{'toEditable()'}</code> in{' '}
+				<code>{'utils/stops.ts'}</code>.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'control'}</code>
+			</td>
+			<td>
+				<code>{'Snippet<[stop: Stop<T>, index: number]>'}</code>
+			</td>
+			<td></td>
+			<td>The control of an output.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- The labels are made from the input of the expression: `zoom 10` for an `interpolate`, `zoom < 12` and `zoom ≥ 12` for a `step`, `class = primary` for a `match`, and `other` for the fallback of a `match`.
+- A long label is cut, with the full text in its tooltip.
+
+## Stories
+
+- **Zoom**: the outputs of an `interpolate` on the zoom, with number inputs.
+- **Classes**: the outputs of a `match`, with a long label.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />
