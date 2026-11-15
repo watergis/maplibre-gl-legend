@@ -5,7 +5,11 @@ import * as ManualEditorStories from './ManualEditor.stories.svelte';
 
 # ManualEditor
 
-The manual editor mode of the dialog: the `paint` and `layout` properties of the layer as YAML or JSON, in two text areas. The Apply button applies the text to the map.
+The manual editor mode of the dialog: the `paint` and `layout` properties of the layer as YAML or JSON, in text areas. The Apply button applies the text to the map. The Layout text area is shown only for the layer types whose fields edit a layout property (see `hasLayoutFields()` in `panels/fields.ts`, today only `symbol`); for the other types the layout of the layer is left as it is.
+
+The **Show full layer spec** switch, below the format, shows the whole layer specification (id, type, source, filter, zoom range, paint, layout…) instead, read-only, without the Apply button.
+
+Each text area has a button copying its text to the clipboard.
 
 ## Where it is used
 
@@ -35,6 +39,21 @@ The manual editor mode of the dialog: the `paint` and `layout` properties of the
 		</tr>
 		<tr>
 			<td>
+				<code>{'full'}</code>
+			</td>
+			<td>
+				<code>{'boolean'}</code>
+			</td>
+			<td>
+				<code>{'false'}</code>
+			</td>
+			<td>
+				Show the whole layer, read-only, instead of the editable properties (the switch). Bindable:
+				the dialog keeps it between layers.
+			</td>
+		</tr>
+		<tr>
+			<td>
 				<code>{'onapply'}</code>
 			</td>
 			<td>
@@ -52,16 +71,19 @@ The manual editor mode of the dialog: the `paint` and `layout` properties of the
 - Text which is not valid YAML or JSON, or not an object, shows an error and changes nothing.
 - Switching the format converts the text. Invalid text keeps the format and shows the error.
 - "Applied" is shown for a moment after Apply.
+- Checking Show full layer spec reads the layer from the map again, so it shows what was applied.
+- The copy button shows a check mark for a moment after the text has been copied.
 
 ## Stories
 
-- **YAML**: the properties of a line layer as YAML.
+- **YAML**: the paint properties of a line layer as YAML (no Layout text area).
 - **JSON**: the same layer as JSON.
-- **Symbol**: a symbol layer with layout properties.
+- **Symbol**: a symbol layer, with its paint and layout properties.
+- **Full layer**: the whole symbol layer, read-only (Show full layer spec checked).
 
 ## Controls
 
-The story controls are the initial `format` and the `onchange` action, called for each property Apply sets.
+The story controls are the initial `format` and `full`, and the `onchange` action, called for each property Apply sets.
 
 ## Primary story
 
