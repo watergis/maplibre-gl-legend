@@ -1,5 +1,11 @@
+import type { LayerSpecification } from 'maplibre-gl';
 import { describe, expect, it } from 'vitest';
-import { diffProperties, parseProperties, stringifyProperties } from './manual-format';
+import {
+	diffProperties,
+	parseProperties,
+	stringifyLayer,
+	stringifyProperties
+} from './manual-format';
 
 describe('manual format', () => {
 	const paint = {
@@ -31,5 +37,18 @@ describe('manual format', () => {
 			['line-width', undefined],
 			['line-blur', 1]
 		]);
+	});
+
+	it('writes a whole layer as YAML and JSON', () => {
+		const layer: LayerSpecification = {
+			id: 'roads',
+			type: 'line',
+			source: 'roads',
+			filter: ['==', ['get', 'class'], 'primary'],
+			paint: { 'line-color': '#ff0000', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1] }
+		};
+		expect(stringifyLayer(undefined, 'yaml')).toBe('');
+		expect(JSON.parse(stringifyLayer(layer, 'json'))).toEqual(layer);
+		expect(parseProperties(stringifyLayer(layer, 'yaml'), 'yaml')).toEqual(layer);
 	});
 });

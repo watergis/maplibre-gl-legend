@@ -44,6 +44,7 @@
 	let version = $state(0);
 	let manual = $state(false);
 	let format = $state<ManualFormat>('yaml');
+	let fullLayer = $state(false);
 
 	let dialog: HTMLDialogElement;
 
@@ -310,7 +311,7 @@
 		{#if layer}
 			{#key `${layer.id}:${version}:${manual}`}
 				{#if manual}
-					<ManualEditor bind:format />
+					<ManualEditor bind:format bind:full={fullLayer} />
 				{:else}
 					<LayerPanel />
 				{/if}

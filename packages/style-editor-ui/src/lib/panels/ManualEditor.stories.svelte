@@ -10,6 +10,7 @@
 	interface Args {
 		story: LayerStory;
 		format: ManualFormat;
+		full: boolean;
 		onchange: (property: string, value: unknown) => void;
 	}
 
@@ -17,9 +18,10 @@
 		title: 'Panels/ManualEditor',
 		argTypes: {
 			story: { control: false },
-			format: { control: 'inline-radio', options: ['yaml', 'json'] }
+			format: { control: 'inline-radio', options: ['yaml', 'json'] },
+			full: { control: 'boolean' }
 		},
-		args: { format: 'yaml', onchange: fn() }
+		args: { format: 'yaml', full: false, onchange: fn() }
 	});
 </script>
 
@@ -30,7 +32,7 @@
 			layerId={args.story.layerId}
 			onchange={args.onchange}
 		>
-			<ManualEditor format={args.format} />
+			<ManualEditor format={args.format} full={args.full} />
 		</EditorContextFrame>
 	{/key}
 {/snippet}
@@ -38,3 +40,4 @@
 <Story name="YAML" {template} args={{ story: LAYER_STORIES.line }} />
 <Story name="JSON" {template} args={{ story: LAYER_STORIES.line, format: 'json' }} />
 <Story name="Symbol" {template} args={{ story: LAYER_STORIES.symbolSdfIcon }} />
+<Story name="Full layer" {template} args={{ story: LAYER_STORIES.symbolSdfIcon, full: true }} />

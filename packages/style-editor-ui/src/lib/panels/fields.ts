@@ -222,3 +222,16 @@ export const FIELDS: Partial<Record<LayerType, FieldConfig[]>> = {
 export function getFields(condition: FieldCondition): FieldConfig[] {
 	return (FIELDS[condition.layer.type] ?? []).filter((field) => field.when?.(condition) ?? true);
 }
+
+/**
+ * Whether the fields of a layer type edit a layout property. The manual editor shows the layout
+ * properties only for these layer types.
+ *
+ * @param layerType the type of the layer
+ * @returns true when a field of the layer type is a layout property
+ */
+export function hasLayoutFields(layerType: LayerType): boolean {
+	return (FIELDS[layerType] ?? []).some(
+		(field) => field.kind !== 'heatmap-generator' && field.type === 'layout'
+	);
+}

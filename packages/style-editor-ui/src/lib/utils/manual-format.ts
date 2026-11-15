@@ -1,4 +1,5 @@
 import yaml from 'js-yaml';
+import type { LayerSpecification } from 'maplibre-gl';
 
 /** the text format of the manual editor */
 export type ManualFormat = 'yaml' | 'json';
@@ -21,6 +22,23 @@ export function stringifyProperties(
 	return format === 'yaml'
 		? yaml.dump(properties, { lineWidth: -1, flowLevel: 2 })
 		: JSON.stringify(properties, null, 2);
+}
+
+/**
+ * Write a whole layer as text.
+ *
+ * @param layer the layer
+ * @param format YAML or JSON
+ * @returns the text; an empty string for no layer
+ */
+export function stringifyLayer(
+	layer: LayerSpecification | undefined,
+	format: ManualFormat
+): string {
+	if (!layer) return '';
+	return format === 'yaml'
+		? yaml.dump(layer, { lineWidth: -1, flowLevel: 3 })
+		: JSON.stringify(layer, null, 2);
 }
 
 /**
