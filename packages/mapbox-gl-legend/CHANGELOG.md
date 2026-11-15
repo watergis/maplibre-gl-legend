@@ -1,5 +1,13 @@
 # @watergis/mapbox-gl-legend
 
+## 2.0.1
+
+### Patch Changes
+
+- a3b3175: fix: the options of `MapboxLegendControl` are optional, as in `MaplibreLegendControl`
+  
+  `new MapboxLegendControl(targets, { reverseOrder: false })` now type-checks: omitted options use their default values.
+
 ## 2.0.0
 
 ### Major Changes

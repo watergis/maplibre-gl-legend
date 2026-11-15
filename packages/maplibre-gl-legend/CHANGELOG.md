@@ -1,5 +1,34 @@
 # @watergis/maplibre-gl-legend
 
+## 4.0.0
+
+### Major Changes
+
+- 27d0744: feat: upgrade layer legend generator to render proper legend for each layer including linear / categorical legend, and raster layers
+
+### Minor Changes
+
+- 50063aa: feat: group layers in the legend (#27)
+  
+  Layers in a group are listed under a collapsible group title. The group's eye toggle switches all of its layers on/off, and each layer keeps its own toggle. Click the group row to expand or collapse it. Layers in `groups` are shown even if they are not in `targets`, and their titles still come from `targets` (or the layer ID).
+  
+  ```ts
+  map.addControl(
+  	new MaplibreLegendControl(targets, {
+  		// group title and the IDs of its layers
+  		groups: {
+  			Pipeline: ['pipeline', 'pipeline_annotation'],
+  			'Water Facilities': ['wtp', 'wtp_annotation', 'tank', 'tank_annotation']
+  		},
+  		// other layers sharing the same source-layer are grouped by the source-layer name while 2 or more of them are listed (default: false)
+  		groupBySourceLayer: true,
+  		// groups start collapsed (default: false)
+  		collapseGroups: false
+  	})
+  );
+  ```
+- 053dbee: feat: refine the legend UI. Layer visibility is toggled with Lucide eye / eye-off icons, the close button uses the Lucide x icon, "Only rendered" is a switch, and a line separates each layer. The icons and the switch are defined in CSS custom properties so they can be customized.
+
 ## 3.0.0
 
 ### Major Changes
