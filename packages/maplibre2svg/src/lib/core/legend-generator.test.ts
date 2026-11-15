@@ -1,9 +1,9 @@
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
 import { describe, expect, it, vi } from 'vitest';
-import { encodeGlyphs, fixtureGlyph } from './assets/glyphs/fixture';
-import { createLayerLegend, createLegend } from './index';
-import { fakeEncoder, solidImage } from './test-utils';
-import type { LegendImage, LegendOptions } from './core/types';
+import { encodeGlyphs, fixtureGlyph } from '../assets/glyphs/fixture';
+import { createLayerLegend, createLegend } from '../index';
+import { fakeEncoder, solidImage } from '../test-utils';
+import type { LegendImage, LegendOptions } from './types';
 
 const GLYPHS = 'https://glyphs.test/{fontstack}/{range}.pbf';
 const pbf = encodeGlyphs([...'AaNmeOtr '].map((ch) => fixtureGlyph(ch.codePointAt(0) as number)));

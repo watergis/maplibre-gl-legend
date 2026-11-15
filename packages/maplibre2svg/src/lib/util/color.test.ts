@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { toCssColor } from './util/color';
+import { toCssColor } from './color';
 
 describe('toCssColor', () => {
 	it('converts CSS strings, as evaluated layers hold them', () => {
