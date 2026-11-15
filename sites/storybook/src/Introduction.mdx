@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# MapLibre/Mapbox GL Legend Storybook
+
+The stories of the packages of [maplibre-gl-legend](https://github.com/watergis/maplibre-gl-legend), in one place. Each package has its own group in the sidebar, which opens with its own introduction.
+
+## maplibre2svg
+
+[`@watergis/maplibre2svg`](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre2svg) draws legend symbols as SVG from the layers of a MapLibre style. It draws the symbols of the legend control.
+
+- **Layers**: a group per layer type, with the legend of one or a few layers per story, next to the layer definition that produced it.
+- **Example Maplibre Style**: the whole legend of a style as one combined SVG.
+
+## style-editor-ui
+
+[`@watergis/style-editor-ui`](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/style-editor-ui) is the Svelte UI of the layer style editor, which the legend control opens from a layer with its `showStyleEditor` option. It is bundled into maplibre-gl-legend.
+
+- **Dialog**: the editor over a MapLibre map, with a story per layer type.
+- **Panels**: the Properties and Manual editor modes of the dialog.
+- **Controls** and **Components**: the fields of the editor and the form components they are made of.
+
+## Links
+
+- [Demo](https://maplibre-gl-legend.water-gis.com/)
+- [API reference](https://maplibre-gl-legend.water-gis.com/api) (TypeDoc)
+- [Source on GitHub](https://github.com/watergis/maplibre-gl-legend)

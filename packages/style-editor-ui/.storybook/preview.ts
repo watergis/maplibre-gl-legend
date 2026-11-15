@@ -1,9 +1,15 @@
 import type { Preview } from '@storybook/sveltekit';
+import { themes } from 'storybook/theming';
 import '../src/lib/theme.css';
+import { isDarkMode } from './mode';
 import './preview.css';
 
-// the theme of the editor (`--gl-style-editor-*` custom properties) applies to every story
+const dark = isDarkMode();
+
+// the theme of the editor (`--gl-style-editor-*` custom properties) applies to every story, and
+// its `light-dark()` colors follow the light/dark mode of Storybook
 document.body.classList.add('gl-style-editor-theme');
+document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
 
 const preview: Preview = {
 	// a Docs page per stories file, with every story; each stories file attaches its own MDX page
@@ -15,6 +21,8 @@ const preview: Preview = {
 				color: /(background|color)$/i
 			}
 		},
+		// the Docs pages have no toolbar to switch the background, so they follow the mode instead
+		docs: { theme: dark ? themes.dark : themes.light },
 		a11y: {
 			test: 'todo'
 		},

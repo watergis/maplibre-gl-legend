@@ -18,7 +18,10 @@
 	let year = new Date().getFullYear();
 
 	const apiHref = resolve('/api');
-	let isApiPage = $derived(page.url.pathname.replace(/\/$/, '') === apiHref);
+	const storiesHref = resolve('/stories');
+	let pathname = $derived(page.url.pathname.replace(/\/$/, ''));
+	let isApiPage = $derived(pathname === apiHref);
+	let isStoriesPage = $derived(pathname === storiesHref);
 </script>
 
 <svelte:head>
@@ -53,6 +56,13 @@
 							aria-current={isApiPage ? 'page' : undefined}
 						>
 							API
+						</a>
+						<a
+							class="btn px-2 font-bold {isStoriesPage ? 'preset-tonal' : 'hover:preset-tonal'}"
+							href={storiesHref}
+							aria-current={isStoriesPage ? 'page' : undefined}
+						>
+							Stories
 						</a>
 						<LightSwitch />
 						<!-- eslint-disable svelte/no-navigation-without-resolve -->

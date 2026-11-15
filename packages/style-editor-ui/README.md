@@ -35,7 +35,7 @@ The styles of the components are bundled into `maplibre-gl-legend.css`.
 
 ## Development
 
-Every component has stories, and the dialog has a story per layer type (background, fill, line, symbol with text / SDF icon / icon, circle, fill-extrusion, raster, hillshade, color-relief, heatmap) over a MapLibre map whose data is generated in the browser (`src/stories/layer-stories.ts`). The controls and the panels are shown with a mock map (`src/stories/mock-map.ts`).
+Every component has stories, and the dialog has a story per layer type (background, fill, line, symbol with text / SDF icon / icon, circle, fill-extrusion, raster, hillshade, color-relief, heatmap) over a MapLibre map whose data is generated in the browser (`src/stories/layer-stories.ts`). The controls and the panels are shown with a mock map (`src/stories/mock-map.ts`). The stories are published with those of maplibre2svg: <https://maplibre-gl-legend.water-gis.com/stories>
 
 ```bash
 pnpm --filter @watergis/style-editor-ui storybook
