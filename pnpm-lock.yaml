@@ -197,6 +197,9 @@ importers:
       lefthook:
         specifier: ^2.2.2
         version: 2.2.2
+      typedoc:
+        specifier: ^0.28.20
+        version: 0.28.20(typescript@6.0.3)
 
   packages/mapbox-gl-legend:
     dependencies:
@@ -372,9 +375,6 @@ importers:
       storybook:
         specifier: ^10.6.7
         version: 10.6.7(@types/react@19.3.0)(prettier@3.9.10)(react@19.3.1)
-      typedoc:
-        specifier: ^0.28.20
-        version: 0.28.20(typescript@6.0.3)
       typescript:
         specifier: ^6.0.3
         version: 6.0.3

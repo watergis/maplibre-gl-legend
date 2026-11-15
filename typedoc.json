@@ -1,0 +1,27 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"name": "MapLibre/Mapbox GL Legend",
+	"entryPointStrategy": "packages",
+	"entryPoints": [
+		"packages/maplibre-gl-legend",
+		"packages/maplibre2svg",
+		"packages/mapbox-gl-legend"
+	],
+	"sortEntryPoints": false,
+	"packageOptions": {
+		"entryPoints": ["src/lib/index.ts"],
+		"tsconfig": "tsconfig.json",
+		"excludePrivate": true,
+		"excludeInternal": true,
+		"excludeExternals": true,
+		"categorizeByGroup": true
+	},
+	"readme": "README.md",
+	"out": "sites/demo/static/docs",
+	"customCss": "./typedoc/typedoc.css",
+	"customJs": "./typedoc/typedoc.js",
+	"ignoredHighlightLanguages": ["mermaid"],
+	"navigationLinks": {
+		"Storybook": "/maplibre2svg/stories"
+	}
+}

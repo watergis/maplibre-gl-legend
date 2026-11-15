@@ -1,4 +1,8 @@
 import type { Preview } from '@storybook/html-vite';
+import { themes } from 'storybook/theming';
+import { isDarkMode } from './mode';
+
+const dark = isDarkMode();
 
 const BACKGROUNDS = {
 	light: { name: 'Light', value: '#ffffff' },
@@ -11,6 +15,8 @@ const preview: Preview = {
 	parameters: {
 		backgrounds: { options: BACKGROUNDS },
 		controls: { expanded: true },
+		// the Docs pages have no toolbar to switch the background, so they follow the mode instead
+		docs: { theme: dark ? themes.dark : themes.light },
 		options: {
 			storySort: {
 				order: [
@@ -24,7 +30,7 @@ const preview: Preview = {
 		}
 	},
 	initialGlobals: {
-		backgrounds: { value: 'light' }
+		backgrounds: { value: dark ? 'dark' : 'light' }
 	},
 	decorators: [
 		(story, context) => {

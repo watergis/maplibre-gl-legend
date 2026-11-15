@@ -9,28 +9,110 @@ import type {
 } from 'mapbox-gl';
 import LegendSymbol from '@watergis/legend-symbol';
 
+/**
+ * Options of {@link MapboxLegendControl}.
+ *
+ * Every option can be omitted when it is passed to the constructor: the default value is used
+ * instead.
+ */
 export interface LegendOptions {
+	/**
+	 * Whether the legend panel is open when the control is added.
+	 *
+	 * - `true`: the panel is open. It stays open until the user closes it with its close button.
+	 * - `false`: only the legend button is shown, and the user opens the panel with it. The panel
+	 *   is closed again when the user clicks outside the control.
+	 *
+	 * @defaultValue `true`
+	 */
 	showDefault: boolean;
+	/**
+	 * Whether each layer has a checkbox to show / hide it on the map.
+	 *
+	 * The checkbox sets the `visibility` layout property of the layer. Checkboxes of the same layer
+	 * in other legend controls are kept in sync.
+	 *
+	 * @defaultValue `true`
+	 */
 	showCheckbox: boolean;
+	/**
+	 * The order of the layers in the legend.
+	 *
+	 * - `true`: the top-most layer of the style (the last one in `style.layers`) comes first, as
+	 *   they are stacked on the map.
+	 * - `false`: the layers are listed in the order of `style.layers`.
+	 *
+	 * @defaultValue `true`
+	 */
 	reverseOrder: boolean;
+	/**
+	 * The initial state of the "Only rendered" checkbox in the panel.
+	 *
+	 * - `true`: only the layers which have features rendered in the current view are listed. The
+	 *   list is updated when the map is moved. Layers hidden with the checkbox stay listed, so that
+	 *   they can be shown again.
+	 * - `false`: all layers in `targets` are listed.
+	 *
+	 * The user can change it with the checkbox.
+	 *
+	 * @defaultValue `true`
+	 */
 	onlyRendered: boolean;
+	/**
+	 * The title shown at the top of the panel.
+	 *
+	 * @defaultValue `'Legend'`
+	 */
 	title?: string;
+	/**
+	 * The label of the "Only rendered" checkbox, e.g. to translate it.
+	 *
+	 * @defaultValue `'Only rendered'`
+	 */
 	onlyRenderedLabel?: string;
+	/**
+	 * The Mapbox access token used to load the sprite of the style when it is a `mapbox://` URL,
+	 * for the icons of symbol layers and the patterns of fill layers.
+	 *
+	 * @defaultValue `mapboxgl.accessToken`
+	 */
 	accessToken?: string;
 }
 
 /**
- * Mapbox GL Legend Control.
- * @param {Object} targets - Object of layer.id and title
- * @param {boolean} options.showDefault true: it shows legend as default. false: legend will be closed as default
- * @param {boolean} options.showCheckbox true: checkbox will be added for switching layer's visibility. false: checkbox will not be added.
- * @param {boolean} options.reverseOrder true: layers will be ordered from top. false: layers will be ordered from bottom. If not specified, default value will be true.
- * @param {boolean} options.onlyRendered true: only rendered layers will be shown on legend as default. false: all layers' legend will be shown as default. If not specified, default value will be true.
- * @param {string} options.title the text shown above the legend. Default is 'Legend'.
- * @param {string} options.onlyRenderedLabel the text of the "Only rendered" checkbox label. Default is 'Only rendered'.
- * @param {string} options.accessToken Mapbox access token used to load `mapbox://` sprites. Default is `mapboxgl.accessToken`.
+ * A Mapbox GL JS control which shows a legend panel of the map's layers.
+ *
+ * The panel has:
+ *
+ * - a title ({@link LegendOptions.title}) and a close button. When the panel is closed, a legend
+ *   button opens it again.
+ * - the "Only rendered" checkbox ({@link LegendOptions.onlyRendered}), to list only the layers
+ *   rendered in the current view.
+ * - a row per layer: a checkbox to show / hide the layer ({@link LegendOptions.showCheckbox}), its
+ *   symbol and its title. The symbol is drawn from the style of the layer at the current zoom.
+ *
+ * The legend is updated when the map is moved and when the style changes.
+ *
+ * @example
+ * ```ts
+ * map.on('load', () => {
+ * 	const targets = {
+ * 		pipeline: 'Pipeline',
+ * 		meter: 'Water Meter',
+ * 		valve: 'Valve'
+ * 	};
+ *
+ * 	// closed at first, without the checkboxes
+ * 	map.addControl(
+ * 		new MapboxLegendControl(targets, { showDefault: false, showCheckbox: false }),
+ * 		'top-right'
+ * 	);
+ *
+ * 	// all layers of the style, in the order of style.layers
+ * 	map.addControl(new MapboxLegendControl({}, { reverseOrder: false }), 'bottom-left');
+ * });
+ * ```
  */
-
 export class MapboxLegendControl implements IControl {
 	private controlContainer: HTMLElement;
 	private map?: MapboxMap;
@@ -55,7 +137,18 @@ export class MapboxLegendControl implements IControl {
 		json: JSON
 	};
 
-	constructor(targets: { [key: string]: string }, options: LegendOptions) {
+	/**
+	 * Create a legend control. Add it to the map with `map.addControl()`, after the style is loaded
+	 * (e.g. in the `load` event).
+	 *
+	 * @param targets The layers listed in the legend: the layer ID and the title shown for it, e.g.
+	 *   `{ pipeline: 'Pipeline' }`. The layers are listed in the order of the style, not of this
+	 *   object. With an empty object (`{}`), all layers of the style are listed, titled by their
+	 *   IDs.
+	 * @param options The options of the legend. Omitted options use their default values: see
+	 *   {@link LegendOptions}.
+	 */
+	constructor(targets: { [key: string]: string }, options?: Partial<LegendOptions>) {
 		this.targets = targets;
 		if (options) {
 			this.options = Object.assign(this.options, options);
@@ -64,6 +157,11 @@ export class MapboxLegendControl implements IControl {
 		this.onDocumentClick = this.onDocumentClick.bind(this);
 	}
 
+	/**
+	 * The position of the control when `map.addControl()` is called without a position.
+	 *
+	 * @returns `'top-right'`
+	 */
 	public getDefaultPosition(): ControlPosition {
 		const defaultPosition = 'top-right';
 		return defaultPosition;
@@ -71,8 +169,8 @@ export class MapboxLegendControl implements IControl {
 
 	/**
 	 * create checkbox for switching layer visibility
-	 * @param layer mapboxgl.Layer object
-	 * @returns HTMLElement | undefined return TD Element
+	 * @param layer the layer
+	 * @returns the TD Element holding the checkbox, or undefined without `showCheckbox`
 	 */
 	private createLayerCheckbox(layer: LayerSpecification): HTMLElement | undefined {
 		if (!this.options.showCheckbox) return;
@@ -131,8 +229,8 @@ export class MapboxLegendControl implements IControl {
 
 	/**
 	 * Create and return a layer's legend row
-	 * @param layer mapboxgl.Layer object
-	 * @returns HTMLElement | undefined return TR Element
+	 * @param layer the layer
+	 * @returns the TR Element, or undefined when the layer has no symbol to draw
 	 */
 	private getLayerLegend(layer: LayerSpecification): HTMLElement | undefined {
 		const map = this.map;
@@ -331,6 +429,13 @@ export class MapboxLegendControl implements IControl {
 		return token ? `${url}?access_token=${token}` : url;
 	}
 
+	/**
+	 * Create the panel, load the sprite of the style and start updating the panel with the map.
+	 * Called by `map.addControl()`: you do not need to call it yourself.
+	 *
+	 * @param map The map the control is added to.
+	 * @returns The element of the control, placed on the map by Mapbox GL JS.
+	 */
 	public onAdd(map: MapboxMap): HTMLElement {
 		this.map = map;
 		this.controlContainer = document.createElement('div');
@@ -414,6 +519,10 @@ export class MapboxLegendControl implements IControl {
 		return this.controlContainer;
 	}
 
+	/**
+	 * Remove the panel from the map. Called by `map.removeControl()`: you do not need to call it
+	 * yourself.
+	 */
 	public onRemove(): void {
 		if (
 			!this.controlContainer ||
@@ -429,6 +538,12 @@ export class MapboxLegendControl implements IControl {
 		this.map = undefined;
 	}
 
+	/**
+	 * Update the legend now.
+	 *
+	 * The legend is updated by itself when the map is moved and when the style changes. Call this
+	 * when something else changed what it shows, e.g. layer visibility set by your code.
+	 */
 	public redraw(): void {
 		this.updateLegendControl();
 	}

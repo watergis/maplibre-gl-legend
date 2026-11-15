@@ -1,21 +1,110 @@
 import { ControlPosition, IControl, LayerSpecification, Map as MaplibreMap } from 'maplibre-gl';
 import { createLayerLegend, createLegendCache, legendToSvg } from '@watergis/maplibre2svg';
 
+/**
+ * Options of {@link MaplibreLegendControl}.
+ *
+ * Every option can be omitted when it is passed to the constructor: the default value is used
+ * instead.
+ */
 export interface LegendOptions {
+	/**
+	 * Whether the legend panel is open when the control is added.
+	 *
+	 * - `true`: the panel is open. It stays open until the user closes it with its close button.
+	 * - `false`: only the legend button is shown, and the user opens the panel with it. The panel
+	 *   is closed again when the user clicks outside the control.
+	 *
+	 * @defaultValue `true`
+	 */
 	showDefault: boolean;
+	/**
+	 * Whether each layer (and each group) has a toggle to show / hide it on the map.
+	 *
+	 * The toggle sets the `visibility` layout property of the layer. Toggles of the same layer in
+	 * other legend controls are kept in sync.
+	 *
+	 * @defaultValue `true`
+	 */
 	showCheckbox: boolean;
+	/**
+	 * The order of the layers in the legend.
+	 *
+	 * - `true`: the top-most layer of the style (the last one in `style.layers`) comes first, as
+	 *   they are stacked on the map.
+	 * - `false`: the layers are listed in the order of `style.layers`.
+	 *
+	 * @defaultValue `true`
+	 */
 	reverseOrder: boolean;
+	/**
+	 * The initial state of the "Only rendered" switch in the panel.
+	 *
+	 * - `true`: only the layers which have features rendered in the current view are listed. The
+	 *   list is updated when the map is moved. Layers hidden with the toggle stay listed, so that
+	 *   they can be shown again.
+	 * - `false`: all layers in `targets` are listed.
+	 *
+	 * The user can change it with the switch.
+	 *
+	 * @defaultValue `true`
+	 */
 	onlyRendered: boolean;
+	/**
+	 * The title shown at the top of the panel.
+	 *
+	 * @defaultValue `'Legend'`
+	 */
 	title?: string;
+	/**
+	 * The label of the "Only rendered" switch, e.g. to translate it.
+	 *
+	 * @defaultValue `'Only rendered'`
+	 */
 	onlyRenderedLabel?: string;
 	/**
-	 * Groups of layers shown (and switched on/off) together: group title and the layer IDs in it.
-	 * A layer belongs to the first group listing it.
+	 * Groups of layers listed (and shown / hidden) together: the title of each group and the IDs of
+	 * its layers.
+	 *
+	 * - The layers of a group are listed under the group title, at the position of the first of
+	 *   them. Clicking the group row collapses / expands the group.
+	 * - The toggle of a group shows / hides all of its layers, including the layers not rendered in
+	 *   the current view. It is shown as partially checked when only some of them are visible. Each
+	 *   layer keeps its own toggle.
+	 * - Layers in the groups are listed even if they are not in `targets`. Their titles still come
+	 *   from `targets`, or the layer ID.
+	 * - A layer belongs to the first group listing it.
+	 * - A group without any layer listed is not shown.
+	 *
+	 * @example
+	 * ```ts
+	 * {
+	 * 	groups: {
+	 * 		Pipeline: ['pipeline', 'pipeline_annotation'],
+	 * 		'Water Facilities': ['wtp', 'wtp_annotation', 'tank', 'tank_annotation']
+	 * 	}
+	 * }
+	 * ```
+	 *
+	 * @defaultValue `undefined` (no group)
 	 */
 	groups?: { [title: string]: string[] };
-	/** Layers not in `groups` which share the same source and source-layer are grouped by the source-layer name. Default is false. */
+	/**
+	 * Whether the layers not in {@link groups} which share the same `source` and `source-layer`
+	 * are grouped automatically, titled by the source-layer name.
+	 *
+	 * Such a group is made only while two or more of its layers are listed: with
+	 * {@link onlyRendered}, a single layer rendered at the current zoom is listed as a layer.
+	 *
+	 * @defaultValue `false`
+	 */
 	groupBySourceLayer?: boolean;
-	/** true: groups are collapsed as default. Default is false. */
+	/**
+	 * Whether the groups are collapsed when they are shown first. The state the user sets is kept
+	 * while the legend is updated.
+	 *
+	 * @defaultValue `false`
+	 */
 	collapseGroups?: boolean;
 }
 
@@ -32,19 +121,54 @@ type LegendItem =
 	  };
 
 /**
- * Mapbox GL Legend Control.
- * @param {Object} targets - Object of layer.id and title
- * @param {boolean} options.showDefault true: it shows legend as default. false: legend will be closed as default
- * @param {boolean} options.showCheckbox true: checkbox will be added for switching layer's visibility. false: checkbox will not be added.
- * @param {boolean} options.reverseOrder true: layers will be ordered from top. false: layers will be ordered from bottom. If not specified, default value will be true.
- * @param {boolean} options.onlyRendered true: only rendered layers will be shown on legend as default. false: all layers' legend will be shown as default. If not specified, default value will be true.
- * @param {string} options.title the text shown above the legend. Default is 'Legend'.
- * @param {string} options.onlyRenderedLabel the text of the "Only rendered" checkbox label. Default is 'Only rendered'.
- * @param {Object} options.groups groups of layers shown and switched on/off together: group title and the layer IDs in it.
- * @param {boolean} options.groupBySourceLayer true: layers sharing the same source-layer are grouped. Default is false.
- * @param {boolean} options.collapseGroups true: groups are collapsed as default. Default is false.
+ * A MapLibre GL JS control which shows a legend panel of the map's layers.
+ *
+ * The panel has:
+ *
+ * - a title ({@link LegendOptions.title}) and a close button. When the panel is closed, a legend
+ *   button opens it again.
+ * - the "Only rendered" switch ({@link LegendOptions.onlyRendered}), to list only the layers
+ *   rendered in the current view.
+ * - a row per layer: a toggle to show / hide the layer ({@link LegendOptions.showCheckbox}), its
+ *   symbol and its title. A layer styled by data (e.g. `match` or `step` expressions) has a row for
+ *   each of its classes under the layer row. A layer which has nothing to draw is not listed.
+ * - optionally, groups of layers ({@link LegendOptions.groups},
+ *   {@link LegendOptions.groupBySourceLayer}).
+ *
+ * The legend is updated when the map is moved and when the style changes.
+ *
+ * @example
+ * ```ts
+ * map.on('load', () => {
+ * 	const targets = {
+ * 		pipeline: 'Pipeline',
+ * 		pipeline_annotation: 'Pipeline Label',
+ * 		valve: 'Valve'
+ * 	};
+ *
+ * 	// closed at first, without the toggles, listing all layers in targets
+ * 	map.addControl(
+ * 		new MaplibreLegendControl(targets, {
+ * 			showDefault: false,
+ * 			showCheckbox: false,
+ * 			onlyRendered: false
+ * 		}),
+ * 		'top-right'
+ * 	);
+ *
+ * 	// all layers of the style, in the order of style.layers
+ * 	map.addControl(new MaplibreLegendControl({}, { reverseOrder: false }), 'bottom-left');
+ *
+ * 	// pipeline layers are listed and switched together
+ * 	map.addControl(
+ * 		new MaplibreLegendControl(targets, {
+ * 			groups: { Pipeline: ['pipeline', 'pipeline_annotation'] }
+ * 		}),
+ * 		'top-left'
+ * 	);
+ * });
+ * ```
  */
-
 export class MaplibreLegendControl implements IControl {
 	private controlContainer: HTMLElement;
 	private map?: MaplibreMap;
@@ -74,6 +198,17 @@ export class MaplibreLegendControl implements IControl {
 	private groupLayers: Map<string, string[]> = new Map();
 	private redrawScheduled = false;
 
+	/**
+	 * Create a legend control. Add it to the map with `map.addControl()`, after the style is loaded
+	 * (e.g. in the `load` event).
+	 *
+	 * @param targets The layers listed in the legend: the layer ID and the title shown for it, e.g.
+	 *   `{ pipeline: 'Pipeline' }`. The layers are listed in the order of the style, not of this
+	 *   object. With an empty object (`{}`), all layers of the style are listed, titled by their
+	 *   IDs.
+	 * @param options The options of the legend. Omitted options use their default values: see
+	 *   {@link LegendOptions}.
+	 */
 	constructor(targets: { [key: string]: string }, options?: Partial<LegendOptions>) {
 		this.targets = targets;
 		if (options) {
@@ -83,6 +218,11 @@ export class MaplibreLegendControl implements IControl {
 		this.onDocumentClick = this.onDocumentClick.bind(this);
 	}
 
+	/**
+	 * The position of the control when `map.addControl()` is called without a position.
+	 *
+	 * @returns `'top-right'`
+	 */
 	public getDefaultPosition(): ControlPosition {
 		const defaultPosition = 'top-right';
 		return defaultPosition;
@@ -113,8 +253,8 @@ export class MaplibreLegendControl implements IControl {
 
 	/**
 	 * create checkbox for switching layer visibility
-	 * @param layer mapboxgl.Layer object
-	 * @returns HTMLElement | undefined return TD Element
+	 * @param layer the layer
+	 * @returns the TD Element holding the checkbox, or undefined without `showCheckbox`
 	 */
 	private createLayerCheckbox(layer: LayerSpecification): HTMLElement | undefined {
 		if (!this.options.showCheckbox) return;
@@ -146,7 +286,7 @@ export class MaplibreLegendControl implements IControl {
 
 	/**
 	 * Create and return a layer's legend rows
-	 * @param layer mapboxgl.Layer object
+	 * @param layer the layer
 	 * @param groupKey the key of the group the layer belongs to
 	 * @returns the TBODY Element holding the layer's rows, and a promise resolved with false when the layer has no legend (the TBODY is removed)
 	 */
@@ -537,6 +677,13 @@ export class MaplibreLegendControl implements IControl {
 		this.updateGroupStates();
 	}
 
+	/**
+	 * Create the panel and start updating it with the map. Called by `map.addControl()`: you do not
+	 * need to call it yourself.
+	 *
+	 * @param map The map the control is added to.
+	 * @returns The element of the control, placed on the map by MapLibre.
+	 */
 	public onAdd(map: MaplibreMap): HTMLElement {
 		this.map = map;
 		this.controlContainer = document.createElement('div');
@@ -618,6 +765,10 @@ export class MaplibreLegendControl implements IControl {
 		return this.controlContainer;
 	}
 
+	/**
+	 * Remove the panel from the map. Called by `map.removeControl()`: you do not need to call it
+	 * yourself.
+	 */
 	public onRemove(): void {
 		if (
 			!this.controlContainer ||
@@ -633,6 +784,12 @@ export class MaplibreLegendControl implements IControl {
 		this.map = undefined;
 	}
 
+	/**
+	 * Update the legend now.
+	 *
+	 * The legend is updated by itself when the map is moved and when the style changes. Call this
+	 * when something else changed what it shows, e.g. layer visibility set by your code.
+	 */
 	public redraw(): void {
 		this.updateLegendControl();
 	}

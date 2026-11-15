@@ -4,3 +4,4 @@ package-lock.json
 yarn.lock
 /.netlify
 /static/maplibre2svg
+/static/docs

@@ -15,3 +15,8 @@
 	max-width: 100%;
 	height: auto;
 }
+
+/* the examples in the doc comments are indented with tabs, as the source */
+pre {
+	tab-size: 2;
+}

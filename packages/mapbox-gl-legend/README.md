@@ -11,7 +11,7 @@ This package was moved from [watergis/mapbox-gl-legend](https://github.com/water
 
 ## for MapLibre GL JS users
 
-Please consider to use [@watergis/maplibre-gl-legend](../maplibre-gl-legend/) for MapLibre GL JS.
+Please consider to use [@watergis/maplibre-gl-legend](../maplibre-gl-legend/README.md) for MapLibre GL JS.
 
 ## Installation
 
@@ -22,6 +22,8 @@ pnpm i -D @watergis/mapbox-gl-legend mapbox-gl
 ## Demo
 
 See [demo](https://maplibre-gl-legend.water-gis.com).
+
+See [API reference](https://maplibre-gl-legend.water-gis.com/api) for all classes and options.
 
 ![demo.gif](./demo.gif)
 
@@ -64,6 +66,9 @@ map.on('load', function () {
 Specify your layers which you want to add the legend by the control.
 
 ### Options
+
+All options are optional. See [LegendOptions in the API reference](https://maplibre-gl-legend.water-gis.com/api) for the details.
+
 
 - showDefault
   - true: Legend will be shown as default

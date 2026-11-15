@@ -1,10 +1,11 @@
 # maplibre-gl-legend
-![build](https://github.com/watergis/maplibre-gl-export/workflows/build/badge.svg)
-![GitHub](https://img.shields.io/github/license/watergis/maplibre-gl-legend)
+
+![licence](https://img.shields.io/github/license/watergis/maplibre-gl-legend)
+[![version](https://img.shields.io/npm/v/@watergis/maplibre-gl-legend.svg)](https://www.npmjs.com/package/@watergis/maplibre-gl-legend)
 
 This module adds legend control which is able to create legend panel from mapbox style to maplibre-gl. It was forked from [mapbox-gl-legend](https://github.com/watergis/mapbox-gl-legend).
 
-Legend symbols are drawn as SVG from the map's style by [maplibre2svg](../maplibre2svg) (bundled in this package).
+Legend symbols are drawn as SVG from the map's style by [maplibre2svg](../maplibre2svg/README.md) (bundled in this package).
 
 ## Installation:
 
@@ -17,6 +18,8 @@ pnpm i -D @watergis/maplibre-gl-legend maplibre-gl
 Try [codesandbox](https://codesandbox.io/s/mapbox-gl-legend-0x6f0).
 
 See [demo](https://maplibre-gl-legend.water-gis.com).
+
+See [API reference](https://maplibre-gl-legend.water-gis.com/api) for all classes and options.
 
 ![demo.gif](./demo.gif)
 
@@ -68,14 +71,15 @@ map.addControl(new MaplibreLegendControl(targets, {
     'Water Facilities': ['wtp', 'wtp_annotation', 'tank', 'tank_annotation'],
   },
 }), 'top-left');
-
-// if you want to use basemap from Mapbox in v2
-map.addControl(new MaplibreLegendControl({}, {accesstoken: 'your mapbox accesstoken'}));
+});
 ```
 
 Specify your layers which you want to add the legend by the control.
 
 ### Options
+
+All options are optional. See [LegendOptions in the API reference](https://maplibre-gl-legend.water-gis.com/api) for the details.
+
 - showDefault
   - true: Legend will be shown as default
   - false: Legend will be hide as default

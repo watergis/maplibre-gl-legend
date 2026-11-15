@@ -8,4 +8,4 @@
 </script>
 
 <!-- the Storybook copied to static/maplibre2svg/storybook/ by scripts/copy-maplibre2svg.js -->
-<EmbeddedSite title="maplibre2svg Storybook" {src} />
+<EmbeddedSite title="maplibre2svg Storybook" {src} reloadOnModeChange />
