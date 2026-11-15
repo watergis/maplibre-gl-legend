@@ -1,0 +1,107 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as FillStories from './fill.stories';
+
+<Meta of={FillStories} />
+
+# fill
+
+## What the legend draws
+
+A rectangle that fills the swatch. An outline of its own color is drawn as a 1px border. Otherwise a neutral frame stands in for the outline, which would vanish for a light fill.
+
+## Supported properties
+
+These are the properties of the layer that change its legend symbol. **Classes** gives the order in which the properties are tried for classification: the first one whose value depends on the feature (a `match`, `case`, `step` or `interpolate`) gives the classes of the legend.
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Paint / layout</th>
+			<th>How the legend uses it</th>
+			<th>Classes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>fill-color</code>
+			</td>
+			<td>paint</td>
+			<td>Color of the rectangle</td>
+			<td>1</td>
+		</tr>
+		<tr>
+			<td>
+				<code>fill-pattern</code>
+			</td>
+			<td>paint</td>
+			<td>Image of the sprite filling the rectangle, instead of the color</td>
+			<td>2</td>
+		</tr>
+		<tr>
+			<td>
+				<code>fill-outline-color</code>
+			</td>
+			<td>paint</td>
+			<td>1px border when it differs from the fill; otherwise a neutral frame</td>
+			<td>3</td>
+		</tr>
+		<tr>
+			<td>
+				<code>fill-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the fill and of its outline</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<td>
+				<code>fill-antialias</code>
+			</td>
+			<td>paint</td>
+			<td>
+				<code>false</code> draws no outline
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>fill-layer-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the whole symbol</td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+
+Other properties do not change the symbol: `fill-layer-blend`, `fill-translate`, `fill-translate-anchor`, `fill-sort-key`.
+
+## Expressions and classes
+
+When a property with a number in the **Classes** column above depends on the feature, through a `match`, `case`, `step` or `interpolate`, the legend has one entry per class: a value of a `match`, a condition of a `case`, an interval of a `step` or a stop of an `interpolate`. The one with the lowest number sets the classes. The other properties are evaluated for a representative feature of each class, so linked properties (a color and a width on the same field) stay together. `zoom` expressions are evaluated at the `zoom` control. Labels come from the expression, or from `metadata.legend` (see `CustomLabels`).
+
+The shared stories (`CategoricalMatch`, `CategoricalCase`, `GraduatedStep`, `LinearInterpolate`, `ExponentialInterpolate`, `ZoomAndDataInterpolate`, `CustomLabels`) have the same names on every vector layer type, so you can compare the types.
+
+## Assets
+
+`fill-pattern` needs the images of a sprite. The stories use hatching made in code.
+
+## Controls
+
+Every paint and layout property of the type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. A property without a value is left out of the layer, so MapLibre's default applies. A property whose value is an expression is edited as JSON. The layer definition next to the legend shows what is drawn.
+
+`zoom` evaluates the zoom expressions, and `defaultLabel` names the fallback class of a `match` or `case`.
+
+See [`fill` in the MapLibre style specification](https://maplibre.org/maplibre-style-spec/layers/#fill) for every property.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

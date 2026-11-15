@@ -50,6 +50,7 @@
 		"@types/node": "^26.6.6",
 		"@typescript-eslint/eslint-plugin": "^8.72.1",
 		"@typescript-eslint/parser": "^8.72.1",
+		"@watergis/maplibre2svg": "workspace:*",
 		"autoprefixer": "^10.6.2",
 		"eslint": "^10.14.0",
 		"eslint-config-prettier": "^10.1.8",
@@ -66,9 +67,6 @@
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.72.1",
 		"vite": "^8.3.5"
-	},
-	"dependencies": {
-		"@watergis/legend-symbol": "^0.2.3"
 	},
 	"peerDependencies": {
 		"maplibre-gl": "^6.4.1"

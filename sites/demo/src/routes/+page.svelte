@@ -342,4 +342,21 @@ map.on('load', () => {
 			>
 		</div>
 	</section>
+
+	<section class="space-y-4">
+		<h3 class="h3 pt-10">maplibre2svg</h3>
+		<p>
+			The legend symbols are drawn by maplibre2svg, an internal package of this repository which
+			turns the layers of a MapLibre style into SVG. Its API reference and Storybook are published
+			here for contributors.
+		</p>
+		<div class="flex flex-wrap justify-center gap-2">
+			<a class="btn preset-outlined-surface-500" href={resolve('/maplibre2svg/api-reference')}
+				>API reference</a
+			>
+			<a class="btn preset-outlined-surface-500" href={resolve('/maplibre2svg/stories')}
+				>Storybook</a
+			>
+		</div>
+	</section>
 </div>

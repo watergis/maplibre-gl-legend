@@ -1,0 +1,19 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"name": "maplibre2svg",
+	"entryPoints": ["src/lib/index.ts"],
+	"tsconfig": "tsconfig.json",
+	"out": "site/docs",
+	"readme": "README.md",
+	"customCss": "./typedoc.css",
+	"customJs": "./typedoc.js",
+	"ignoredHighlightLanguages": ["mermaid"],
+	"excludePrivate": true,
+	"excludeInternal": true,
+	"excludeExternals": true,
+	"categorizeByGroup": true,
+	"navigationLinks": {
+		"Storybook": "../storybook/index.html",
+		"GitHub": "https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre2svg"
+	}
+}

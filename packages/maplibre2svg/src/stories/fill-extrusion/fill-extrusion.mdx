@@ -1,0 +1,93 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as FillExtrusionStories from './fill-extrusion.stories';
+
+<Meta of={FillExtrusionStories} />
+
+# fill-extrusion
+
+## What the legend draws
+
+An isometric box. The side faces are darker shades of the top face, lit from the left as MapLibre does by default, and the height of the box is relative to the tallest class of the layer.
+
+## Supported properties
+
+These are the properties of the layer that change its legend symbol. **Classes** gives the order in which the properties are tried for classification: the first one whose value depends on the feature (a `match`, `case`, `step` or `interpolate`) gives the classes of the legend.
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Paint / layout</th>
+			<th>How the legend uses it</th>
+			<th>Classes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>fill-extrusion-color</code>
+			</td>
+			<td>paint</td>
+			<td>Top face; the side faces are darker shades of it</td>
+			<td>1</td>
+		</tr>
+		<tr>
+			<td>
+				<code>fill-extrusion-pattern</code>
+			</td>
+			<td>paint</td>
+			<td>Image of the sprite on the top face, instead of the color</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>fill-extrusion-height</code>
+			</td>
+			<td>paint</td>
+			<td>Height of the box, relative to the tallest class of the layer</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>fill-extrusion-base</code>
+			</td>
+			<td>paint</td>
+			<td>Subtracted from the height</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>fill-extrusion-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the box</td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+
+Other properties do not change the symbol: `fill-extrusion-translate`, `fill-extrusion-translate-anchor`, `fill-extrusion-vertical-gradient`, `fill-extrusion-rounded-corner-distance`.
+
+## Expressions and classes
+
+When a property with a number in the **Classes** column above depends on the feature, through a `match`, `case`, `step` or `interpolate`, the legend has one entry per class: a value of a `match`, a condition of a `case`, an interval of a `step` or a stop of an `interpolate`. The one with the lowest number sets the classes. The other properties are evaluated for a representative feature of each class, so linked properties (a color and a width on the same field) stay together. `zoom` expressions are evaluated at the `zoom` control. Labels come from the expression, or from `metadata.legend` (see `CustomLabels`).
+
+The shared stories (`CategoricalMatch`, `CategoricalCase`, `GraduatedStep`, `LinearInterpolate`, `ExponentialInterpolate`, `ZoomAndDataInterpolate`, `CustomLabels`) have the same names on every vector layer type, so you can compare the types.
+
+## Controls
+
+Every paint and layout property of the type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. A property without a value is left out of the layer, so MapLibre's default applies. A property whose value is an expression is edited as JSON. The layer definition next to the legend shows what is drawn.
+
+`zoom` evaluates the zoom expressions, and `defaultLabel` names the fallback class of a `match` or `case`.
+
+See [`fill-extrusion` in the MapLibre style specification](https://maplibre.org/maplibre-style-spec/layers/#fill-extrusion) for every property.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

@@ -1,0 +1,94 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as RasterStories from './raster.stories';
+
+<Meta of={RasterStories} />
+
+# raster
+
+## What the legend draws
+
+A thumbnail of the layer: the tile at the center and zoom, or the image of an `image` source, covering the swatch. When the tile does not load (404, CORS, a `pmtiles://` source, a source with only a TileJSON `url`), a generic mosaic stands in.
+
+The `lng` and `lat` controls set the center the tile is taken from, and the `source` control switches the source of the layer.
+
+## Supported properties
+
+These are the properties of the layer that change its legend symbol.
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Paint / layout</th>
+			<th>How the legend uses it</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>raster-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the tile</td>
+		</tr>
+		<tr>
+			<td>
+				<code>raster-hue-rotate</code>
+			</td>
+			<td>paint</td>
+			<td>Color matrix, as in the MapLibre shader</td>
+		</tr>
+		<tr>
+			<td>
+				<code>raster-saturation</code>
+			</td>
+			<td>paint</td>
+			<td>Color matrix, as in the MapLibre shader</td>
+		</tr>
+		<tr>
+			<td>
+				<code>raster-contrast</code>
+			</td>
+			<td>paint</td>
+			<td>Color matrix, as in the MapLibre shader</td>
+		</tr>
+		<tr>
+			<td>
+				<code>raster-brightness-min</code>
+			</td>
+			<td>paint</td>
+			<td>Color matrix, as in the MapLibre shader</td>
+		</tr>
+		<tr>
+			<td>
+				<code>raster-brightness-max</code>
+			</td>
+			<td>paint</td>
+			<td>Color matrix, as in the MapLibre shader</td>
+		</tr>
+	</tbody>
+</table>
+
+Other properties do not change the symbol: `resampling`, `raster-resampling`, `raster-fade-duration`.
+
+## Assets
+
+Tiles come from public servers (OpenStreetMap, Esri World Imagery). An SVG shown through `<img>` cannot load remote tiles at all.
+
+## Controls
+
+Every paint and layout property of the type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. A property without a value is left out of the layer, so MapLibre's default applies. A property whose value is an expression is edited as JSON. The layer definition next to the legend shows what is drawn.
+
+`zoom` evaluates the zoom expressions, and `defaultLabel` names the fallback class of a `match` or `case`.
+
+See [`raster` in the MapLibre style specification](https://maplibre.org/maplibre-style-spec/layers/#raster) for every property.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

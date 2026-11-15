@@ -85,6 +85,10 @@ th.legend-table-th {
 }
 
 td.legend-table-td > svg {
+	display: block;
+}
+
+td.legend-table-td > svg.post-icon {
 	height: 17px;
 }
 
