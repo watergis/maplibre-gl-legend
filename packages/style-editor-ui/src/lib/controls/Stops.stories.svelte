@@ -5,15 +5,7 @@
 	import Stops from './Stops.svelte';
 
 	const { Story } = defineMeta({
-		title: 'Controls/Stops',
-		parameters: {
-			docs: {
-				description: {
-					component:
-						'The outputs of an expression, each with its label and its control (here a number input).'
-				}
-			}
-		}
+		title: 'Controls/Stops'
 	});
 
 	const stops: Stop<number>[] = [

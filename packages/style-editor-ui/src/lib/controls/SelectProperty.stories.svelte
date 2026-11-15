@@ -17,14 +17,6 @@
 
 	const { Story } = defineMeta({
 		title: 'Controls/SelectProperty',
-		parameters: {
-			docs: {
-				description: {
-					component:
-						'A property chosen from a list: the options of the field, or the values of the style specification ("Default" when the property has no default value).'
-				}
-			}
-		},
 		args: { onchange: fn() }
 	});
 </script>

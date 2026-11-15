@@ -1,0 +1,92 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as SelectStories from './Select.stories.svelte';
+
+<Meta of={SelectStories} />
+
+# Select
+
+A native dropdown list of labelled string values.
+
+## Where it is used
+
+`SelectProperty`, which gives the index of each option as its value.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'id'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The id of the select.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'name'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The name of the select.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'options'}</code>
+			</td>
+			<td>
+				<code>{'{ label: string; value: string }[]'}</code>
+			</td>
+			<td></td>
+			<td>The options.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'value'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The selected value. Bindable.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onchange'}</code>
+			</td>
+			<td>
+				<code>{'(value: string) => void'}</code>
+			</td>
+			<td></td>
+			<td>Called with the value the user selected.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+- **Default**: the values of `raster-resampling`.
+- **Line pattern**: the patterns of `line-dasharray`.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# style-editor-ui
+
+style-editor-ui is the Svelte UI of the layer style editor of [`@watergis/maplibre-gl-legend`](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre-gl-legend). It is bundled into maplibre-gl-legend and not published on npm: the legend control opens it from a layer of the legend when its `showStyleEditor` option is on.
+
+The editor is a non-modal dialog over the map. It edits the `paint` and `layout` properties of one layer, and every change is applied to the map at once:
+
+- **Properties**: the main properties of the layer type (opacity, color, width, size, halo, ...) with sliders and color pickers. A property set by a zoom or data expression (`interpolate`, `step`, `match`, or a legacy function with `stops`) is edited output by output. Other expressions are shown as they are, with a link to the manual editor.
+- **Manual editor**: the `paint` and `layout` properties as YAML or JSON, applied with the Apply button. Properties removed from the text are reset to their defaults.
+- **Heatmap**: symbol, circle and line layers can add a heatmap layer made from their features.
+- **Reset**: restores the style the layer had when the dialog was opened for it.
+
+Each field links to the [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/layers/) of its property.
+
+## How the stories are organised
+
+The groups go from the whole editor down to its smallest parts. Each component opens with a **Docs** page that explains what it does, its props and its stories, followed by every story.
+
+- **Dialog**: `StyleEditorDialog`, the editor as maplibre-gl-legend opens it over a MapLibre map, with a story per layer type: background, fill, line, symbol (text, SDF icon, icon), circle, fill-extrusion, raster, hillshade, color-relief and heatmap.
+- **Panels**: the two modes of the dialog. `LayerPanel` shows the fields of the layer type, and `ManualEditor` the properties as text.
+- **Controls**: the field of one property and its controls: numbers (`NumberProperty`), colors (`ColorProperty`), lists (`SelectProperty`), the outputs of an expression (`Stops`), expressions left to the manual editor (`ExpressionNote`) and the heatmap switch (`HeatmapGenerator`). `PropertyField` picks the control of a field.
+- **Components**: the generic form components the controls are made of: buttons, inputs, the field row and the icons.
+
+## The data of the stories
+
+The stories run without a tile server.
+
+- The **Dialog** stories draw a real MapLibre map (`src/stories/MapFrame.svelte`) from the styles of `src/stories/layer-stories.ts`. Their data is generated in the browser: GeoJSON, raster and DEM tiles from the `story-raster://` and `story-dem://` protocols, and icons. Only the glyphs of the text labels are loaded from the MapLibre demo tiles.
+- The **Panels** and **Controls** stories use a mock map (`src/stories/mock-map.ts`), which keeps the layers in memory without drawing them. `src/stories/EditorContextFrame.svelte` gives them the editor context, as the dialog does.
+
+The **Actions** panel lists the calls the editor makes: `onchange` with the property and its new value, `onmanualeditor` when the manual editor is asked for, and the `onChange` / `onClose` callbacks of the dialog.
+
+## Theme
+
+Every story is shown with the theme of the editor (`src/lib/theme.css`). The look is driven by the `--gl-style-editor-*` CSS custom properties: the [Tailwind CSS colors](https://tailwindcss.com/docs/colors) as the palette, and [shadcn/ui](https://ui.shadcn.com/docs/theming) names for the roles the components use (`background`, `foreground`, `primary`, `muted`, `border`, `input`, `ring`, ...). Every element has a `gl-style-editor-` class, so an application can restyle any part.
+
+## Links
+
+- [README](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/style-editor-ui#readme)
+- [Source on GitHub](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/style-editor-ui)
+- [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/)

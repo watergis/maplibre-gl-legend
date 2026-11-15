@@ -6,7 +6,6 @@
 	const { Story } = defineMeta({
 		title: 'Components/ColorInput',
 		component: ColorInput,
-		tags: ['autodocs'],
 		args: {
 			id: 'story-color',
 			name: 'fill-color',

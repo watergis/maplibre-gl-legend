@@ -13,12 +13,8 @@
 		component: MapFrame,
 		parameters: {
 			layout: 'fullscreen',
-			docs: {
-				description: {
-					component:
-						'The non-modal style editor over the map. Edit the fields and the map changes at once; drag the header to move the dialog.'
-				}
-			}
+			// on the Docs page, the story is drawn in an iframe: the dialog is placed in the window
+			docs: { story: { inline: false, height: '640px' } }
 		},
 		argTypes: {
 			position: {

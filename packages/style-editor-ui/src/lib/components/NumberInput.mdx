@@ -1,0 +1,143 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as NumberInputStories from './NumberInput.stories.svelte';
+
+<Meta of={NumberInputStories} />
+
+# NumberInput
+
+A slider with a number box. The slider covers the usual range of the property, and the box accepts any number, also out of the range of the slider.
+
+## Where it is used
+
+`NumberProperty`, for a constant number and for each output of a numeric expression.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'id'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The id of the number box.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'name'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The name of the slider and of the box.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'label'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>
+				The accessible name, when the input has no <code>{'<label>'}</code>.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'value'}</code>
+			</td>
+			<td>
+				<code>{'number'}</code>
+			</td>
+			<td></td>
+			<td>The value. Bindable.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'min'}</code>
+			</td>
+			<td>
+				<code>{'number'}</code>
+			</td>
+			<td></td>
+			<td>The minimum of the slider.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'max'}</code>
+			</td>
+			<td>
+				<code>{'number'}</code>
+			</td>
+			<td></td>
+			<td>The maximum of the slider.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'step'}</code>
+			</td>
+			<td>
+				<code>{'number'}</code>
+			</td>
+			<td></td>
+			<td>The step of the slider and of the box.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'unit'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>
+				Shown after the box, e.g. <code>{'px'}</code> or <code>{'%'}</code>.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onchange'}</code>
+			</td>
+			<td>
+				<code>{'(value: number) => void'}</code>
+			</td>
+			<td></td>
+			<td>Called with the new value while the slider moves or the box is typed in.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- A value out of the range is kept: the slider stops at its end, and the box shows the value.
+- An empty or invalid box is ignored until it holds a number.
+- The slider is out of the tab order; the box is the keyboard control.
+
+## Stories
+
+- **Pixels**: a width from 0 to 20 px by 0.5.
+- **Percent**: an opacity from 0 to 100%.
+- **Out of range**: 42 px on a slider up to 20 px.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

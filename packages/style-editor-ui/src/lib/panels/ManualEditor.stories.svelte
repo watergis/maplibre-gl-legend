@@ -15,14 +15,6 @@
 
 	const { Story } = defineMeta({
 		title: 'Panels/ManualEditor',
-		parameters: {
-			docs: {
-				description: {
-					component:
-						'The `paint` and `layout` properties as YAML or JSON. Apply sets the changed properties, and resets the removed ones. Invalid text shows an error.'
-				}
-			}
-		},
 		argTypes: {
 			story: { control: false },
 			format: { control: 'inline-radio', options: ['yaml', 'json'] }

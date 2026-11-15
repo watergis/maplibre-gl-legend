@@ -1,0 +1,71 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as PropertyFieldStories from './PropertyField.stories.svelte';
+
+<Meta of={PropertyFieldStories} />
+
+# PropertyField
+
+A field of the editor: a `Field` with the label of the property and its link to the specification, around the control of its kind: `NumberProperty`, `ColorProperty`, `SelectProperty`, or the `HeatmapGenerator` switch.
+
+## Where it is used
+
+`LayerPanel`, once per field of the layer type.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'field'}</code>
+			</td>
+			<td>
+				<code>{'FieldConfig'}</code>
+			</td>
+			<td></td>
+			<td>
+				The field, see <code>{'FIELDS'}</code> in <code>{'panels/fields.ts'}</code>: its{' '}
+				<code>{'kind'}</code> (<code>{'number'}</code>, <code>{'color'}</code>,{' '}
+				<code>{'select'}</code> or <code>{'heatmap-generator'}</code>), property and label.
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- The value is read from the map with `getProperty()` of the editor context.
+- A property not set in the style shows the default value of the style specification.
+- The heatmap switch is inline, and links to the `heatmap` layer type.
+
+## Stories
+
+The stories put a `circle` layer on a mock map, except `Select` which uses a `raster` layer.
+
+- **Number**: `circle-radius`.
+- **Color**: `circle-color`.
+- **Default value**: `circle-stroke-width`, not set in the layer: its default value 0 is shown.
+- **Select**: `raster-resampling`, from the values of the specification.
+- **Heatmap generator**: the heatmap switch.
+
+## Controls
+
+The story controls are the args of the story, not the props of the component: the `layer` put on the mock map, the `field` of the editor (see `FIELDS` in `panels/fields.ts`) and the `onchange` action, called with the property and its new value whenever the control writes to the map.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

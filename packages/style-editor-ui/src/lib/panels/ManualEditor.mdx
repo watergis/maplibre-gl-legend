@@ -1,0 +1,74 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as ManualEditorStories from './ManualEditor.stories.svelte';
+
+<Meta of={ManualEditorStories} />
+
+# ManualEditor
+
+The manual editor mode of the dialog: the `paint` and `layout` properties of the layer as YAML or JSON, in two text areas. The Apply button applies the text to the map.
+
+## Where it is used
+
+`StyleEditorDialog`, while the Manual editor mode is on. Every expression the fields cannot edit is edited here.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'format'}</code>
+			</td>
+			<td>
+				<code>{"'yaml' | 'json'"}</code>
+			</td>
+			<td></td>
+			<td>The text format. Bindable: the dialog keeps it between layers.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onapply'}</code>
+			</td>
+			<td>
+				<code>{'() => void'}</code>
+			</td>
+			<td></td>
+			<td>Called after the properties have been applied.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- Apply sets the changed properties, and resets the removed ones to their defaults (see `diffProperties()` in `utils/manual-format.ts`).
+- Text which is not valid YAML or JSON, or not an object, shows an error and changes nothing.
+- Switching the format converts the text. Invalid text keeps the format and shows the error.
+- "Applied" is shown for a moment after Apply.
+
+## Stories
+
+- **YAML**: the properties of a line layer as YAML.
+- **JSON**: the same layer as JSON.
+- **Symbol**: a symbol layer with layout properties.
+
+## Controls
+
+The story controls are the initial `format` and the `onchange` action, called for each property Apply sets.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

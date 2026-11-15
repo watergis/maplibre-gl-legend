@@ -16,14 +16,6 @@
 
 	const { Story } = defineMeta({
 		title: 'Controls/NumberProperty',
-		parameters: {
-			docs: {
-				description: {
-					component:
-						'A numeric property: a constant, or each output of an `interpolate` / `step` / `match` expression. Other expressions are left to the manual editor.'
-				}
-			}
-		},
 		args: { onchange: fn() }
 	});
 

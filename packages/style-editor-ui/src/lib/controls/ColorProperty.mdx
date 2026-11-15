@@ -1,0 +1,81 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as ColorPropertyStories from './ColorProperty.stories.svelte';
+
+<Meta of={ColorPropertyStories} />
+
+# ColorProperty
+
+The control of a color property. A constant color is edited with one `ColorInput`. A zoom or data expression (`interpolate`, `step`, `match`) or a legacy function with `stops` whose outputs are constant colors is edited output by output, with a `ColorInput` per output in `Stops`. Any other value shows `ExpressionNote`.
+
+## Where it is used
+
+`PropertyField`, for the fields of kind `color`.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'field'}</code>
+			</td>
+			<td>
+				<code>{'ColorFieldConfig'}</code>
+			</td>
+			<td></td>
+			<td>
+				The field: the property, its type (<code>{'paint'}</code> or <code>{'layout'}</code>), its
+				label, and the <code>{'linked'}</code> properties set to the same value.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'value'}</code>
+			</td>
+			<td>
+				<code>{'unknown'}</code>
+			</td>
+			<td></td>
+			<td>The value of the property when the field is shown.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- Colors are read by `parseColor()` in `utils/color.ts`: a CSS color string, or an `rgb` / `rgba` expression of numbers.
+- Colors are written by `formatColor()`: `#rrggbb` when opaque, `rgba(...)` otherwise.
+- The expression keeps its inputs; only the edited output changes.
+- Writes to the map are debounced (60 ms, see `controls/write.ts`), and the last one is written when the field is destroyed.
+
+## Stories
+
+Each story puts a `fill` layer on a mock map and shows the `fill-color` field.
+
+- **Constant**: an opaque color.
+- **Translucent**: an `rgba()` color: the opacity is edited in the picker.
+- **Data classes**: a `match` on `class`: one color per value, and one for the others.
+- **Legacy stops**: a legacy function `{ stops: [[8, ...], [14, ...]] }`: one color per zoom.
+- **Expression**: a `case` expression, left to the manual editor.
+
+## Controls
+
+The story controls are the args of the story, not the props of the component: the `layer` put on the mock map, the `field` of the editor (see `FIELDS` in `panels/fields.ts`) and the `onchange` action, called with the property and its new value whenever the control writes to the map.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

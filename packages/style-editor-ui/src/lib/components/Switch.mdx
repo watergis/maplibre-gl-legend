@@ -1,0 +1,84 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as SwitchStories from './Switch.stories.svelte';
+
+<Meta of={SwitchStories} />
+
+# Switch
+
+A checkbox styled as a switch (`role="switch"`).
+
+## Where it is used
+
+`HeatmapGenerator`, to add or remove the heatmap layer.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'id'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>
+				The id of the checkbox, for its <code>{'<label>'}</code>.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'name'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The name of the checkbox.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'checked'}</code>
+			</td>
+			<td>
+				<code>{'boolean'}</code>
+			</td>
+			<td></td>
+			<td>Whether the switch is on. Bindable.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onchange'}</code>
+			</td>
+			<td>
+				<code>{'(checked: boolean) => void'}</code>
+			</td>
+			<td></td>
+			<td>Called when the user turns the switch on or off.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+- **Off**: the switch off, with its label.
+- **On**: the switch on.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

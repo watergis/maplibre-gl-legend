@@ -12,14 +12,6 @@
 
 	const { Story } = defineMeta({
 		title: 'Controls/ExpressionNote',
-		parameters: {
-			docs: {
-				description: {
-					component:
-						'Shown instead of a control when a property is set by an expression only the manual editor edits.'
-				}
-			}
-		},
 		args: { onmanualeditor: fn() }
 	});
 

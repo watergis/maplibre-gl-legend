@@ -16,14 +16,6 @@
 
 	const { Story } = defineMeta({
 		title: 'Controls/PropertyField',
-		parameters: {
-			docs: {
-				description: {
-					component:
-						'A field of the editor: its label with a link to the style specification, and the control of its kind. A property not set in the style shows its default value.'
-				}
-			}
-		},
 		args: { onchange: fn() }
 	});
 

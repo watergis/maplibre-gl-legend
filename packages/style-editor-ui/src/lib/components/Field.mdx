@@ -1,0 +1,112 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as FieldStories from './Field.stories.svelte';
+
+<Meta of={FieldStories} />
+
+# Field
+
+The form row of a property: its label, with a link to the specification of the property, above its control. With `inline` the control is on the line of the label.
+
+## Where it is used
+
+`PropertyField` wraps every control of the editor in a `Field`.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'name'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>
+				Added as the class <code>{'gl-style-editor-field--{name}'}</code>, usually the property
+				name.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'label'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The label of the field.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'id'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The id of the control the label is for.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'help'}</code>
+			</td>
+			<td>
+				<code>{'{ layerType: LayerType; type?: PropertyType; property?: string }'}</code>
+			</td>
+			<td></td>
+			<td>
+				The specification linked from the label, see <code>{'HelpLink'}</code>. Without it there is
+				no link.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'inline'}</code>
+			</td>
+			<td>
+				<code>{'boolean'}</code>
+			</td>
+			<td>
+				<code>{'false'}</code>
+			</td>
+			<td>Puts the control on the line of the label, e.g. for a switch.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'children'}</code>
+			</td>
+			<td>
+				<code>{'Snippet'}</code>
+			</td>
+			<td></td>
+			<td>The control.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+- **With a number input**: `line-width` with a slider and a number box.
+- **With a color input**: `fill-color` with a translucent color.
+- **Inline**: the heatmap switch on the line of its label, linked to the heatmap layer type.
+- **Without help**: a field without the link to the specification.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

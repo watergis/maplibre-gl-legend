@@ -7,7 +7,6 @@
 	const { Story } = defineMeta({
 		title: 'Components/SegmentedButton',
 		component: SegmentedButton,
-		tags: ['autodocs'],
 		args: {
 			name: 'story-format',
 			label: 'Format',

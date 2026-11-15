@@ -5,7 +5,6 @@
 	const { Story } = defineMeta({
 		title: 'Components/HelpLink',
 		component: HelpLink,
-		tags: ['autodocs'],
 		args: { layerType: 'fill', type: 'paint', property: 'fill-color' },
 		argTypes: {
 			type: { control: 'inline-radio', options: ['paint', 'layout'] }

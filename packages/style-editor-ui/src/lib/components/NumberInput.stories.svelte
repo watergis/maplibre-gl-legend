@@ -6,7 +6,6 @@
 	const { Story } = defineMeta({
 		title: 'Components/NumberInput',
 		component: NumberInput,
-		tags: ['autodocs'],
 		args: {
 			id: 'story-number',
 			name: 'line-width',

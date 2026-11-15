@@ -7,7 +7,6 @@
 	const { Story } = defineMeta({
 		title: 'Components/IconButton',
 		component: IconButton,
-		tags: ['autodocs'],
 		args: { icon: X, name: 'close', label: 'Close', onclick: fn() },
 		argTypes: { icon: { control: false } }
 	});

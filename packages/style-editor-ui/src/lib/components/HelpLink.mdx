@@ -1,0 +1,79 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as HelpLinkStories from './HelpLink.stories.svelte';
+
+<Meta of={HelpLinkStories} />
+
+# HelpLink
+
+A help icon linking to the [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/layers/) of a property, or of a layer type when no property is given. The link opens in a new tab.
+
+## Where it is used
+
+The label of each `Field`, and the header of the dialog next to the layer type.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'layerType'}</code>
+			</td>
+			<td>
+				<code>{'LayerType'}</code>
+			</td>
+			<td></td>
+			<td>
+				The layer type, e.g. <code>{'fill'}</code>.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'type'}</code>
+			</td>
+			<td>
+				<code>{"'paint' | 'layout'"}</code>
+			</td>
+			<td></td>
+			<td>Whether the property is a paint or a layout property.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'property'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The property. Without it, the link goes to the layer type.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- The URL is made by `getHelpUrl()` in `utils/spec.ts`.
+- The accessible name and the tooltip are "Open the specification of ..." with the property or the layer type.
+
+## Stories
+
+- **Property**: the link to `fill-color`.
+- **Layer type**: the link to the `heatmap` layer type.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

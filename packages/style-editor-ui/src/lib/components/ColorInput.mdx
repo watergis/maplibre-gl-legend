@@ -1,0 +1,106 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as ColorInputStories from './ColorInput.stories.svelte';
+
+<Meta of={ColorInputStories} />
+
+# ColorInput
+
+A color input: a swatch with the hex code and the opacity of the color, which opens a popup color picker ([svelte-awesome-color-picker](https://github.com/Ennoriel/svelte-awesome-color-picker)) with hue and opacity sliders and hex / RGB text inputs.
+
+## Where it is used
+
+`ColorProperty`, for a constant color and for each output of a color expression.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'id'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>
+				The id of the swatch button; the popup is <code>{'{id}-picker'}</code>.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'name'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The name of the button.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'label'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>
+				The accessible name and tooltip, when the input has no <code>{'<label>'}</code>. The
+				accessible name also tells the hex code and the opacity.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'value'}</code>
+			</td>
+			<td>
+				<code>{'{ hex: string; alpha: number }'}</code>
+			</td>
+			<td></td>
+			<td>
+				The color: <code>{'#rrggbb'}</code> and an opacity from 0 to 1. Bindable.
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onchange'}</code>
+			</td>
+			<td>
+				<code>{'(value: { hex: string; alpha: number }) => void'}</code>
+			</td>
+			<td></td>
+			<td>Called with the new color while it is being picked.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- The popup is `position: fixed`, so the scrolling body of the dialog does not clip it. It opens below the swatch, or above it when there is no room below, and follows the swatch when the dialog scrolls, is dragged or is resized.
+- A click outside the input closes the popup. Escape closes it and gives the focus back to the swatch, without closing the dialog.
+- Only a change is reported: the picker reports its initial color too, which is ignored. Moving only the opacity slider keeps the color, even though the picker works in HSV.
+- The opacity is rounded to 0.01.
+
+## Stories
+
+- **Opaque**: an opaque blue.
+- **Translucent**: a red at 40% opacity: the swatch shows the checkerboard through the color.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

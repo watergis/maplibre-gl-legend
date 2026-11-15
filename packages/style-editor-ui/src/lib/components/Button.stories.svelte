@@ -7,7 +7,6 @@
 	const { Story } = defineMeta({
 		title: 'Components/Button',
 		component: Button,
-		tags: ['autodocs'],
 		args: { variant: 'primary', label: 'Apply', icon: Check, iconName: 'apply', onclick: fn() },
 		argTypes: {
 			variant: { control: 'inline-radio', options: ['primary', 'secondary'] },

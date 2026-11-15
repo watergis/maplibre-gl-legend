@@ -1,0 +1,88 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as SelectPropertyStories from './SelectProperty.stories.svelte';
+
+<Meta of={SelectPropertyStories} />
+
+# SelectProperty
+
+The control of a property chosen from a list: the `options` of the field, or else the values of the property in the style specification. A value which is not in the list (an expression) shows `ExpressionNote`.
+
+## Where it is used
+
+`PropertyField`, for the fields of kind `select`, e.g. `line-dasharray`, `icon-overlap` and `raster-resampling`.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'field'}</code>
+			</td>
+			<td>
+				<code>{'SelectFieldConfig'}</code>
+			</td>
+			<td></td>
+			<td>
+				The field, with its optional <code>{'options'}</code> (<code>{'{ label, value }'}</code>,
+				the value being any style value).
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'spec'}</code>
+			</td>
+			<td>
+				<code>{'PropertySpec'}</code>
+			</td>
+			<td></td>
+			<td>The specification of the property, for its values and its default value.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'value'}</code>
+			</td>
+			<td>
+				<code>{'unknown'}</code>
+			</td>
+			<td></td>
+			<td>The value of the property when the field is shown.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Behaviour
+
+- Options are compared as JSON, so array values like a dash pattern are found.
+- An unset property selects its default value.
+- A property without a default value gets a first option "Default", which removes the property.
+- The choice is written to the map at once.
+
+## Stories
+
+- **Options of the field**: the line patterns of `line-dasharray`, with `[10, 4]` selected.
+- **Values of the specification**: `raster-resampling`, unset: its default `linear` is selected.
+- **Without a default value**: `icon-overlap`, which has no default: the "Default" option is selected.
+- **Expression**: a `step` on the zoom for `line-dasharray`, left to the manual editor.
+
+## Controls
+
+The story controls are the args of the story, not the props of the component: the `layer` put on the mock map, the `field` of the editor (see `FIELDS` in `panels/fields.ts`) and the `onchange` action, called with the property and its new value whenever the control writes to the map.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />
