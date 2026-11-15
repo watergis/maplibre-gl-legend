@@ -7,7 +7,7 @@ Given a style, it works out the classes of each layer (the branches of a `match`
 This is an internal package of this repository. [`@watergis/maplibre-gl-legend`](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre-gl-legend) uses it to draw the symbols of its legend control. It is not published to npm.
 
 - API reference: <https://maplibre-gl-legend.water-gis.com/docs/modules/_watergis_maplibre2svg.html>
-- Storybook: <https://maplibre-gl-legend.water-gis.com/maplibre2svg/stories>
+- Storybook: <https://maplibre-gl-legend.water-gis.com/stories>
 
 ## Usage
 

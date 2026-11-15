@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
-		"build": "pnpm -w run build:docs && pnpm --filter @watergis/maplibre2svg build-storybook && node scripts/copy-maplibre2svg.js && vite build",
+		"build": "pnpm -w run build:docs && pnpm --filter @watergis/storybook --fail-if-no-match build-storybook && node scripts/copy-storybook.js && vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",

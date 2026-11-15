@@ -1,0 +1,3 @@
+node_modules
+# the composed Storybook, built by `pnpm build-storybook`
+/build

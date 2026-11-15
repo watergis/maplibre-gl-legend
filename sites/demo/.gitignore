@@ -9,8 +9,8 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-# Storybook of maplibre2svg, copied at build time
-/static/maplibre2svg
+# Storybook of all packages, copied at build time from sites/storybook
+/static/storybook
 
 # API reference of all packages, written by `pnpm build:docs` at the repository root
 /static/docs
