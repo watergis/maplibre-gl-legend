@@ -1,7 +1,8 @@
 /**
  * Copy the API reference and the Storybook of maplibre2svg, built by its `build:site` script,
  * into static/maplibre2svg/, so that the demo site serves them at /maplibre2svg/docs/ and
- * /maplibre2svg/storybook/.
+ * /maplibre2svg/storybook/. The pages /maplibre2svg/api-reference and /maplibre2svg/stories show
+ * them under the header of the demo.
  */
 import { cpSync, existsSync, rmSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';

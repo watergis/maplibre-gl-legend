@@ -5,6 +5,7 @@
 	"tsconfig": "tsconfig.json",
 	"out": "site/docs",
 	"readme": "README.md",
+	"customCss": "./typedoc.css",
 	"excludePrivate": true,
 	"excludeInternal": true,
 	"excludeExternals": true,
