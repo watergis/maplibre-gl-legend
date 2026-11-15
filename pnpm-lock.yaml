@@ -423,6 +423,9 @@ importers:
       '@watergis/maplibre-gl-legend':
         specifier: workspace:^
         version: link:../../packages/maplibre-gl-legend
+      '@watergis/maplibre2svg':
+        specifier: workspace:*
+        version: link:../../packages/maplibre2svg
       eslint:
         specifier: ^10.14.0
         version: 10.14.0(jiti@2.7.0)(supports-color@8.1.1)

@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
+		"build": "pnpm --filter @watergis/maplibre2svg build:site && node scripts/copy-maplibre2svg.js && vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -23,6 +23,7 @@
 		"@types/node": "^26.6.6",
 		"@watergis/mapbox-gl-legend": "workspace:^",
 		"@watergis/maplibre-gl-legend": "workspace:^",
+		"@watergis/maplibre2svg": "workspace:*",
 		"eslint": "^10.14.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.22.0",

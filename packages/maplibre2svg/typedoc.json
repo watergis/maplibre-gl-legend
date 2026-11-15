@@ -10,7 +10,7 @@
 	"excludeExternals": true,
 	"categorizeByGroup": true,
 	"navigationLinks": {
-		"Storybook": "../storybook/",
+		"Storybook": "../storybook/index.html",
 		"GitHub": "https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre2svg"
 	}
 }
