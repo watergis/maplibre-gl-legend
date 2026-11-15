@@ -2,7 +2,11 @@
 '@watergis/maplibre-gl-legend': minor
 ---
 
-feat: add a style editor to change the style of a layer from the legend
+feat: Adds a style editor to maplibre-gl-legend. With the new showStyleEditor option, each layer has a palette button which opens a dialog to change the style of the layer on the map.
+
+```ts
+map.addControl(new MaplibreLegendControl(targets, { showStyleEditor: true }), 'top-right');
+```
 
 - New `showStyleEditor` option: each layer has a palette button which opens the style editor.
 - The editor is a non-modal dialog which stays inside the map. It edits opacity, colors, widths, sizes, etc. depending on the layer type, and each output of `interpolate` / `step` / `match` expressions.
