@@ -1,14 +1,14 @@
-import { rasterColorMatrix, rasterPlaceholder } from '../assets/raster';
+import { rasterColorMatrix, rasterPlaceholder } from '../../assets/raster';
 import {
 	layerOpacity,
 	opacity,
 	uniqueId,
 	type RenderContext,
 	type RenderedSymbol
-} from '../render';
-import type { SvgDocument } from '../render/svg';
-import type { EvaluatedLayer } from '../style';
-import { LayerAdapter } from './layer-adapter';
+} from '../../render';
+import type { SvgDocument } from '../../render/svg';
+import type { EvaluatedLayer } from '../../style';
+import { LayerAdapter } from '../base/layer-adapter';
 
 /** The plain backdrop of a tile: a faint neutral, so that opacity fades towards the page */
 const BACKDROP = 'rgba(128,128,128,0.12)';

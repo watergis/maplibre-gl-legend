@@ -1,5 +1,5 @@
-import type { RenderContext, RenderedSymbol } from '../render';
-import type { EvaluatedLayer, GeometryType, PropertyGroup } from '../style';
+import type { RenderContext, RenderedSymbol } from '../../render';
+import type { EvaluatedLayer, GeometryType, PropertyGroup } from '../../style';
 
 /** A paint or layout property which a layer can be classified by, e.g. `['paint', 'fill-color']` */
 export type ClassificationAxisSpec = readonly [group: PropertyGroup, name: string];

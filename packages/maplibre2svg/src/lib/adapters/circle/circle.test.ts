@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { attrsOf, evaluatedLayer, renderContext } from '../test-utils';
-import { CircleAdapter } from './circle';
+import { attrsOf, evaluatedLayer, renderContext } from '../../test-utils';
+import { CircleAdapter } from './index';
 
 const renderCircle = (...args: Parameters<CircleAdapter['render']>) =>
 	new CircleAdapter().render(...args);

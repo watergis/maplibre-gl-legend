@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { attrsOf, evaluatedLayer, renderContext, solidImage } from '../test-utils';
-import { lineGeometry, LineAdapter } from './line';
+import { attrsOf, evaluatedLayer, renderContext, solidImage } from '../../test-utils';
+import { lineGeometry, LineAdapter } from './index';
 
 const renderLine = (...args: Parameters<LineAdapter['render']>) =>
 	new LineAdapter().render(...args);

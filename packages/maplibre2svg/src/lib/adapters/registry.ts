@@ -7,7 +7,7 @@ import { FillAdapter } from './fill';
 import { FillExtrusionAdapter } from './fill-extrusion';
 import { HeatmapAdapter } from './heatmap';
 import { HillshadeAdapter } from './hillshade';
-import type { LayerAdapter } from './layer-adapter';
+import type { LayerAdapter } from './base/layer-adapter';
 import { LineAdapter } from './line';
 import { RasterAdapter } from './raster';
 import { SymbolAdapter } from './symbol';

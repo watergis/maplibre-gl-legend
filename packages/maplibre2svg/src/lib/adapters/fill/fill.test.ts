@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { attrsOf, evaluatedLayer, renderContext, solidImage } from '../test-utils';
-import { FRAME_COLOR } from '../render/swatch';
-import { FillAdapter } from './fill';
+import { attrsOf, evaluatedLayer, renderContext, solidImage } from '../../test-utils';
+import { FRAME_COLOR } from '../../render/swatch';
+import { FillAdapter } from './index';
 
 const renderFill = (...args: Parameters<FillAdapter['render']>) =>
 	new FillAdapter().render(...args);

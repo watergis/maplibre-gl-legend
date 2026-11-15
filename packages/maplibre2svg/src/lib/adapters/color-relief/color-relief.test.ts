@@ -1,7 +1,7 @@
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
 import { describe, expect, it } from 'vitest';
-import { createLayerLegend } from '../core/legend-generator';
-import { attrsOf } from '../test-utils';
+import { createLayerLegend } from '../../core/legend-generator';
+import { attrsOf } from '../../test-utils';
 
 const relief = (color: unknown, extra: Record<string, unknown> = {}) => {
 	const layer = {

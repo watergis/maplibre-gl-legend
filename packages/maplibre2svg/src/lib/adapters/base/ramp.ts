@@ -1,4 +1,4 @@
-import type { LegendRamp } from '../core/types';
+import type { LegendRamp } from '../../core/types';
 import {
 	el,
 	layerOpacity,
@@ -7,15 +7,15 @@ import {
 	uniqueId,
 	type RenderContext,
 	type RenderedSymbol
-} from '../render';
+} from '../../render';
 import {
 	evaluateProperty,
 	propertySpec,
 	toExpression,
 	type EvaluatedLayer,
 	type GeometryType
-} from '../style';
-import { neutralSymbol } from './default';
+} from '../../style';
+import { neutralSymbol } from '../default';
 import { LayerAdapter } from './layer-adapter';
 
 /** Evenly spaced samples of a ramp, besides its own stops */

@@ -1,7 +1,7 @@
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
 import { describe, expect, it } from 'vitest';
-import { createLayerLegend } from '../core/legend-generator';
-import { evaluatedLayer } from '../test-utils';
+import { createLayerLegend } from '../../core/legend-generator';
+import { evaluatedLayer } from '../../test-utils';
 import { curveStops, sampleRamp } from './ramp';
 
 const legendOf = (layer: unknown) => {

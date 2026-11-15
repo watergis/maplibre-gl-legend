@@ -1,6 +1,6 @@
-import type { RenderContext, RenderedSymbol } from '../render';
-import type { EvaluatedLayer } from '../style';
-import { LayerAdapter } from './layer-adapter';
+import type { RenderContext, RenderedSymbol } from '../../render';
+import type { EvaluatedLayer } from '../../style';
+import { LayerAdapter } from '../base/layer-adapter';
 
 /** A grey rectangle the size of the swatch, for what has no symbol of its own */
 export function neutralSymbol(ctx: RenderContext): RenderedSymbol {

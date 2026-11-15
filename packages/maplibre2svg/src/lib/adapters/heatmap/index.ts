@@ -1,4 +1,4 @@
-import { RampAdapter, type RampInput } from './ramp';
+import { RampAdapter, type RampInput } from '../base/ramp';
 
 /**
  * `heatmap`: one ramp entry, `heatmap-color` over `heatmap-density` 0 → 1 (the default ramp

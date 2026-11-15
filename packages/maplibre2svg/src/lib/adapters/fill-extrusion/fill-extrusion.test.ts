@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { attrsOf, evaluatedLayer, renderContext, solidImage } from '../test-utils';
-import { boxHeight, FillExtrusionAdapter } from './fill-extrusion';
+import { attrsOf, evaluatedLayer, renderContext, solidImage } from '../../test-utils';
+import { boxHeight, FillExtrusionAdapter } from './index';
 
 const renderFillExtrusion = (...args: Parameters<FillExtrusionAdapter['render']>) =>
 	new FillExtrusionAdapter().render(...args);

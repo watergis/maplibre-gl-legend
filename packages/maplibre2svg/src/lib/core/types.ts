@@ -1,5 +1,5 @@
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
-import type { LayerAdapter } from '../adapters/layer-adapter';
+import type { LayerAdapter } from '../adapters/base/layer-adapter';
 import type { LegendCache } from './cache';
 
 export type { LayerSpecification, LegendCache, StyleSpecification };

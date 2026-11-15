@@ -1,7 +1,7 @@
-import { paintColor, type Paint, type Swatch } from '../render';
-import type { Attrs } from '../render/svg';
-import type { EvaluatedLayer } from '../style';
-import { AreaAdapter } from './area';
+import { paintColor, type Paint, type Swatch } from '../../render';
+import type { Attrs } from '../../render/svg';
+import type { EvaluatedLayer } from '../../style';
+import { AreaAdapter } from '../base/area';
 
 /** Width of the outline, as MapLibre draws it */
 const OUTLINE_WIDTH = 1;

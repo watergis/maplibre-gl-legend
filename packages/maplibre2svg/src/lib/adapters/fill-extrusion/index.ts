@@ -6,10 +6,10 @@ import {
 	paintNumber,
 	type RenderContext,
 	type RenderedSymbol
-} from '../render';
-import type { EvaluatedLayer } from '../style';
-import { shade } from '../util/color';
-import { LayerAdapter } from './layer-adapter';
+} from '../../render';
+import type { EvaluatedLayer } from '../../style';
+import { shade } from '../../util/color';
+import { LayerAdapter } from '../base/layer-adapter';
 
 /** Half the width and half the depth of the top face, in pixels */
 const DX = 11;

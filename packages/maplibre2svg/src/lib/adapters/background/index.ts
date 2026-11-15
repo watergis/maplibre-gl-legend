@@ -1,7 +1,7 @@
-import type { Swatch } from '../render';
-import type { Attrs } from '../render/svg';
-import type { EvaluatedLayer } from '../style';
-import { AreaAdapter } from './area';
+import type { Swatch } from '../../render';
+import type { Attrs } from '../../render/svg';
+import type { EvaluatedLayer } from '../../style';
+import { AreaAdapter } from '../base/area';
 
 /**
  * `background`: a rectangle of `background-color` (or `background-pattern`) ×

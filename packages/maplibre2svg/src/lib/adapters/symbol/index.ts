@@ -1,7 +1,7 @@
 import { fmt, type RenderContext, type RenderedSymbol } from '../../render';
 import type { EvaluatedLayer } from '../../style';
 import { neutralSymbol } from '../default';
-import { LayerAdapter } from '../layer-adapter';
+import { LayerAdapter } from '../base/layer-adapter';
 import { IconDrawer } from './icon';
 import type { SymbolPartDrawer } from './part';
 import { TextDrawer } from './text';

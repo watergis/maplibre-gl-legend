@@ -5,9 +5,9 @@ import {
 	type RenderContext,
 	type RenderedSymbol,
 	type Swatch
-} from '../render';
-import type { Attrs } from '../render/svg';
-import type { EvaluatedLayer } from '../style';
+} from '../../render';
+import type { Attrs } from '../../render/svg';
+import type { EvaluatedLayer } from '../../style';
 import { LayerAdapter } from './layer-adapter';
 
 /** The fill of an area: its attributes and the `<pattern>` they refer to, if any */

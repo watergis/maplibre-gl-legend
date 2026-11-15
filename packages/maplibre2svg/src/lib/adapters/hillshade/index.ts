@@ -2,7 +2,7 @@ import type { RenderContext, RenderedSymbol } from '../../render';
 import type { EvaluatedLayer } from '../../style';
 import { toRgba } from '../../util/color';
 import { clamp, numberOf } from '../../util/number';
-import { LayerAdapter } from '../layer-adapter';
+import { LayerAdapter } from '../base/layer-adapter';
 import { shadeTerrain, type HillshadeLight, type Premultiplied } from './shade';
 import { vectorHillshade } from './vector';
 

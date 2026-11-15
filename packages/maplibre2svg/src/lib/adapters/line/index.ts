@@ -7,12 +7,12 @@ import {
 	paintNumber,
 	type RenderContext,
 	type RenderedSymbol
-} from '../render';
-import type { EvaluatedLayer } from '../style';
-import { clamp } from '../util/number';
-import { LayerAdapter } from './layer-adapter';
-import { dashPattern, fitDashes } from './line-dash';
-import { lineGradient } from './line-gradient';
+} from '../../render';
+import type { EvaluatedLayer } from '../../style';
+import { clamp } from '../../util/number';
+import { LayerAdapter } from '../base/layer-adapter';
+import { dashPattern, fitDashes } from './dash';
+import { lineGradient } from './gradient';
 
 /** The width of the line(s), the gap between two, and the centers of the lines */
 export interface LineGeometry {

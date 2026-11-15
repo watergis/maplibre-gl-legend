@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { attrsOf, evaluatedLayer, renderContext, solidImage } from '../test-utils';
-import { FRAME_COLOR } from '../render/swatch';
-import { BackgroundAdapter } from './background';
+import { attrsOf, evaluatedLayer, renderContext, solidImage } from '../../test-utils';
+import { FRAME_COLOR } from '../../render/swatch';
+import { BackgroundAdapter } from './index';
 
 const renderBackground = (...args: Parameters<BackgroundAdapter['render']>) =>
 	new BackgroundAdapter().render(...args);

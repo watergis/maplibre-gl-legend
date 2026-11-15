@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dashPattern, fitDashes } from './line-dash';
+import { dashPattern, fitDashes } from './dash';
 
 describe('dashPattern', () => {
 	it('multiplies the lengths by the line width', () => {

@@ -4,9 +4,9 @@ import {
 	paintNumber,
 	type RenderContext,
 	type RenderedSymbol
-} from '../render';
-import type { EvaluatedLayer } from '../style';
-import { LayerAdapter } from './layer-adapter';
+} from '../../render';
+import type { EvaluatedLayer } from '../../style';
+import { LayerAdapter } from '../base/layer-adapter';
 
 /** The radius of a circle, the width of its stroke, and both together */
 export interface CircleGeometry {

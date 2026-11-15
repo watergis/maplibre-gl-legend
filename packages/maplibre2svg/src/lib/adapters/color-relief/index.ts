@@ -1,7 +1,7 @@
-import type { RenderContext, RenderedSymbol } from '../render';
-import type { EvaluatedLayer } from '../style';
-import { AreaAdapter } from './area';
-import { neutralSymbol } from './default';
+import type { RenderContext, RenderedSymbol } from '../../render';
+import type { EvaluatedLayer } from '../../style';
+import { AreaAdapter } from '../base/area';
+import { neutralSymbol } from '../default';
 
 /**
  * `color-relief`, classified by `elevation`: one area swatch per class of the color of its

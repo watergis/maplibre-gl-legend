@@ -1,4 +1,4 @@
-import { numberOf } from '../util/number';
+import { numberOf } from '../../util/number';
 
 /** `stroke-dasharray` and `stroke-dashoffset` of a line */
 export interface DashPattern {

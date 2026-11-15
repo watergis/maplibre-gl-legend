@@ -1,6 +1,6 @@
-import { evaluateProperty, type EvaluatedLayer, type GeometryType } from '../style';
-import { paintColor } from '../render/paint';
-import { el, uniqueId } from '../render/svg';
+import { evaluateProperty, type EvaluatedLayer, type GeometryType } from '../../style';
+import { paintColor } from '../../render/paint';
+import { el, uniqueId } from '../../render/svg';
 
 /** How many stops sample `line-gradient` along the line */
 const SAMPLES = 11;

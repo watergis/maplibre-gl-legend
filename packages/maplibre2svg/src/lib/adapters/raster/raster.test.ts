@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createLegendCache } from '../../core/cache';
-import { RasterAdapter } from '../../adapters/raster';
+import { RasterAdapter } from './index';
 import { evaluatedLayer, renderContext, withContext } from '../../test-utils';
-import { RasterSourceResolver } from './raster-resolver';
-import type { RasterContext } from './source';
+import { RasterSourceResolver } from '../../assets/raster/raster-resolver';
+import type { RasterContext } from '../../assets/raster/source';
 
 const renderRaster = (...args: Parameters<RasterAdapter['render']>) =>
 	new RasterAdapter().render(...args);
