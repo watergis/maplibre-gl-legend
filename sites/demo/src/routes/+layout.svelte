@@ -62,7 +62,7 @@
 							href={storiesHref}
 							aria-current={isStoriesPage ? 'page' : undefined}
 						>
-							Stories
+							Storybook
 						</a>
 						<LightSwitch />
 						<!-- eslint-disable svelte/no-navigation-without-resolve -->
