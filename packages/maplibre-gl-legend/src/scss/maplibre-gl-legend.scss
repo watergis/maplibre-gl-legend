@@ -1,8 +1,39 @@
+/*
+ * Customizable properties.
+ * Override any of these on `.maplibregl-legend-list` (or a more specific selector) to restyle the control.
+ * Icons are used as CSS masks, so only their shape matters; their color comes from the color properties.
+ */
 .maplibregl-legend-list {
-	display: none;
+	/* Lucide "eye": shown when a layer is visible */
+	--maplibregl-legend-icon-visible: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+	/* Lucide "eye-off": shown when a layer is hidden */
+	--maplibregl-legend-icon-hidden: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49'/%3E%3Cpath d='M14.084 14.158a3 3 0 0 1-4.242-4.242'/%3E%3Cpath d='M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143'/%3E%3Cpath d='m2 2 20 20'/%3E%3C/svg%3E");
+	/* Lucide "x": the close button */
+	--maplibregl-legend-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18'/%3E%3Cpath d='m6 6 12 12'/%3E%3C/svg%3E");
+	--maplibregl-legend-icon-size: 16px;
+	--maplibregl-legend-icon-color: #1c1c1c;
+	--maplibregl-legend-icon-hidden-color: #9a9a9a;
+	--maplibregl-legend-close-icon-size: 16px;
+	--maplibregl-legend-close-icon-color: #1c1c1c;
+
+	/* "Only rendered" switch */
+	--maplibregl-legend-switch-width: 28px;
+	--maplibregl-legend-switch-height: 16px;
+	--maplibregl-legend-switch-thumb-size: 12px;
+	--maplibregl-legend-switch-on-color: #3b82f6;
+	--maplibregl-legend-switch-off-color: #c4c4c4;
+	--maplibregl-legend-switch-thumb-color: #ffffff;
+
+	/* line between layers */
+	--maplibregl-legend-divider: 1px solid #e5e5e5;
+
+	--maplibregl-legend-text-color: #1c1c1c;
+	--maplibregl-legend-focus-color: #3b82f6;
 }
 
 .maplibregl-legend-list {
+	display: none;
+	position: relative;
 	margin: 0.3em;
 }
 
@@ -16,22 +47,11 @@
 	border: none;
 	cursor: pointer;
 	display: block;
-	/* padding: 8px 8px 6px; */
-	/* text-align: right; */
-	/* width: 100%; */
 	height: auto;
 }
 
 .maplibregl-legend-list button.active {
 	font-weight: bold;
-}
-
-.maplibregl-legend-list button:hover {
-	background-color: rgba(0, 0, 0, 0.05);
-}
-
-.maplibregl-legend-list button + button {
-	border-top: 1px solid #ddd;
 }
 
 .maplibregl-legend-switcher {
@@ -41,47 +61,168 @@
 	background-size: 70%;
 }
 
-table.legend-table {
-	border-collapse: collapse;
-	margin: 0 auto;
-}
-td.legend-table-td,
-th.legend-table-th {
-	border: 1px solid #ffffff;
-	margin: 10px;
-	padding: 2px;
-	text-align: left;
-}
-
-.maplibregl-legend-close-button {
+/* close button (Lucide "x") */
+.maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-close-button {
 	position: absolute;
 	right: 0;
 	top: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: calc(var(--maplibregl-legend-close-icon-size) + 8px);
+	height: calc(var(--maplibregl-legend-close-icon-size) + 8px);
+	padding: 0;
 	border: 0;
-	border-radius: 0 3px 0 0;
-	cursor: pointer;
+	border-radius: 3px;
 	background-color: transparent;
-	font-size: 13px;
-	padding-top: 5px;
-	padding-right: 5px;
+	cursor: pointer;
+}
+
+.maplibregl-legend-close-button::before {
+	content: '';
+	display: block;
+	width: var(--maplibregl-legend-close-icon-size);
+	height: var(--maplibregl-legend-close-icon-size);
+	background-color: var(--maplibregl-legend-close-icon-color);
+	-webkit-mask: var(--maplibregl-legend-icon-close) center / contain no-repeat;
+	mask: var(--maplibregl-legend-icon-close) center / contain no-repeat;
+}
+
+.maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-close-button:hover {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.maplibregl-legend-close-button:focus-visible {
+	outline: 2px solid var(--maplibregl-legend-focus-color);
+	outline-offset: -2px;
 }
 
 .maplibregl-legend-title-label {
+	display: block;
 	font-size: 14px;
 	font-weight: bold;
 	margin: 5px;
-	color: #1c1c1c;
+	padding-right: calc(var(--maplibregl-legend-close-icon-size) + 8px);
+	color: var(--maplibregl-legend-text-color);
+}
+
+/* "Only rendered" switch */
+.maplibregl-legend-onlyRendered {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	/* the border spans the full width, like the lines between layers */
+	margin: 5px 0 0;
+	padding: 0 5px 5px;
+	border-bottom: var(--maplibregl-legend-divider);
 }
 
 .maplibregl-legend-onlyRendered-checkbox {
-	margin: 5px;
-	margin-left: 0.5em;
+	-webkit-appearance: none;
+	appearance: none;
+	position: relative;
+	flex: none;
+	width: var(--maplibregl-legend-switch-width);
+	height: var(--maplibregl-legend-switch-height);
+	margin: 0;
+	border: 0;
+	border-radius: var(--maplibregl-legend-switch-height);
+	background-color: var(--maplibregl-legend-switch-off-color);
+	cursor: pointer;
+	transition: background-color 0.15s ease-in-out;
+}
+
+.maplibregl-legend-onlyRendered-checkbox::before {
+	content: '';
+	position: absolute;
+	top: calc(
+		(var(--maplibregl-legend-switch-height) - var(--maplibregl-legend-switch-thumb-size)) / 2
+	);
+	left: calc(
+		(var(--maplibregl-legend-switch-height) - var(--maplibregl-legend-switch-thumb-size)) / 2
+	);
+	width: var(--maplibregl-legend-switch-thumb-size);
+	height: var(--maplibregl-legend-switch-thumb-size);
+	border-radius: 50%;
+	background-color: var(--maplibregl-legend-switch-thumb-color);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+	transition: transform 0.15s ease-in-out;
+}
+
+.maplibregl-legend-onlyRendered-checkbox:checked {
+	background-color: var(--maplibregl-legend-switch-on-color);
+}
+
+.maplibregl-legend-onlyRendered-checkbox:checked::before {
+	transform: translateX(
+		calc(var(--maplibregl-legend-switch-width) - var(--maplibregl-legend-switch-height))
+	);
+}
+
+.maplibregl-legend-onlyRendered-checkbox:focus-visible {
+	outline: 2px solid var(--maplibregl-legend-focus-color);
+	outline-offset: 2px;
 }
 
 .maplibregl-legend-onlyRendered-label {
 	font-size: 14px;
-	margin: 5px;
-	color: #1c1c1c;
+	color: var(--maplibregl-legend-text-color);
+	cursor: pointer;
+}
+
+/* legend table */
+table.legend-table {
+	border-collapse: collapse;
+	margin: 0 auto;
+	width: 100%;
+}
+
+/* a line between layers (a layer's rows, including its class rows, share one tbody) */
+tbody.maplibregl-legend-layer + tbody.maplibregl-legend-layer {
+	border-top: var(--maplibregl-legend-divider);
+}
+
+td.legend-table-td,
+th.legend-table-th {
+	border: 0;
+	padding: 3px 2px;
+	text-align: left;
+	vertical-align: middle;
+}
+
+/* layer visibility toggle (Lucide "eye" / "eye-off") */
+.maplibregl-legend-visibility-toggle {
+	-webkit-appearance: none;
+	appearance: none;
+	display: block;
+	width: var(--maplibregl-legend-icon-size);
+	height: var(--maplibregl-legend-icon-size);
+	margin: 0 2px;
+	padding: 0;
+	border: 0;
+	background: none;
+	cursor: pointer;
+}
+
+.maplibregl-legend-visibility-toggle::before {
+	content: '';
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: var(--maplibregl-legend-icon-hidden-color);
+	-webkit-mask: var(--maplibregl-legend-icon-hidden) center / contain no-repeat;
+	mask: var(--maplibregl-legend-icon-hidden) center / contain no-repeat;
+}
+
+.maplibregl-legend-visibility-toggle:checked::before {
+	background-color: var(--maplibregl-legend-icon-color);
+	-webkit-mask-image: var(--maplibregl-legend-icon-visible);
+	mask-image: var(--maplibregl-legend-icon-visible);
+}
+
+.maplibregl-legend-visibility-toggle:focus-visible {
+	outline: 2px solid var(--maplibregl-legend-focus-color);
+	outline-offset: 2px;
 }
 
 td.legend-table-td > svg {
@@ -93,5 +234,5 @@ td.legend-table-td > svg.post-icon {
 }
 
 td.legend-table-td > label {
-	color: #1c1c1c;
+	color: var(--maplibregl-legend-text-color);
 }
