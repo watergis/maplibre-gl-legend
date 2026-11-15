@@ -14,3 +14,6 @@ export {
 	type NodeClassifiers
 } from './node-classifiers';
 export type { FeatureProperties, LabelInfo, LegendClass } from './types';
+export type { ClassifierKind, ClassifierNode } from './find-node';
+export type { ClassCandidate } from './types';
+export type { ClassifyContext } from './verify';

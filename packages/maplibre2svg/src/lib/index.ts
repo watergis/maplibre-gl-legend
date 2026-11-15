@@ -9,7 +9,7 @@
  */
 export { LegendCache, createLegendCache } from './core/cache';
 export { LegendGenerator, createLayerLegend, createLegend } from './core/legend-generator';
-export type { ResolvedOptions } from './core/options';
+export type { OptionalOptions, ResolvedOptions } from './core/options';
 export type {
 	ImageEncoder,
 	LayerLegend,
@@ -23,6 +23,7 @@ export type {
 	SwatchOptions
 } from './core/types';
 export { LegendSvgRenderer, legendToSvg, type LegendSvgOptions } from './legend-svg';
+export type { TextMeasurer } from './util/text-measure';
 
 export {
 	AdapterRegistry,
@@ -57,6 +58,7 @@ export {
 	RenderContext,
 	Swatch,
 	SvgDocument,
+	type Attrs,
 	type Paint,
 	type PatternPaint,
 	type PatternTile,
@@ -64,9 +66,50 @@ export {
 	type RenderedSymbol,
 	type TextContext
 } from './render';
-export { LayerClassifier, type LegendClass, type LabelInfo } from './classify';
-export { LabelGenerator } from './label';
-export { LayerEvaluator, type EvaluatedLayer, type GeometryType } from './style';
-export { GlyphRenderer } from './assets/glyphs';
-export { ImageStore } from './assets/images';
-export { RasterSourceResolver } from './assets/raster';
+export {
+	LayerClassifier,
+	CaseClassifier,
+	InterpolateClassifier,
+	MatchClassifier,
+	StepClassifier,
+	defaultNodeClassifiers,
+	type ClassCandidate,
+	type ClassifierKind,
+	type ClassifierNode,
+	type ClassifyContext,
+	type ClassifyOptions,
+	type FeatureProperties,
+	type LabelInfo,
+	type LayerTypeRulebook,
+	type LayerTypeRules,
+	type LegendClass,
+	type NodeClassifier,
+	type NodeClassifiers
+} from './classify';
+export { LabelGenerator, type LabelOptions, type Labelled } from './label';
+export {
+	LayerEvaluator,
+	type EvaluatedLayer,
+	type EvaluateLayerOptions,
+	type EvaluationInput,
+	type GeometryType,
+	type GeometryTypeOf,
+	type PropertyGroup,
+	type UnresolvedTokens
+} from './style';
+export {
+	GlyphRenderer,
+	type GlyphFetcher,
+	type GlyphLabel,
+	type GlyphRendererInit,
+	type TextImage,
+	type TextImageRequest
+} from './assets/glyphs';
+export type { Rgba, SdfStyle } from './assets/sdf';
+export { ImageStore, type FoundImage, type ImageContext, type ImageSize } from './assets/images';
+export {
+	RasterSourceResolver,
+	type ImageLoader,
+	type RasterContext,
+	type RasterUrlResolver
+} from './assets/raster';

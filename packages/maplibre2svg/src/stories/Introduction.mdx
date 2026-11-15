@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# maplibre2svg
+
+maplibre2svg draws legend symbols as SVG from the layers of a MapLibre style. It is the package [`@watergis/maplibre-gl-legend`](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre-gl-legend) uses to draw the symbols of its legend control.
+
+These stories show the legend of one or a few layers per page, next to the layer definition that produced it, so you can compare the style JSON with the symbols drawn from it.
+
+## How the stories are organised
+
+**Layers** has a group per layer type: `fill`, `line`, `circle`, `fill-extrusion`, `background`, `symbol`, `symbol text`, `raster`, `hillshade`, `heatmap` and `color-relief`.
+
+The vector types (`fill`, `line`, `circle`, `fill-extrusion`, `symbol`) share a set of stories with the same names, so the same kind of expression can be compared across types:
+
+- `Categorical`: a `match` on a field. One entry per value, plus the fallback.
+- `CategoricalCase`: a `case` with conditions on a field.
+- `Graduated`: a `step`. One entry per interval.
+- `Linear`: an `interpolate` on a field. One entry per stop.
+- `LinearSize`: an `interpolate` on a size property, such as `circle-radius` or `line-width`.
+- `LinearExponential`: an `interpolate` with an `exponential` curve.
+- `ZoomAndData`: an `interpolate` on the zoom whose stops depend on a field.
+- `CustomLabels`: `Categorical` with labels from `metadata.legend`.
+
+Other stories in each group cover what is specific to that type, for example dashes, caps and gradients for `line`, SDF icons and missing images for `symbol`, the fonts and halos of labels for `symbol text`, and tile sources and color adjustments for `raster`.
+
+**Example Maplibre Style** draws the whole legend of two real styles, as one combined SVG that can be downloaded.
+
+## Controls
+
+Every story has these controls:
+
+- `zoom`: the zoom level the expressions are evaluated at. Change it to see the classes of zoom-dependent expressions change.
+- `defaultLabel`: the label of the fallback class of a `match` or a `case`.
+- `showDefault`: used by `CustomLabels` to show or hide the fallback class.
+
+Some stories load sprites, glyphs or tiles from public servers. Without network access those parts fall back to placeholders or CSS fonts.
+
+## Links
+
+- [API reference](../docs/) (TypeDoc)
+- [README](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre2svg#readme)
+- [Source on GitHub](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre2svg)

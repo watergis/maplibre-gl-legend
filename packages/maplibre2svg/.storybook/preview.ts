@@ -8,7 +8,10 @@ const BACKGROUNDS = {
 const preview: Preview = {
 	parameters: {
 		backgrounds: { options: BACKGROUNDS },
-		controls: { expanded: true }
+		controls: { expanded: true },
+		options: {
+			storySort: { order: ['Introduction', 'Layers', 'Example Maplibre Style'] }
+		}
 	},
 	initialGlobals: {
 		backgrounds: { value: 'light' }

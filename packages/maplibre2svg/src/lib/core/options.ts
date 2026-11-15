@@ -9,7 +9,8 @@ import type { ImageEncoder, LegendOptions, SwatchOptions } from './types';
 export const DEFAULT_SWATCH: SwatchOptions = { width: 30, height: 20, maxSize: 40, frame: true };
 export const DEFAULT_LABEL = 'Other';
 
-type Optional =
+/** The options which stay optional after the defaults are filled in */
+export type OptionalOptions =
 	| 'center'
 	| 'getImage'
 	| 'listImages'
@@ -20,8 +21,8 @@ type Optional =
 	| 'adapters';
 
 /** Legend options with the defaults filled in */
-export type ResolvedOptions = Omit<Required<LegendOptions>, Optional> &
-	Pick<LegendOptions, Optional> & {
+export type ResolvedOptions = Omit<Required<LegendOptions>, OptionalOptions> &
+	Pick<LegendOptions, OptionalOptions> & {
 		swatch: SwatchOptions;
 		cache: LegendCache;
 		imageEncoder: ImageEncoder;

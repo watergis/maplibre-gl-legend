@@ -17,6 +17,6 @@ export default [
 		}
 	},
 	{
-		ignores: ['build/', 'dist/', 'storybook-static/']
+		ignores: ['build/', 'dist/', 'storybook-static/', 'site/']
 	}
 ];

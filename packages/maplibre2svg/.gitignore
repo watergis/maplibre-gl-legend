@@ -105,3 +105,6 @@ dist
 
 # Storybook
 storybook-static
+
+# Built API reference and Storybook
+site
