@@ -106,7 +106,7 @@ Specify your layers which you want to add the legend by the control.
 - groupBySourceLayer
   - true: layers not in `groups` which share the same source and `source-layer` are grouped automatically, titled by the source-layer name. They are grouped only while 2 or more of them are listed (e.g. with `onlyRendered`, a layer not rendered at the current zoom is not counted).
   - false: layers are not grouped automatically.
-  - default value is `true`.
+  - default value is `false`.
 - collapseGroups
   - true: groups are collapsed as default.
   - false: groups are expanded as default.

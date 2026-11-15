@@ -80,7 +80,7 @@ export const MAPBOX_DEFAULTS: MapboxDemoOptions = {
 export const MAPLIBRE_DEFAULTS: MaplibreDemoOptions = {
 	...MAPBOX_DEFAULTS,
 	useGroups: true,
-	groupBySourceLayer: true,
+	groupBySourceLayer: false,
 	collapseGroups: false
 };
 

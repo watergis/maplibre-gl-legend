@@ -150,7 +150,7 @@ map.on('load', () => {
 					},
 					{
 						name: 'groupBySourceLayer',
-						default: 'true',
+						default: 'false',
 						description:
 							'true: layers not in groups which share the same source and source-layer are grouped automatically by the source-layer name.'
 					},

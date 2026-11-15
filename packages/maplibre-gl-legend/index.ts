@@ -84,5 +84,8 @@ map.on('load', function () {
 		onlyRendered: false,
 		reverseOrder: true
 	};
-	map.addControl(new MaplibreLegendControl({}, options), 'bottom-left');
+	map.addControl(
+		new MaplibreLegendControl({}, { ...options, groupBySourceLayer: true }),
+		'bottom-left'
+	);
 });

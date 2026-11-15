@@ -13,7 +13,7 @@ export interface LegendOptions {
 	 * A layer belongs to the first group listing it.
 	 */
 	groups?: { [title: string]: string[] };
-	/** Layers not in `groups` which share the same source and source-layer are grouped by the source-layer name. Default is true. */
+	/** Layers not in `groups` which share the same source and source-layer are grouped by the source-layer name. Default is false. */
 	groupBySourceLayer?: boolean;
 	/** true: groups are collapsed as default. Default is false. */
 	collapseGroups?: boolean;
@@ -41,7 +41,7 @@ type LegendItem =
  * @param {string} options.title the text shown above the legend. Default is 'Legend'.
  * @param {string} options.onlyRenderedLabel the text of the "Only rendered" checkbox label. Default is 'Only rendered'.
  * @param {Object} options.groups groups of layers shown and switched on/off together: group title and the layer IDs in it.
- * @param {boolean} options.groupBySourceLayer true: layers sharing the same source-layer are grouped. Default is true.
+ * @param {boolean} options.groupBySourceLayer true: layers sharing the same source-layer are grouped. Default is false.
  * @param {boolean} options.collapseGroups true: groups are collapsed as default. Default is false.
  */
 
@@ -63,7 +63,7 @@ export class MaplibreLegendControl implements IControl {
 		title: undefined,
 		onlyRenderedLabel: undefined,
 		groups: undefined,
-		groupBySourceLayer: true,
+		groupBySourceLayer: false,
 		collapseGroups: false
 	};
 	// keeps the glyphs and tiles loaded for the legend between redraws
@@ -407,7 +407,7 @@ export class MaplibreLegendControl implements IControl {
 			}
 		}
 
-		if (this.options.groupBySourceLayer !== false) {
+		if (this.options.groupBySourceLayer) {
 			const sourceLayerGroups: Map<string, LayerSpecification[]> = new Map();
 			for (const layer of layers) {
 				if (groupKeys.has(layer.id)) continue;
