@@ -114,22 +114,169 @@ Other layer types get a neutral grey rectangle.
 
 `createLegend` goes through four steps for each layer. Each step is a class, and the source folders follow them:
 
-```
-style layer
-  │
-  ├─ classify/  LayerClassifier    finds the property that classifies the layer and splits it into
-  │                                classes, each with a representative feature
-  ├─ style/     LayerEvaluator     evaluates every paint and layout property for that feature
-  ├─ label/     LabelGenerator     labels the classes and applies metadata.legend
-  └─ adapters/  LayerAdapter       draws the symbol of each class, one adapter per layer type
-                                   │
-                                   └─ render/  RenderContext, Swatch   what adapters draw with
-                                      assets/  ImageStore, GlyphRenderer, RasterSourceResolver
-```
+| Folder      | Class           | Step                                                                                              |
+| ----------- | --------------- | ------------------------------------------------------------------------------------------------- |
+| `classify/` | LayerClassifier | Finds the property that classifies the layer and splits it into classes, each with a representative feature. |
+| `style/`    | LayerEvaluator  | Evaluates every paint and layout property for that feature.                                       |
+| `label/`    | LabelGenerator  | Labels the classes and applies `metadata.legend`.                                                 |
+| `adapters/` | LayerAdapter    | Draws the symbol of each class, one adapter per layer type, with `render/` and `assets/`.         |
 
 `core/LegendGenerator` runs the steps and holds the options and the cache. `legend-svg/LegendSvgRenderer` lays legends out as one SVG.
 
+### Modules
+
+How a style becomes legends, and which module each step is in. Solid arrows are calls, dotted arrows are what a module reads from another.
+
+```mermaid
+flowchart TD
+	inputNode[/"style + LegendOptions"/] --> coreNode["<b>core/</b><br>LegendGenerator"]
+	coreNode -- "1 classify" --> classifyNode["<b>classify/</b><br>LayerClassifier"]
+	classifyNode -- "evaluate per class" --> styleNode["<b>style/</b><br>LayerEvaluator"]
+	coreNode -- "2 label" --> labelNode["<b>label/</b><br>LabelGenerator"]
+	coreNode -- "3 draw" --> adaptersNode["<b>adapters/</b><br>AdapterRegistry, LayerAdapter"]
+	adaptersNode -- "draw with" --> renderNode["<b>render/</b><br>RenderContext, Swatch"]
+	renderNode -- "load" --> assetsNode["<b>assets/</b><br>ImageStore, GlyphRenderer,<br>RasterSourceResolver"]
+	assetsNode -. "keep loaded data in" .-> cacheNode["<b>core/</b><br>LegendCache"]
+	classifyNode -. "classificationAxes,<br>geometryType" .-> adaptersNode
+	coreNode -- "4 widen symbols" --> outputNode[/"LayerLegend[]"/]
+	outputNode --> legendSvgNode["<b>legend-svg/</b><br>LegendSvgRenderer"] --> svgNode[/"one standalone SVG"/]
+```
+
+### Classes
+
+The main classes and what each one holds. `*--` is a class that creates and owns another, `o--` one that holds another given to it, and `-->` one that uses another. The layer adapters are in the diagram under the next paragraph.
+
+```mermaid
+classDiagram
+	direction TB
+	class LegendGenerator {
+		core/
+		+options
+		+adapters
+		+createLegend(style)
+		+createLayerLegend(layer, style)
+		+createRenderContext(style)
+	}
+	class LegendCache {
+		core/
+	}
+	class LegendSvgRenderer {
+		legend-svg/
+		+render(legends)
+	}
+	class LayerClassifier {
+		classify/
+		+classify(layer, options)
+	}
+	class NodeClassifier {
+		<<interface>>
+		classify/
+		+kind
+		+classify(node, ctx)
+	}
+	class LayerEvaluator {
+		style/
+		+evaluate(layer, input)
+	}
+	class LabelGenerator {
+		label/
+		+label(layer, classes)
+		+layerLabel(layer)
+	}
+	class AdapterRegistry {
+		adapters/
+		+register(adapter)
+		+get(type)
+		+geometryTypeOf(type)
+	}
+	class LayerAdapter {
+		<<abstract>>
+		adapters/
+		+render(layer, ctx)
+	}
+	class RenderContext {
+		render/
+		+createSwatch(width, height)
+		+withSiblings(layers)
+	}
+	class Swatch {
+		render/
+		+define(elements)
+		+add(nodes)
+		+addFrame()
+		+build()
+	}
+	class ImageStore {
+		assets/
+	}
+	class GlyphRenderer {
+		assets/
+	}
+	class RasterSourceResolver {
+		assets/
+	}
+
+	LegendGenerator *-- AdapterRegistry
+	LegendGenerator *-- LayerClassifier
+	LegendGenerator *-- LabelGenerator
+	LegendGenerator --> RenderContext : creates one per style
+	LegendSvgRenderer --> LegendGenerator : lays out its LayerLegend[]
+
+	LayerClassifier o-- AdapterRegistry : as LayerTypeRulebook
+	LayerClassifier o-- LayerEvaluator
+	LayerClassifier o-- NodeClassifier
+	note for NodeClassifier "MatchClassifier, CaseClassifier,<br>StepClassifier, InterpolateClassifier"
+	LayerEvaluator --> AdapterRegistry : geometryTypeOf
+
+	AdapterRegistry o-- LayerAdapter
+	LayerAdapter --> RenderContext : render(layer, ctx)
+	RenderContext --> Swatch : createSwatch()
+	RenderContext o-- ImageStore
+	RenderContext o-- GlyphRenderer
+	RenderContext o-- RasterSourceResolver
+	ImageStore --> LegendCache
+	GlyphRenderer --> LegendCache
+	RasterSourceResolver --> LegendCache
+```
+
 Everything the legend knows about a layer type is in its adapter: the geometry type of its features, the properties its classes can come from (`classificationAxes`), and how a symbol is drawn (`render`). Each layer type has a folder under `adapters/` (`adapters/fill/`, `adapters/line/`, ...) with its adapter, its helpers and its tests. The shared base classes are in `adapters/base/`: `fill`, `background` and `color-relief` extend `AreaAdapter`, and `heatmap` extends `RampAdapter`. `AdapterRegistry` maps layer types to adapters.
+
+```mermaid
+classDiagram
+	direction LR
+	class LayerAdapter {
+		<<abstract>>
+		+type
+		+geometryType
+		+classificationAxes
+		+render(layer, ctx)
+	}
+	class AreaAdapter {
+		<<abstract>>
+	}
+	class RampAdapter {
+		<<abstract>>
+	}
+	LayerAdapter <|-- AreaAdapter
+	LayerAdapter <|-- RampAdapter
+	LayerAdapter <|-- LineAdapter
+	LayerAdapter <|-- CircleAdapter
+	LayerAdapter <|-- FillExtrusionAdapter
+	LayerAdapter <|-- SymbolAdapter
+	LayerAdapter <|-- RasterAdapter
+	LayerAdapter <|-- HillshadeAdapter
+	LayerAdapter <|-- DefaultAdapter
+	AreaAdapter <|-- FillAdapter
+	AreaAdapter <|-- BackgroundAdapter
+	AreaAdapter <|-- ColorReliefAdapter
+	RampAdapter <|-- HeatmapAdapter
+	SymbolAdapter o-- SymbolPartDrawer : parts
+	SymbolPartDrawer <|.. IconDrawer
+	SymbolPartDrawer <|.. TextDrawer
+	class SymbolPartDrawer {
+		<<interface>>
+	}
+```
 
 ## Adding or replacing an adapter
 

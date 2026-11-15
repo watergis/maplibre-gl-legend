@@ -6,6 +6,8 @@
 	"out": "site/docs",
 	"readme": "README.md",
 	"customCss": "./typedoc.css",
+	"customJs": "./typedoc.js",
+	"ignoredHighlightLanguages": ["mermaid"],
 	"excludePrivate": true,
 	"excludeInternal": true,
 	"excludeExternals": true,

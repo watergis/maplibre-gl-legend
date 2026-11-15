@@ -5,3 +5,13 @@
 .tsd-page-title:has(+ .tsd-panel.tsd-typography > h1:first-child) {
 	display: none;
 }
+
+/* the Mermaid diagrams of the README, drawn by typedoc.js */
+.mermaid-diagram {
+	margin: 1em 0;
+	overflow-x: auto;
+}
+.mermaid-diagram svg {
+	max-width: 100%;
+	height: auto;
+}
