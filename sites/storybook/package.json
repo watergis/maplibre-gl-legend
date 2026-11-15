@@ -1,5 +1,5 @@
 {
-	"name": "storybook",
+	"name": "@watergis/storybook",
 	"description": "The Storybook of all packages: maplibre2svg and style-editor-ui composed into one site, shown on the demo site.",
 	"version": "0.0.1",
 	"private": true,

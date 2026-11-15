@@ -14,7 +14,7 @@ const from = resolve(here, '../../storybook/build');
 const to = resolve(here, '../static/storybook');
 
 if (!existsSync(from)) {
-	console.error(`${from} is missing: run "pnpm build-storybook" in sites/storybook`);
+	console.error(`${from} is missing: run "pnpm --filter @watergis/storybook build-storybook"`);
 	process.exit(1);
 }
 rmSync(to, { recursive: true, force: true });

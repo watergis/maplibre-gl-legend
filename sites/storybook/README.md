@@ -15,13 +15,13 @@ pnpm --filter @watergis/style-editor-ui storybook
 ```
 
 ```bash
-pnpm --filter ./sites/storybook storybook
+pnpm --filter @watergis/storybook storybook
 ```
 
 ## Build
 
 ```bash
-pnpm --filter ./sites/storybook build-storybook
+pnpm --filter @watergis/storybook build-storybook
 ```
 
 builds the Storybooks of the packages and this one, and copies the packages into `build/maplibre2svg` and `build/style-editor-ui`, where `build/index.html` refers to them. The demo site copies `build/` into `static/storybook/` when it is built (`sites/demo/scripts/copy-storybook.js`).
