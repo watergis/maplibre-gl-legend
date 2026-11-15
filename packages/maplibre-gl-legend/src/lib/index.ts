@@ -88,6 +88,10 @@ export class MaplibreLegendControl implements IControl {
 		checklayer.setAttribute('type', 'checkbox');
 		checklayer.setAttribute('name', layer.id);
 		checklayer.setAttribute('value', layer.id);
+		checklayer.classList.add('maplibregl-legend-visibility-toggle');
+		const layerTitle = this.targets?.[layer.id] ?? layer.id;
+		checklayer.setAttribute('aria-label', `Toggle visibility of ${layerTitle}`);
+		checklayer.title = 'Toggle visibility';
 		const visibility = this.map?.getLayoutProperty(layer.id, 'visibility');
 		if (!visibility) {
 			checklayer.checked = true;
@@ -118,15 +122,19 @@ export class MaplibreLegendControl implements IControl {
 	}
 
 	/**
-	 * Create and return a layer's legend row
+	 * Create and return a layer's legend rows
 	 * @param layer mapboxgl.Layer object
-	 * @returns HTMLElement | undefined return TR Element
+	 * @returns HTMLElement | undefined return TBODY Element holding the layer's rows
 	 */
 	private getLayerLegend(layer: LayerSpecification): HTMLElement | undefined {
 		const map = this.map;
 		if (!map) return;
 
+		// all rows of a layer (the layer row and its class row) share a tbody, so they are separated from other layers as a group
+		const tbody = document.createElement('TBODY');
+		tbody.className = 'maplibregl-legend-layer';
 		const tr = document.createElement('TR');
+		tbody.appendChild(tr);
 
 		const td0 = this.createLayerCheckbox(layer);
 		if (td0) tr.appendChild(td0);
@@ -196,7 +204,7 @@ export class MaplibreLegendControl implements IControl {
 		})
 			.then((legend) => {
 				if (legend.entries.length === 0) {
-					tr.remove();
+					tbody.remove();
 				} else if (legend.entries.length === 1) {
 					td1.appendChild(legend.entries[0].svg);
 				} else {
@@ -215,10 +223,9 @@ export class MaplibreLegendControl implements IControl {
 			})
 			.catch(() => appendFallbackIcon());
 
-		// tr.appendChild(td0);
 		tr.appendChild(td1);
 		tr.appendChild(td2);
-		return tr;
+		return tbody;
 	}
 
 	/**
@@ -278,9 +285,9 @@ export class MaplibreLegendControl implements IControl {
 						// only show rendered layer
 						if (!visibleLayers[l.id]) return;
 					}
-					const tr = this.getLayerLegend(l);
-					if (!tr) return;
-					this.legendTable.appendChild(tr);
+					const tbody = this.getLayerLegend(l);
+					if (!tbody) return;
+					this.legendTable.appendChild(tbody);
 				} else {
 					return;
 				}
@@ -306,8 +313,11 @@ export class MaplibreLegendControl implements IControl {
 		this.controlContainer.appendChild(this.legendButton);
 		this.controlContainer.appendChild(this.legendContainer);
 
+		// the icon is drawn by CSS (.maplibregl-legend-close-button::before)
 		this.closeButton = document.createElement('button');
-		this.closeButton.textContent = 'x';
+		this.closeButton.type = 'button';
+		this.closeButton.setAttribute('aria-label', 'Close legend');
+		this.closeButton.title = 'Close';
 		this.closeButton.classList.add('maplibregl-legend-close-button');
 		this.closeButton.addEventListener('click', () => {
 			this.legendButton.style.display = 'block';
@@ -319,22 +329,25 @@ export class MaplibreLegendControl implements IControl {
 		legendLabel.classList.add('maplibregl-legend-title-label');
 		legendLabel.textContent = this.options.title || 'Legend';
 		this.legendContainer.appendChild(legendLabel);
-		this.legendContainer.appendChild(document.createElement('br'));
 
+		// "Only rendered" switch: a checkbox styled as a switch by CSS
+		const onlyRenderedContainer = document.createElement('div');
+		onlyRenderedContainer.classList.add('maplibregl-legend-onlyRendered');
 		const checkOnlyRendered = document.createElement('input');
 		checkOnlyRendered.setAttribute('type', 'checkbox');
+		checkOnlyRendered.setAttribute('role', 'switch');
 		const checkboxOnlyRenderedId = `maplibregl-legend-onlyrendered-checkbox-${Math.random() * 100}`;
 		checkOnlyRendered.setAttribute('id', checkboxOnlyRenderedId);
 		checkOnlyRendered.classList.add('maplibregl-legend-onlyRendered-checkbox');
 		checkOnlyRendered.checked = this.onlyRendered;
 		checkOnlyRendered.addEventListener('click', this.handleClickOnlyRendered.bind(this));
-		this.legendContainer.appendChild(checkOnlyRendered);
+		onlyRenderedContainer.appendChild(checkOnlyRendered);
 		const onlyRenderedLabel = document.createElement('label');
 		onlyRenderedLabel.classList.add('maplibregl-legend-onlyRendered-label');
 		onlyRenderedLabel.textContent = this.options.onlyRenderedLabel || 'Only rendered';
 		onlyRenderedLabel.htmlFor = checkboxOnlyRenderedId;
-		this.legendContainer.appendChild(onlyRenderedLabel);
-		this.legendContainer.appendChild(document.createElement('br'));
+		onlyRenderedContainer.appendChild(onlyRenderedLabel);
+		this.legendContainer.appendChild(onlyRenderedContainer);
 
 		this.map.on('moveend', () => {
 			this.updateLegendControl();

@@ -91,6 +91,40 @@ Specify your layers which you want to add the legend by the control.
   - the label text of the "Only rendered" checkbox. Use it to translate the label into other languages.
   - default: "Only rendered"
 
+### Customizing styles
+
+The icons (layer visibility eye / eye-off, close button) and the "Only rendered" switch are drawn entirely by CSS, using [Lucide](https://lucide.dev) icons by default. Override the CSS custom properties on `.maplibregl-legend-list` to change them. Icons are applied as CSS masks, so only their shape is used; set their color with the color properties.
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `--maplibregl-legend-icon-visible` | Lucide `eye` | icon of a visible layer |
+| `--maplibregl-legend-icon-hidden` | Lucide `eye-off` | icon of a hidden layer |
+| `--maplibregl-legend-icon-close` | Lucide `x` | icon of the close button |
+| `--maplibregl-legend-icon-size` | `16px` | size of the visibility icons |
+| `--maplibregl-legend-icon-color` | `#1c1c1c` | color of the visible icon |
+| `--maplibregl-legend-icon-hidden-color` | `#9a9a9a` | color of the hidden icon |
+| `--maplibregl-legend-close-icon-size` | `16px` | size of the close icon |
+| `--maplibregl-legend-close-icon-color` | `#1c1c1c` | color of the close icon |
+| `--maplibregl-legend-switch-width` | `28px` | width of the switch |
+| `--maplibregl-legend-switch-height` | `16px` | height of the switch |
+| `--maplibregl-legend-switch-thumb-size` | `12px` | size of the switch knob |
+| `--maplibregl-legend-switch-on-color` | `#3b82f6` | switch color when on |
+| `--maplibregl-legend-switch-off-color` | `#c4c4c4` | switch color when off |
+| `--maplibregl-legend-switch-thumb-color` | `#ffffff` | color of the switch knob |
+| `--maplibregl-legend-divider` | `1px solid #e5e5e5` | line between layers |
+| `--maplibregl-legend-text-color` | `#1c1c1c` | text color |
+| `--maplibregl-legend-focus-color` | `#3b82f6` | keyboard focus outline color |
+
+```css
+.maplibregl-legend-list {
+	--maplibregl-legend-icon-color: #0f766e;
+	--maplibregl-legend-switch-on-color: #0f766e;
+	--maplibregl-legend-divider: 1px dashed #ccc;
+	/* any SVG works as an icon */
+	--maplibregl-legend-icon-close: url('./my-close-icon.svg');
+}
+```
+
 ### Use CDN
 
 maplibre-gl v6 is distributed as ES modules only, so load both maplibre-gl and this plugin with `<script type="module">`.
