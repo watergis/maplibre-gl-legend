@@ -5,11 +5,14 @@
 	"entryPoints": [
 		"packages/maplibre-gl-legend",
 		"packages/maplibre2svg",
+		"packages/style-editor-ui",
 		"packages/mapbox-gl-legend"
 	],
 	"sortEntryPoints": false,
 	"packageOptions": {
-		"entryPoints": ["src/lib/index.ts"],
+		"entryPoints": [
+			"src/lib/index.ts"
+		],
 		"tsconfig": "tsconfig.json",
 		"excludePrivate": true,
 		"excludeInternal": true,
@@ -20,7 +23,9 @@
 	"out": "sites/demo/static/docs",
 	"customCss": "./typedoc/typedoc.css",
 	"customJs": "./typedoc/typedoc.js",
-	"ignoredHighlightLanguages": ["mermaid"],
+	"ignoredHighlightLanguages": [
+		"mermaid"
+	],
 	"navigationLinks": {
 		"Storybook": "/maplibre2svg/stories"
 	}

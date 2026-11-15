@@ -1,0 +1,143 @@
+/*
+ * Theme of the style editor: the `--gl-style-editor-*` custom properties and the base rules every
+ * root of the UI shares. The components keep the rest of their styles in their own `<style>`.
+ *
+ * The roots are the dialog, and `gl-style-editor-theme`, which applies the theme to the components
+ * used on their own (e.g. Storybook).
+ *
+ * Colors come in two layers:
+ *   - the palette: the Tailwind CSS colors in use (`--gl-style-editor-slate-500`, ...), slate as
+ *     the base and indigo as the primary color. Only the roles below refer to them.
+ *   - the roles: named as in shadcn/ui (`background`, `foreground`, `primary`, `muted`, `ring`,
+ *     ...). The components use only these, so the roles are what to change for another look.
+ *
+ * Light or dark: the roles are `light-dark()` pairs, so they follow the `color-scheme` the page
+ * sets (e.g. `:root { color-scheme: dark; }`), which the dialog inherits. A page without
+ * `color-scheme` is light; `:root { color-scheme: light dark; }` follows the OS setting.
+ *
+ * Changing the theme:
+ *   .gl-style-editor-dialog {
+ *     --gl-style-editor-primary: #0f766e;
+ *     --gl-style-editor-radius: 4px;
+ *     --gl-style-editor-font: 'Inter', sans-serif;
+ *   }
+ */
+.gl-style-editor-dialog,
+.gl-style-editor-theme {
+	/* palette: Tailwind CSS colors (https://tailwindcss.com/docs/colors) */
+	--gl-style-editor-white: #ffffff;
+	--gl-style-editor-slate-50: oklch(98.4% 0.003 247.858);
+	--gl-style-editor-slate-100: oklch(96.8% 0.007 247.896);
+	--gl-style-editor-slate-200: oklch(92.9% 0.013 255.508);
+	--gl-style-editor-slate-400: oklch(70.4% 0.04 256.788);
+	--gl-style-editor-slate-500: oklch(55.4% 0.046 257.417);
+	--gl-style-editor-slate-700: oklch(37.2% 0.044 257.287);
+	--gl-style-editor-slate-800: oklch(27.9% 0.041 260.031);
+	--gl-style-editor-slate-900: oklch(20.8% 0.042 265.755);
+	--gl-style-editor-slate-950: oklch(12.9% 0.042 264.695);
+	--gl-style-editor-indigo-400: oklch(67.3% 0.182 276.935);
+	--gl-style-editor-indigo-500: oklch(58.5% 0.233 277.117);
+	--gl-style-editor-indigo-600: oklch(51.1% 0.262 276.966);
+	--gl-style-editor-red-400: oklch(70.4% 0.191 22.216);
+	--gl-style-editor-red-600: oklch(57.7% 0.245 27.325);
+
+	/* roles (shadcn/ui names) */
+	--gl-style-editor-background: light-dark(
+		var(--gl-style-editor-white),
+		var(--gl-style-editor-slate-900)
+	);
+	--gl-style-editor-foreground: light-dark(
+		var(--gl-style-editor-slate-900),
+		var(--gl-style-editor-slate-100)
+	);
+	--gl-style-editor-primary: light-dark(
+		var(--gl-style-editor-indigo-600),
+		var(--gl-style-editor-indigo-500)
+	);
+	--gl-style-editor-primary-foreground: var(--gl-style-editor-white);
+	--gl-style-editor-secondary: light-dark(
+		var(--gl-style-editor-slate-100),
+		var(--gl-style-editor-slate-800)
+	);
+	--gl-style-editor-secondary-foreground: light-dark(
+		var(--gl-style-editor-slate-900),
+		var(--gl-style-editor-slate-100)
+	);
+	--gl-style-editor-muted: light-dark(
+		var(--gl-style-editor-slate-50),
+		var(--gl-style-editor-slate-800)
+	);
+	--gl-style-editor-muted-foreground: light-dark(
+		var(--gl-style-editor-slate-500),
+		var(--gl-style-editor-slate-400)
+	);
+	--gl-style-editor-accent: light-dark(
+		var(--gl-style-editor-slate-100),
+		var(--gl-style-editor-slate-800)
+	);
+	--gl-style-editor-accent-foreground: light-dark(
+		var(--gl-style-editor-slate-900),
+		var(--gl-style-editor-slate-100)
+	);
+	--gl-style-editor-destructive: light-dark(
+		var(--gl-style-editor-red-600),
+		var(--gl-style-editor-red-400)
+	);
+	--gl-style-editor-border: light-dark(
+		var(--gl-style-editor-slate-200),
+		var(--gl-style-editor-slate-700)
+	);
+	--gl-style-editor-input: light-dark(
+		var(--gl-style-editor-slate-200),
+		var(--gl-style-editor-slate-700)
+	);
+	--gl-style-editor-ring: light-dark(
+		var(--gl-style-editor-indigo-500),
+		var(--gl-style-editor-indigo-400)
+	);
+	/* roles of this UI which shadcn/ui does not have */
+	--gl-style-editor-input-background: light-dark(
+		var(--gl-style-editor-white),
+		var(--gl-style-editor-slate-950)
+	);
+	--gl-style-editor-shadow-color: light-dark(
+		var(--gl-style-editor-slate-900),
+		var(--gl-style-editor-slate-950)
+	);
+	--gl-style-editor-shadow: 0 12px 40px
+		color-mix(in oklch, var(--gl-style-editor-shadow-color) 24%, transparent);
+
+	--gl-style-editor-font:
+		system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+	--gl-style-editor-mono-font:
+		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+	--gl-style-editor-font-size: 13px;
+	--gl-style-editor-radius: 10px;
+	--gl-style-editor-radius-sm: 6px;
+	--gl-style-editor-icon-size: 16px;
+	/* layout */
+	--gl-style-editor-width: 340px;
+	--gl-style-editor-max-height: calc(100dvh - 32px);
+	--gl-style-editor-offset: 16px;
+	--gl-style-editor-gap: 14px;
+	--gl-style-editor-z-index: 1000;
+}
+
+/* the components used on their own follow the OS setting */
+.gl-style-editor-theme {
+	color-scheme: light dark;
+}
+
+.gl-style-editor-dialog *,
+.gl-style-editor-dialog *::before,
+.gl-style-editor-dialog *::after,
+.gl-style-editor-theme *,
+.gl-style-editor-theme *::before,
+.gl-style-editor-theme *::after {
+	box-sizing: border-box;
+}
+
+.gl-style-editor-dialog [hidden],
+.gl-style-editor-theme [hidden] {
+	display: none !important;
+}

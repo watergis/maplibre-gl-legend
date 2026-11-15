@@ -2,10 +2,6 @@
 	"compilerOptions": {
 		"alwaysStrict": true,
 		"strict": false,
-		"emitDeclarationOnly": true,
-		"declaration": true,
-		"declarationMap": true,
-		"declarationDir": "./dist/types",
 		"rootDir": "./src/lib",
 		"experimentalDecorators": true,
 		"lib": ["dom", "ESNext"],
@@ -21,7 +17,8 @@
 		"sourceMap": true,
 		"target": "ESNext",
 		"esModuleInterop": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"types": ["vite/client"]
 	},
 	"include": ["src/lib"]
 }

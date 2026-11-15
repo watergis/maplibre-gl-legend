@@ -1,0 +1,13 @@
+/* the stories are shown with the theme of the editor, see `src/lib/theme.css` */
+body.gl-style-editor-theme {
+	background: var(--gl-style-editor-background);
+	color: var(--gl-style-editor-foreground);
+	font-family: var(--gl-style-editor-font);
+	font-size: var(--gl-style-editor-font-size);
+	line-height: 1.4;
+}
+
+/* the form components are as wide as the editor */
+.sb-main-padded #storybook-root {
+	width: var(--gl-style-editor-width);
+}

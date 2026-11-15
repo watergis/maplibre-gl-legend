@@ -1,7 +1,6 @@
 import { Map, NavigationControl, setWorkerUrl, addProtocol } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { MaplibreLegendControl, LegendOptions } from './src/lib/index';
-import './src/scss/maplibre-gl-legend.scss';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { Protocol } from 'pmtiles';
 
@@ -60,6 +59,8 @@ map.on('load', function () {
 		reverseOrder: false,
 		title: 'Custom title',
 		onlyRenderedLabel: 'Show only rendered',
+		// a palette button on each layer opens the style editor
+		showStyleEditor: true,
 		// layers in a group are listed under the group title, and switched on/off together
 		groups: {
 			'Water Facilities': [
