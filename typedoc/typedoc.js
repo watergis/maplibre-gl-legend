@@ -68,3 +68,19 @@ if (document.readyState === 'loading') {
 } else {
 	void drawDiagrams();
 }
+
+/*
+ * The demo site shows this reference in a frame under its header. The navigation links lead to
+ * other pages of the demo (the Storybook), so open them in the whole window, not in the frame.
+ */
+function openNavigationLinksInWindow() {
+	for (const link of document.querySelectorAll('#tsd-toolbar-links a, #tsd-sidebar-links a')) {
+		link.target = '_top';
+	}
+}
+
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', openNavigationLinksInWindow);
+} else {
+	openNavigationLinksInWindow();
+}

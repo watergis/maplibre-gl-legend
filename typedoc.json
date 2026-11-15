@@ -22,6 +22,6 @@
 	"customJs": "./typedoc/typedoc.js",
 	"ignoredHighlightLanguages": ["mermaid"],
 	"navigationLinks": {
-		"Storybook": "/maplibre2svg/storybook/index.html",
+		"Storybook": "/maplibre2svg/stories"
 	}
 }
