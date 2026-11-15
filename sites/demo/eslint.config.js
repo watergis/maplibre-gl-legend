@@ -28,6 +28,6 @@ export default [
 		}
 	},
 	{
-		ignores: ['build/', '.svelte-kit/', 'dist/', '.netlify']
+		ignores: ['build/', '.svelte-kit/', 'dist/', '.netlify', 'static/maplibre2svg/']
 	}
 ];

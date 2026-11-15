@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import {
-	ControlPosition,
-	IControl,
-	LayerSpecification,
-	Map as MaplibreMap,
-	SpriteSpecification
-} from 'maplibre-gl';
-import LegendSymbol from '@watergis/legend-symbol';
+import { ControlPosition, IControl, LayerSpecification, Map as MaplibreMap } from 'maplibre-gl';
+import { createLayerLegend, createLegendCache, legendToSvg } from '@watergis/maplibre2svg';
 
 export interface LegendOptions {
 	showDefault: boolean;
@@ -46,10 +40,8 @@ export class MaplibreLegendControl implements IControl {
 		title: undefined,
 		onlyRenderedLabel: undefined
 	};
-	private sprite = {
-		image: HTMLImageElement,
-		json: JSON
-	};
+	// keeps the glyphs and tiles loaded for the legend between redraws
+	private legendCache = createLegendCache();
 
 	constructor(targets: { [key: string]: string }, options: LegendOptions) {
 		this.targets = targets;
@@ -132,9 +124,7 @@ export class MaplibreLegendControl implements IControl {
 	 */
 	private getLayerLegend(layer: LayerSpecification): HTMLElement | undefined {
 		const map = this.map;
-		const zoom = map?.getZoom();
-		const sprite = this.sprite;
-		const symbol = LegendSymbol({ sprite, zoom, layer });
+		if (!map) return;
 
 		const tr = document.createElement('TR');
 
@@ -145,7 +135,7 @@ export class MaplibreLegendControl implements IControl {
 		const td1 = document.createElement('TD');
 		td1.className = 'legend-table-td';
 
-		if (!symbol) {
+		const appendFallbackIcon = () => {
 			const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 			const iconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 			const iconPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -175,51 +165,8 @@ export class MaplibreLegendControl implements IControl {
 			iconSvg.appendChild(iconPath);
 			iconSvg.appendChild(iconPath2);
 
-			const label2 = document.createElement('label');
-			label2.textContent =
-				this.targets && this.targets[layer.id] ? this.targets[layer.id] : layer.id;
 			td1.appendChild(iconSvg);
-		} else {
-			if (symbol.element === 'div') {
-				if (
-					symbol.attributes.style.backgroundImage &&
-					!['url(undefined)', 'url(null)'].includes(symbol.attributes.style.backgroundImage)
-				) {
-					const img = document.createElement('img');
-					img.src = symbol.attributes.style.backgroundImage.replace('url(', '').replace(')', '');
-					img.alt = layer.id;
-					img.style.cssText = `height: 17px;`;
-					td1.appendChild(img);
-				}
-				td1.style.backgroundColor = symbol.attributes.style.backgroundColor;
-				td1.style.backgroundPosition = symbol.attributes.style.backgroundPosition;
-				td1.style.backgroundSize = symbol.attributes.style.backgroundSize;
-				td1.style.backgroundRepeat = symbol.attributes.style.backgroundRepeat;
-				td1.style.opacity = symbol.attributes.style.opacity;
-			} else if (symbol.element === 'svg') {
-				const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-				svg.style.cssText = 'height: 17px;';
-				svg.setAttributeNS(null, 'version', '1.1');
-				Object.keys(symbol.attributes).forEach((k) => {
-					svg.setAttribute(k, symbol.attributes[k]);
-					const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-					symbol.children.forEach((child) => {
-						const c = document.createElementNS('http://www.w3.org/2000/svg', child.element);
-						Object.keys(child.attributes).forEach((k2) => {
-							c.setAttributeNS(null, k2, child.attributes[k2]);
-						});
-						group.appendChild(c);
-					});
-					svg.appendChild(group);
-				});
-				const label2 = document.createElement('label');
-				label2.textContent =
-					this.targets && this.targets[layer.id] ? this.targets[layer.id] : layer.id;
-				td1.appendChild(svg);
-			} else {
-				return;
-			}
-		}
+		};
 
 		// create layer label
 		const td2 = document.createElement('TD');
@@ -227,6 +174,46 @@ export class MaplibreLegendControl implements IControl {
 		const label1 = document.createElement('label');
 		label1.textContent = this.targets && this.targets[layer.id] ? this.targets[layer.id] : layer.id;
 		td2.appendChild(label1);
+
+		// draw the legend symbol(s) with maplibre2svg; the row is shown first and filled when ready
+		createLayerLegend(layer, map.getStyle(), {
+			zoom: map.getZoom(),
+			center: map.getCenter().toArray(),
+			getImage: (id) => {
+				const image = map.getImage(id);
+				const rgba = image?.data;
+				if (!rgba || !('data' in rgba)) return undefined;
+				return {
+					data: rgba.data,
+					width: rgba.width,
+					height: rgba.height,
+					pixelRatio: image.pixelRatio,
+					sdf: image.sdf
+				};
+			},
+			listImages: () => map.listImages(),
+			cache: this.legendCache
+		})
+			.then((legend) => {
+				if (legend.entries.length === 0) {
+					tr.remove();
+				} else if (legend.entries.length === 1) {
+					td1.appendChild(legend.entries[0].svg);
+				} else {
+					// a classified layer: its classes (symbol and label) in a row of their own under the layer row
+					const trClasses = document.createElement('TR');
+					const tdClasses = document.createElement('td');
+					tdClasses.className = 'legend-table-td';
+					tdClasses.colSpan = tr.children.length;
+					tdClasses.appendChild(legendToSvg([legend], { titles: 'never' }));
+					trClasses.appendChild(tdClasses);
+					tr.after(trClasses);
+					// the layer row has no symbol: the label right after the checkbox
+					td1.remove();
+					td2.setAttribute('colspan', '2');
+				}
+			})
+			.catch(() => appendFallbackIcon());
 
 		// tr.appendChild(td0);
 		tr.appendChild(td1);
@@ -301,17 +288,6 @@ export class MaplibreLegendControl implements IControl {
 		}
 	}
 
-	private getStyleUrl(sprite: SpriteSpecification | undefined): string | undefined {
-		if (!sprite) return;
-		if (typeof sprite === 'string') {
-			return sprite;
-		}
-		if (Array.isArray(sprite) && sprite.length) {
-			return sprite[0].url;
-		}
-		return;
-	}
-
 	public onAdd(map: MaplibreMap): HTMLElement {
 		this.map = map;
 		this.controlContainer = document.createElement('div');
@@ -366,21 +342,8 @@ export class MaplibreLegendControl implements IControl {
 		this.map.on('styledata', () => {
 			this.updateLegendControl();
 		});
-		const afterLoadListener = async () => {
+		const afterLoadListener = () => {
 			if (map.loaded()) {
-				const style = map.getStyle();
-				const styleUrl = this.getStyleUrl(style.sprite);
-				if (styleUrl) {
-					const promise = Promise.all([
-						this.loadImage(`${styleUrl}@2x.png`),
-						this.loadJson(`${styleUrl}.json`)
-					]);
-					await promise
-						.then(([image, json]) => {
-							this.setSprite(image, json);
-						})
-						.catch((err) => console.error(err));
-				}
 				this.updateLegendControl();
 				map.off('idle', afterLoadListener);
 			}
@@ -432,41 +395,5 @@ export class MaplibreLegendControl implements IControl {
 		const _checked = e.target?.checked;
 		this.onlyRendered = _checked ? true : false;
 		this.updateLegendControl();
-	}
-
-	private setSprite(image, json) {
-		this.sprite = {
-			image,
-			json
-		};
-	}
-
-	private loadImage(url: string) {
-		let cancelled = false;
-		const promise = new Promise((resolve, reject) => {
-			const img = new Image();
-			img.crossOrigin = 'Anonymous';
-			img.onload = () => {
-				if (!cancelled) resolve(img);
-			};
-			img.onerror = (e) => {
-				if (!cancelled) reject(e);
-			};
-			img.src = url;
-		});
-		//@ts-ignore
-		promise.cancel = () => {
-			cancelled = true;
-		};
-		return promise;
-	}
-
-	private loadJson(url: string) {
-		return fetch(url).then((res) => {
-			if (!res.ok) {
-				throw new Error(`Failed to load JSON: ${res.status} ${res.statusText}`);
-			}
-			return res.json();
-		});
 	}
 }

@@ -1,0 +1,64 @@
+{
+	"name": "@watergis/maplibre2svg",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Create legend symbols as SVG from the layers of a MapLibre style.",
+	"type": "module",
+	"types": "./dist/types/index.d.ts",
+	"module": "dist/maplibre2svg.es.js",
+	"exports": {
+		".": {
+			"types": "./dist/types/index.d.ts",
+			"import": "./dist/maplibre2svg.es.js"
+		}
+	},
+	"files": [
+		"dist",
+		"package.json"
+	],
+	"scripts": {
+		"build": "tsc && vite build",
+		"test": "vitest run",
+		"lint": "prettier --check . && eslint . && tsc -p tsconfig.storybook.json",
+		"format": "prettier --write .",
+		"storybook": "storybook dev -p 6006",
+		"build-storybook": "storybook build -o site/storybook",
+		"docs": "typedoc",
+		"build:site": "pnpm run docs && pnpm run build-storybook"
+	},
+	"keywords": [
+		"maplibre",
+		"maplibre-gl-js",
+		"svg",
+		"legend"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/watergis/maplibre-gl-legend.git"
+	},
+	"author": "Jin IGARASHI",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/watergis/maplibre-gl-legend/issues"
+	},
+	"homepage": "https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre2svg#readme",
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@maplibre/maplibre-gl-style-spec": "^26.5.1",
+		"@storybook/addon-docs": "^10.6.7",
+		"@storybook/html-vite": "^10.6.7",
+		"@types/node": "^26.6.6",
+		"eslint": "^10.14.0",
+		"eslint-config-prettier": "^10.1.8",
+		"globals": "^17.14.0",
+		"happy-dom": "^21.0.4",
+		"maplibre-gl": "^6.16.0",
+		"prettier": "^3.9.10",
+		"storybook": "^10.6.7",
+		"typedoc": "^0.28.20",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.72.1",
+		"vite": "^8.3.5",
+		"vitest": "^5.1.0"
+	}
+}

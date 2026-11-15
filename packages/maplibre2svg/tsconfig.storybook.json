@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"noEmit": true,
+		"lib": ["dom", "dom.iterable", "ESNext"],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"noUnusedLocals": true,
+		"target": "ESNext",
+		"esModuleInterop": true,
+		"skipLibCheck": true
+	},
+	"include": ["src", ".storybook"]
+}
