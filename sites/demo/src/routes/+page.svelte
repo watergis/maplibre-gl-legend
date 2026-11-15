@@ -158,6 +158,12 @@ map.on('load', () => {
 						name: 'collapseGroups',
 						default: 'false',
 						description: 'true: groups are collapsed as default.'
+					},
+					{
+						name: 'showStyleEditor',
+						default: 'false',
+						description:
+							'true: each layer has a palette button opening the style editor, a dialog to change the color, opacity, width, size, etc. of the layer, or its paint / layout properties as YAML / JSON. Its look is changed with the --gl-style-editor-* CSS custom properties.'
 					}
 				]
 			: []),

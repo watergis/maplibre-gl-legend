@@ -12,6 +12,7 @@
 			"default": "./dist/maplibre-gl-legend.es.js"
 		},
 		"./dist/maplibre-gl-legend.css": "./dist/maplibre-gl-legend.css",
+		"./dist/maplibre-gl-legend.min.css": "./dist/maplibre-gl-legend.min.css",
 		"./package.json": "./package.json"
 	},
 	"files": [
@@ -20,11 +21,8 @@
 	],
 	"scripts": {
 		"dev": "vite",
-		"build": "npm run build:js && npm run build:css",
-		"build:js": "tsc && vite build",
-		"build:scss": "sass --no-source-map --style=compressed src/scss/maplibre-gl-legend.scss:dist/maplibre-gl-legend.css",
-		"build:postcss": "postcss dist/*.css -r",
-		"build:css": "npm run build:scss && npm run build:postcss",
+		"build": "npm run build:js",
+		"build:js": "tsc --noEmit && vite build",
 		"preview": "vite preview",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write ."
@@ -46,27 +44,31 @@
 	"homepage": "https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre-gl-legend#readme",
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
+		"@microsoft/api-extractor": "^7.60.1",
+		"@sveltejs/vite-plugin-svelte": "^7.2.0",
 		"@types/geojson": "^7946.0.16",
 		"@types/node": "^26.6.6",
 		"@typescript-eslint/eslint-plugin": "^8.72.1",
 		"@typescript-eslint/parser": "^8.72.1",
 		"@watergis/maplibre2svg": "workspace:*",
+		"@watergis/style-editor-ui": "workspace:^",
 		"autoprefixer": "^10.6.2",
 		"eslint": "^10.14.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-import": "^2.32.0",
 		"globals": "^17.14.0",
+		"lightningcss": "^1.33.0",
 		"maplibre-gl": "^6.16.0",
 		"path": "^0.12.7",
 		"pmtiles": "^4.5.0",
 		"postcss": "^8.5.32",
-		"postcss-cli": "^12.0.0",
 		"prettier": "^3.9.10",
 		"sass": "^1.107.1",
-		"sass-loader": "^17.1.0",
+		"svelte": "^5.57.1",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.72.1",
-		"vite": "^8.3.5"
+		"vite": "^8.3.5",
+		"vite-plugin-dts": "^5.1.2"
 	},
 	"peerDependencies": {
 		"maplibre-gl": "^6.4.1"

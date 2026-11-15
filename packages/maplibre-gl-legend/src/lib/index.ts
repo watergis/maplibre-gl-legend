@@ -1,5 +1,8 @@
 import { ControlPosition, IControl, LayerSpecification, Map as MaplibreMap } from 'maplibre-gl';
 import { createLayerLegend, createLegendCache, legendToSvg } from '@watergis/maplibre2svg';
+import { StyleEditorDialog, type StyleEditorPosition } from '@watergis/style-editor-ui';
+// the styles of the plugin; Vite bundles them with the styles of the style editor (Svelte components)
+import '../scss/maplibre-gl-legend.scss';
 
 /**
  * Options of {@link MaplibreLegendControl}.
@@ -106,6 +109,21 @@ export interface LegendOptions {
 	 * @defaultValue `false`
 	 */
 	collapseGroups?: boolean;
+	/**
+	 * Whether each layer has a button opening the style editor, a dialog to change the style of
+	 * the layer on the map: its color, opacity, width, size, ... depending on the layer type, or
+	 * its `paint` and `layout` properties as YAML / JSON in the manual editor.
+	 *
+	 * The dialog is not modal: the map can be moved while it is open, and the legend shows the
+	 * changes at once. It is placed on the side of the map opposite to the control, and can be moved
+	 * inside the map by dragging its header. It is not higher than the map: its contents scroll.
+	 *
+	 * Its look is changed with the `--gl-style-editor-*` custom properties: see the
+	 * `maplibre-gl-legend.css` file.
+	 *
+	 * @defaultValue `false`
+	 */
+	showStyleEditor?: boolean;
 }
 
 /** a row of the legend: a single layer, or a group of layers */
@@ -188,7 +206,8 @@ export class MaplibreLegendControl implements IControl {
 		onlyRenderedLabel: undefined,
 		groups: undefined,
 		groupBySourceLayer: false,
-		collapseGroups: false
+		collapseGroups: false,
+		showStyleEditor: false
 	};
 	// keeps the glyphs and tiles loaded for the legend between redraws
 	private legendCache = createLegendCache();
@@ -197,6 +216,8 @@ export class MaplibreLegendControl implements IControl {
 	// layer IDs of each group (by group key) in the current legend
 	private groupLayers: Map<string, string[]> = new Map();
 	private redrawScheduled = false;
+	// the style editor dialog, created when it is opened first with `showStyleEditor`
+	private styleEditor?: StyleEditorDialog;
 
 	/**
 	 * Create a legend control. Add it to the map with `map.addControl()`, after the style is loaded
@@ -285,6 +306,30 @@ export class MaplibreLegendControl implements IControl {
 	}
 
 	/**
+	 * create the button opening the style editor of a layer
+	 * @param layer the layer
+	 * @returns the TD Element holding the button, or undefined without `showStyleEditor`
+	 */
+	private createStyleButton(layer: LayerSpecification): HTMLElement | undefined {
+		if (!this.options.showStyleEditor) return;
+
+		const td = document.createElement('TD');
+		td.className = 'legend-table-td maplibregl-legend-style-td';
+		// the icon is drawn by CSS (.maplibregl-legend-style-button::before)
+		const button = document.createElement('button');
+		button.type = 'button';
+		button.classList.add('maplibregl-legend-style-button');
+		const layerTitle = this.targets?.[layer.id] ?? layer.id;
+		button.setAttribute('aria-label', `Edit style of ${layerTitle}`);
+		button.title = 'Edit style';
+		button.addEventListener('click', () => {
+			this.openStyleEditor(layer.id, layerTitle);
+		});
+		td.appendChild(button);
+		return td;
+	}
+
+	/**
 	 * Create and return a layer's legend rows
 	 * @param layer the layer
 	 * @param groupKey the key of the group the layer belongs to
@@ -354,6 +399,8 @@ export class MaplibreLegendControl implements IControl {
 		label1.textContent = this.targets && this.targets[layer.id] ? this.targets[layer.id] : layer.id;
 		td2.appendChild(label1);
 
+		const td3 = this.createStyleButton(layer);
+
 		// draw the legend symbol(s) with maplibre2svg; the row is shown first and filled when ready
 		const ready = createLayerLegend(layer, map.getStyle(), {
 			zoom: map.getZoom(),
@@ -401,6 +448,7 @@ export class MaplibreLegendControl implements IControl {
 
 		tr.appendChild(td1);
 		tr.appendChild(td2);
+		if (td3) tr.appendChild(td3);
 		return { tbody, ready };
 	}
 
@@ -438,10 +486,10 @@ export class MaplibreLegendControl implements IControl {
 			tr.appendChild(td0);
 		}
 
-		// the title spans the symbol and label columns, with the collapse button at its right end
+		// the title spans the symbol, label (and style button) columns, with the collapse button at its right end
 		const td1 = document.createElement('TD');
 		td1.className = 'legend-table-td';
-		td1.setAttribute('colspan', '2');
+		td1.setAttribute('colspan', this.options.showStyleEditor ? '3' : '2');
 		const titleContainer = document.createElement('div');
 		titleContainer.className = 'maplibregl-legend-group-title';
 		const label = document.createElement('label');
@@ -781,6 +829,8 @@ export class MaplibreLegendControl implements IControl {
 		this.legendButton.removeEventListener('click', this.onDocumentClick);
 		this.controlContainer.parentNode.removeChild(this.controlContainer);
 		document.removeEventListener('click', this.onDocumentClick);
+		this.styleEditor?.close();
+		this.styleEditor = undefined;
 		this.map = undefined;
 	}
 
@@ -794,10 +844,35 @@ export class MaplibreLegendControl implements IControl {
 		this.updateLegendControl();
 	}
 
+	/**
+	 * open the style editor for a layer. The dialog is placed in the top corner of the map opposite to the control
+	 * @param layerId the layer ID
+	 * @param title the title of the layer
+	 */
+	private openStyleEditor(layerId: string, title: string) {
+		const map = this.map;
+		if (!map) return;
+		if (!this.styleEditor) {
+			const mapRect = map.getContainer().getBoundingClientRect();
+			const controlRect = this.controlContainer.getBoundingClientRect();
+			const controlOnRight =
+				controlRect.left + controlRect.width / 2 > mapRect.left + mapRect.width / 2;
+			const position: StyleEditorPosition = controlOnRight ? 'top-left' : 'top-right';
+			this.styleEditor = new StyleEditorDialog({
+				map,
+				position,
+				container: map.getContainer()
+			});
+		}
+		this.styleEditor.open({ layerId, title });
+	}
+
 	private onDocumentClick(event: MouseEvent): void {
 		if (
 			this.controlContainer &&
 			!this.controlContainer.contains(event.target as Element) &&
+			// clicks in the style editor do not close the legend
+			!this.styleEditor?.contains(event.target as Node) &&
 			this.legendContainer &&
 			this.legendButton
 		) {

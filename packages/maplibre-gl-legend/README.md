@@ -115,6 +115,14 @@ All options are optional. See [LegendOptions in the API reference](https://mapli
   - true: groups are collapsed as default.
   - false: groups are expanded as default.
   - default value is `false`.
+- showStyleEditor
+  - true: each layer has a palette button which opens the style editor, a dialog to change the style of the layer on the map:
+    - **Properties**: opacity, colors, widths, sizes, halos, etc. depending on the layer type. A property set by a zoom or data expression (`interpolate`, `step`, `match`) is edited output by output.
+    - **Manual editor**: the `paint` and `layout` properties of the layer as YAML or JSON.
+    - **Heatmap**: symbol, circle and line layers can add a heatmap layer made from their features.
+    - **Reset**: restores the style the layer had when the dialog was opened for it.
+  - the dialog is not modal: the map can be moved while it is open, and the legend shows the changes at once. It opens in the top corner of the map opposite to the control, and can be moved inside the map by dragging its header. It is not higher than the map: its contents scroll.
+  - default value is `false`.
 
 ### Customizing styles
 
@@ -132,6 +140,9 @@ The icons (layer visibility eye / eye-off, close button) and the "Only rendered"
 | `--maplibregl-legend-icon-partial-color` | `#9a9a9a` | color of the visible icon of a partially visible group |
 | `--maplibregl-legend-close-icon-size` | `16px` | size of the close icon |
 | `--maplibregl-legend-close-icon-color` | `#1c1c1c` | color of the close icon |
+| `--maplibregl-legend-icon-style` | Lucide `palette` | icon of the button opening the style editor |
+| `--maplibregl-legend-style-icon-color` | `#6b6b6b` | color of the style editor button |
+| `--maplibregl-legend-style-icon-hover-color` | `--maplibregl-legend-focus-color` | color of the style editor button on hover |
 | `--maplibregl-legend-switch-width` | `28px` | width of the switch |
 | `--maplibregl-legend-switch-height` | `16px` | height of the switch |
 | `--maplibregl-legend-switch-thumb-size` | `12px` | size of the switch knob |
@@ -153,6 +164,21 @@ The icons (layer visibility eye / eye-off, close button) and the "Only rendered"
 	--maplibregl-legend-icon-close: url('./my-close-icon.svg');
 }
 ```
+
+#### Style editor
+
+The style editor (`showStyleEditor`) is built with Svelte and its styles are included in `maplibre-gl-legend.css` (a minified `maplibre-gl-legend.min.css` is also available). Its look is driven by the `--gl-style-editor-*` custom properties: the [Tailwind CSS colors](https://tailwindcss.com/docs/colors) as the palette, and [shadcn/ui](https://ui.shadcn.com/docs/theming) names for the roles (`background`, `foreground`, `primary`, `secondary`, `muted`, `accent`, `destructive`, `border`, `input`, `ring`, ...). Override them on `.gl-style-editor-dialog`:
+
+```css
+.gl-style-editor-dialog {
+	--gl-style-editor-primary: #0f766e;
+	--gl-style-editor-radius: 4px;
+	--gl-style-editor-font: 'Inter', sans-serif;
+	--gl-style-editor-width: 380px;
+}
+```
+
+Every element of the dialog has a `gl-style-editor-*` class. The rules of the components are scoped, so a rule overriding one of them needs one more class, e.g. `.gl-style-editor-dialog .gl-style-editor-btn--primary`. The dialog follows the `color-scheme` of the page for light / dark (e.g. `:root { color-scheme: light dark; }`). See the comment at the top of `maplibre-gl-legend.css` for the full list, and how to replace its icons.
 
 ### Use CDN
 

@@ -65,6 +65,7 @@ export interface MaplibreDemoOptions extends MapboxDemoOptions {
 	useGroups: boolean;
 	groupBySourceLayer: boolean;
 	collapseGroups: boolean;
+	showStyleEditor: boolean;
 }
 
 export const MAPBOX_DEFAULTS: MapboxDemoOptions = {
@@ -81,7 +82,8 @@ export const MAPLIBRE_DEFAULTS: MaplibreDemoOptions = {
 	...MAPBOX_DEFAULTS,
 	useGroups: true,
 	groupBySourceLayer: false,
-	collapseGroups: false
+	collapseGroups: false,
+	showStyleEditor: true
 };
 
 /** a field of the options panel */
@@ -104,7 +106,8 @@ export const MAPLIBRE_FIELDS: OptionField[] = [
 	...MAPBOX_FIELDS,
 	{ key: 'useGroups', label: 'groups (example groups)' },
 	{ key: 'groupBySourceLayer', label: 'groupBySourceLayer' },
-	{ key: 'collapseGroups', label: 'collapseGroups' }
+	{ key: 'collapseGroups', label: 'collapseGroups' },
+	{ key: 'showStyleEditor', label: 'showStyleEditor' }
 ];
 
 /** convert options to URL search params. Only values different from the defaults are written */
@@ -158,6 +161,7 @@ export const toMaplibreLegendOptions = (options: MaplibreDemoOptions) => {
 		...toLegendOptions(options),
 		...(options.useGroups ? { groups: DEMO_GROUPS } : {}),
 		groupBySourceLayer: options.groupBySourceLayer,
-		collapseGroups: options.collapseGroups
+		collapseGroups: options.collapseGroups,
+		showStyleEditor: options.showStyleEditor
 	};
 };
