@@ -6,11 +6,21 @@ const BACKGROUNDS = {
 };
 
 const preview: Preview = {
+	// a Docs page per stories file, with every story; the layer types attach their own MDX page
+	tags: ['autodocs'],
 	parameters: {
 		backgrounds: { options: BACKGROUNDS },
 		controls: { expanded: true },
 		options: {
-			storySort: { order: ['Introduction', 'Layers', 'Example Maplibre Style'] }
+			storySort: {
+				order: [
+					'Introduction',
+					'Layers',
+					['*', ['Docs', '*']],
+					'Example Maplibre Style',
+					['Docs', '*']
+				]
+			}
 		}
 	},
 	initialGlobals: {

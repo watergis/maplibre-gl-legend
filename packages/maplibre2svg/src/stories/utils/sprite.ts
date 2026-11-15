@@ -1,11 +1,13 @@
 import type { StyleSpecification } from 'maplibre-gl';
-import type { LegendImage } from '../lib';
+import type { LegendImage } from '../../lib';
 import { hatch } from './fixtures/images';
 
 /** The demo style of the repository: non-SDF icons, glyphs of watergis/font-glyphs */
 export const UNVT_STYLE = 'https://narwassco.github.io/mapbox-stylefiles/unvt/style.json';
 /** The UNDP style, pinned: SDF icons (`icon-color`), a sprite array, Proxima Nova glyphs */
 export const UNDP_STYLE = 'https://unpkg.com/@undp-data/style@2.5.0/dist/style.json';
+/** The MapLibre demo tiles style (github.com/maplibre/demotiles): no sprite, few layers */
+export const MAPLIBRE_DEMO_STYLE = 'https://demotiles.maplibre.org/style.json';
 
 /** Where the stories get the images of a style from */
 export interface StoryImages {
@@ -147,7 +149,12 @@ const styles = new Map<string, Promise<LoadedStyle>>();
 
 /** A style and its images, loaded once per page */
 export function loadStyle(url: string): Promise<LoadedStyle> {
-	if (!styles.has(url)) styles.set(url, fetchStyle(url));
+	if (!styles.has(url)) {
+		// a failed load is tried again on the next render, such as after fixing a typo in the URL
+		const loading = fetchStyle(url);
+		loading.catch(() => styles.delete(url));
+		styles.set(url, loading);
+	}
 	return styles.get(url) as Promise<LoadedStyle>;
 }
 

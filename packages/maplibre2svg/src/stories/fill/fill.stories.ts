@@ -9,64 +9,68 @@ import {
 	linear,
 	PALETTE,
 	zoomAndData
-} from './fixtures/expressions';
+} from '../utils/fixtures/expressions';
 import {
 	expressionStories,
 	layerStory,
-	typeMetaArgs,
+	typeMeta,
 	type TypeStoryArgs
-} from './expression-stories';
-import { withImages } from './sprite';
+} from '../utils/expression-stories';
+import { withImages } from '../utils/sprite';
 
 const OUTLINES = ['#7f0000', '#0b3c6b', '#1b5e20', '#4a148c'];
 
-export default { title: 'Layers/fill', ...typeMetaArgs } satisfies Meta<TypeStoryArgs>;
+export default { title: 'Layers/fill', ...typeMeta('fill') } satisfies Meta<TypeStoryArgs>;
 
 /** one color; the outline is the fill color (fill-antialias) */
-export const Plain = layerStory('fill', 'Plain', { paint: { 'fill-color': '#4daf4a' } });
+export const SingleColor = layerStory('fill', 'SingleColor', {
+	paint: { 'fill-color': '#4daf4a' }
+});
 
 /** a darker fill-outline-color, which must show as a border */
-export const OutlineColor = layerStory('fill', 'OutlineColor', {
+export const FillOutlineColor = layerStory('fill', 'FillOutlineColor', {
 	paint: { 'fill-color': '#a6cee3', 'fill-outline-color': '#1f3c88' }
 });
 
 /** fill-pattern: hatching made in code, at fill-opacity 0.8 */
-export const Pattern = layerStory(
+export const FillPattern = layerStory(
 	'fill',
-	'Pattern',
+	'FillPattern',
 	{ paint: { 'fill-color': '#cccccc', 'fill-pattern': 'hatch', 'fill-opacity': 0.8 } },
-	withImages
+	{ setup: withImages }
 );
 
 /** fill-opacity 0.4, which the outline shares */
-export const Translucent = layerStory('fill', 'Translucent', {
+export const TranslucentFill = layerStory('fill', 'TranslucentFill', {
 	paint: { 'fill-color': '#e41a1c', 'fill-outline-color': '#000000', 'fill-opacity': 0.4 }
 });
 
 const stories = expressionStories('fill', {
 	// color and outline linked to the category
-	Categorical: {
+	CategoricalMatch: {
 		paint: {
 			'fill-color': categorical([...PALETTE], FALLBACK_COLOR),
 			'fill-outline-color': categorical(OUTLINES, '#555555')
 		}
 	},
 	CategoricalCase: { paint: { 'fill-color': categoricalCase([...PALETTE], FALLBACK_COLOR) } },
-	Graduated: { paint: { 'fill-color': graduated(['#fee5d9', '#fcae91', '#fb6a4a', '#cb181d']) } },
+	GraduatedStep: {
+		paint: { 'fill-color': graduated(['#fee5d9', '#fcae91', '#fb6a4a', '#cb181d']) }
+	},
 	// color ramp and opacity on the same field
-	Linear: {
+	LinearInterpolate: {
 		paint: {
 			'fill-color': linear(['#ffffcc', '#41b6c4', '#253494']),
 			'fill-opacity': linear([0.3, 0.6, 1])
 		}
 	},
-	LinearExponential: {
+	ExponentialInterpolate: {
 		paint: {
 			'fill-color': exponential(['#f7fcf5', '#74c476', '#00441b']),
 			'fill-opacity': legacyStops([0.3, 0.6, 1])
 		}
 	},
-	ZoomAndData: {
+	ZoomAndDataInterpolate: {
 		paint: {
 			'fill-color': zoomAndData(
 				['#fdd0a2', '#c6dbef', '#c7e9c0'],
@@ -77,10 +81,17 @@ const stories = expressionStories('fill', {
 	}
 });
 
-export const Categorical = stories.Categorical;
+/** `match` on a field: one entry per value, and the fallback */
+export const CategoricalMatch = stories.CategoricalMatch;
+/** `case` with conditions on fields: one entry per condition, and the fallback */
 export const CategoricalCase = stories.CategoricalCase;
-export const Graduated = stories.Graduated;
-export const Linear = stories.Linear;
-export const LinearExponential = stories.LinearExponential;
-export const ZoomAndData = stories.ZoomAndData;
+/** `step` on a number: one entry per interval */
+export const GraduatedStep = stories.GraduatedStep;
+/** linear `interpolate` on a number: one entry per stop */
+export const LinearInterpolate = stories.LinearInterpolate;
+/** exponential `interpolate` and legacy `stops` */
+export const ExponentialInterpolate = stories.ExponentialInterpolate;
+/** `interpolate` on the zoom whose stops are `match` expressions: move the zoom control */
+export const ZoomAndDataInterpolate = stories.ZoomAndDataInterpolate;
+/** `CategoricalMatch` with labels from `metadata.legend`; `showDefault` hides the fallback */
 export const CustomLabels = stories.CustomLabels;

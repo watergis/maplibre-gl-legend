@@ -1,7 +1,10 @@
 import type { Meta } from '@storybook/html-vite';
-import { layerStory, typeMetaArgs, type TypeStoryArgs } from './expression-stories';
+import { layerStory, typeMeta, type TypeStoryArgs } from '../utils/expression-stories';
 
-export default { title: 'Layers/color-relief', ...typeMetaArgs } satisfies Meta<TypeStoryArgs>;
+export default {
+	title: 'Layers/color-relief',
+	...typeMeta('color-relief')
+} satisfies Meta<TypeStoryArgs>;
 
 const relief = (name: string, color: unknown, opacity?: number) =>
 	layerStory('color-relief', name, {
@@ -50,7 +53,7 @@ export const Bathymetry = relief(
 );
 
 /** a step whose first threshold is above the lowest land: `< 500` and `≥ 3000` are rows too */
-export const StepClasses = relief('StepClasses', [
+export const StepElevationClasses = relief('StepElevationClasses', [
 	'step',
 	['elevation'],
 	'#2c7bb6',

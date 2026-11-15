@@ -1,4 +1,4 @@
-import type { LayerLegend } from '../../lib';
+import type { LayerLegend } from '../../../lib';
 
 /** One row: the symbol centered in a column of `symbolWidth`, so the labels line up */
 function row(symbol: Element, text: string, indent: boolean, symbolWidth: number) {

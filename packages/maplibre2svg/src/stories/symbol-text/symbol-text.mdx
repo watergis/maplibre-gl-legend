@@ -1,0 +1,126 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as SymbolTextStories from './symbol-text.stories';
+
+<Meta of={SymbolTextStories} />
+
+# symbol text
+
+## What the legend draws
+
+For a `symbol` layer without an icon, the legend draws a sample of the label.
+
+The text is drawn from the glyphs of the style (the `glyphs` URL), as MapLibre draws it. When the glyph server has no glyphs for the font stack or for the text, or with the option `glyphs: false`, the text is drawn as SVG text in a CSS font instead.
+
+The classes of symbol layers are covered in **Layers/symbol**.
+
+## Supported properties
+
+These are the properties that change the symbol of a label sample.
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Paint / layout</th>
+			<th>How the legend uses it</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>text-field</code>
+			</td>
+			<td>layout</td>
+			<td>
+				Text of the label sample (<code>Aa</code> for a field without a value)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-font</code>
+			</td>
+			<td>layout</td>
+			<td>Font stack of the glyphs, or a CSS font</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-size</code>
+			</td>
+			<td>layout</td>
+			<td>Size of the label sample</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-color</code>
+			</td>
+			<td>paint</td>
+			<td>Color of the label sample (layers without an icon)</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the label sample</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-halo-color</code>
+			</td>
+			<td>paint</td>
+			<td>Halo of the label sample</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-halo-width</code>
+			</td>
+			<td>paint</td>
+			<td>Halo of the label sample</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-halo-blur</code>
+			</td>
+			<td>paint</td>
+			<td>Halo of the label sample</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-letter-spacing</code>
+			</td>
+			<td>layout</td>
+			<td>Letter spacing of the label sample</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-transform</code>
+			</td>
+			<td>layout</td>
+			<td>Upper or lower case of the label sample</td>
+		</tr>
+	</tbody>
+</table>
+
+Other `text-*` properties do not change the symbol: `text-translate`, `text-translate-anchor`, `text-pitch-alignment`, `text-rotation-alignment`, `text-max-width`, `text-line-height`, `text-justify`, `text-radial-offset`, `text-variable-anchor`, `text-variable-anchor-offset`, `text-anchor`, `text-max-angle`, `text-writing-mode`, `text-rotate`, `text-padding`, `text-keep-upright`, `text-offset`, `text-allow-overlap`, `text-overlap`, `text-ignore-placement`, `text-optional`.
+
+## Assets
+
+The stories use the glyphs of the unvt style (Noto Sans, Roboto) and of the UNDP style (Proxima Nova). `IconAndText` also loads the UNDP sprite.
+
+## Controls
+
+Every paint and layout property of the type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. A property without a value is left out of the layer, so MapLibre's default applies. A property whose value is an expression is edited as JSON. The layer definition next to the legend shows what is drawn.
+
+`zoom` evaluates the zoom expressions, and `defaultLabel` names the fallback class of a `match` or `case`.
+
+See [`symbol` in the MapLibre style specification](https://maplibre.org/maplibre-style-spec/layers/#symbol) for every property.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

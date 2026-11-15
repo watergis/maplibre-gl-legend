@@ -1,0 +1,137 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as LineStories from './line.stories';
+
+<Meta of={LineStories} />
+
+# line
+
+## What the legend draws
+
+A horizontal line at its real width. A line too wide for the swatch is scaled down to fit.
+
+## Supported properties
+
+These are the properties of the layer that change its legend symbol. **Classes** gives the order in which the properties are tried for classification: the first one whose value depends on the feature (a `match`, `case`, `step` or `interpolate`) gives the classes of the legend.
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Paint / layout</th>
+			<th>How the legend uses it</th>
+			<th>Classes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>line-color</code>
+			</td>
+			<td>paint</td>
+			<td>Color of the line</td>
+			<td>1</td>
+		</tr>
+		<tr>
+			<td>
+				<code>line-pattern</code>
+			</td>
+			<td>paint</td>
+			<td>Image of the sprite along the line, scaled to its width</td>
+			<td>2</td>
+		</tr>
+		<tr>
+			<td>
+				<code>line-width</code>
+			</td>
+			<td>paint</td>
+			<td>Width of the line, scaled down to fit the swatch</td>
+			<td>3</td>
+		</tr>
+		<tr>
+			<td>
+				<code>line-dasharray</code>
+			</td>
+			<td>paint</td>
+			<td>Dashes; the swatch widens to show two dash periods</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<td>
+				<code>line-gap-width</code>
+			</td>
+			<td>paint</td>
+			<td>Two parallel lines with a gap, like a road casing</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>line-gradient</code>
+			</td>
+			<td>paint</td>
+			<td>Gradient from one end of the line to the other, instead of the color</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>line-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the line</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>line-cap</code>
+			</td>
+			<td>layout</td>
+			<td>Ends of the line and of the dashes</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>line-join</code>
+			</td>
+			<td>layout</td>
+			<td>Joins of the line</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>line-layer-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the whole symbol</td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+
+Other properties do not change the symbol: `line-layer-blend`, `line-translate`, `line-translate-anchor`, `line-offset`, `line-blur`, `line-miter-limit`, `line-round-limit`, `line-sort-key`.
+
+## Expressions and classes
+
+When a property with a number in the **Classes** column above depends on the feature, through a `match`, `case`, `step` or `interpolate`, the legend has one entry per class: a value of a `match`, a condition of a `case`, an interval of a `step` or a stop of an `interpolate`. The one with the lowest number sets the classes. The other properties are evaluated for a representative feature of each class, so linked properties (a color and a width on the same field) stay together. `zoom` expressions are evaluated at the `zoom` control. Labels come from the expression, or from `metadata.legend` (see `CustomLabels`).
+
+The shared stories (`CategoricalMatch`, `CategoricalCase`, `GraduatedStep`, `LinearInterpolate`, `ExponentialInterpolate`, `ZoomAndDataInterpolate`, `CustomLabels`) have the same names on every vector layer type, so you can compare the types.
+
+## Assets
+
+`line-pattern` needs the images of a sprite. The stories use the unvt sprite.
+
+## Controls
+
+Every paint and layout property of the type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. A property without a value is left out of the layer, so MapLibre's default applies. A property whose value is an expression is edited as JSON. The layer definition next to the legend shows what is drawn.
+
+`zoom` evaluates the zoom expressions, and `defaultLabel` names the fallback class of a `match` or `case`.
+
+See [`line` in the MapLibre style specification](https://maplibre.org/maplibre-style-spec/layers/#line) for every property.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

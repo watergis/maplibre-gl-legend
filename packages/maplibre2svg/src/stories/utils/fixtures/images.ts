@@ -1,4 +1,4 @@
-import type { LegendImage } from '../../lib';
+import type { LegendImage } from '../../../lib';
 
 /**
  * Images made in code for the stories: the sprites have no image meant as a fill pattern.

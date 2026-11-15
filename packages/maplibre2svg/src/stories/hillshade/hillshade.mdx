@@ -1,0 +1,83 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as HillshadeStories from './hillshade.stories';
+
+<Meta of={HillshadeStories} />
+
+# hillshade
+
+## What the legend draws
+
+A small synthetic range of hills, shaded with MapLibre's standard hillshade shader over a neutral ground. Every `hillshade-method` is drawn as the standard one. Where no image can be encoded (Node), a vector stand-in is drawn.
+
+`UndpStyleHillshade` and `UnvtStyleHillshade` take the hillshade layer of a real style. The properties set in the controls replace that layer's own.
+
+## Supported properties
+
+These are the properties of the layer that change its legend symbol.
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Paint / layout</th>
+			<th>How the legend uses it</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>hillshade-illumination-direction</code>
+			</td>
+			<td>paint</td>
+			<td>Direction of the light (the first value of an array)</td>
+		</tr>
+		<tr>
+			<td>
+				<code>hillshade-exaggeration</code>
+			</td>
+			<td>paint</td>
+			<td>Strength of the shading</td>
+		</tr>
+		<tr>
+			<td>
+				<code>hillshade-highlight-color</code>
+			</td>
+			<td>paint</td>
+			<td>Color of the slopes facing the light (the first value of an array)</td>
+		</tr>
+		<tr>
+			<td>
+				<code>hillshade-shadow-color</code>
+			</td>
+			<td>paint</td>
+			<td>Color of the slopes away from the light (the first value of an array)</td>
+		</tr>
+		<tr>
+			<td>
+				<code>hillshade-accent-color</code>
+			</td>
+			<td>paint</td>
+			<td>Color of the steepest slopes</td>
+		</tr>
+	</tbody>
+</table>
+
+Other properties do not change the symbol: `hillshade-illumination-altitude`, `hillshade-illumination-anchor`, `hillshade-method`, `resampling`.
+
+## Controls
+
+Every paint and layout property of the type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. A property without a value is left out of the layer, so MapLibre's default applies. A property whose value is an expression is edited as JSON. The layer definition next to the legend shows what is drawn.
+
+`zoom` evaluates the zoom expressions, and `defaultLabel` names the fallback class of a `match` or `case`.
+
+See [`hillshade` in the MapLibre style specification](https://maplibre.org/maplibre-style-spec/layers/#hillshade) for every property.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

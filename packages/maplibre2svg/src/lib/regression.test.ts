@@ -18,7 +18,7 @@ interface Recorded {
 
 const recorded: Recorded[] = [];
 
-vi.mock('../stories/render/index.ts', async (importOriginal) => {
+vi.mock('../stories/utils/render/index.ts', async (importOriginal) => {
 	const original = await importOriginal<Record<string, unknown>>();
 	const record = (layers: LayerSpecification[], args: unknown, setup: unknown = {}) => {
 		recorded.push({
@@ -59,7 +59,7 @@ const images = {
 	listImages: () => IMAGE_IDS
 };
 
-vi.mock('../stories/sprite.ts', async (importOriginal) => {
+vi.mock('../stories/utils/sprite.ts', async (importOriginal) => {
 	const original = await importOriginal<Record<string, unknown>>();
 	const fake = {
 		getImage: (id: string) => syntheticImage(id),
@@ -106,7 +106,7 @@ function normalizeIds(svg: string) {
 	});
 }
 
-const stories = import.meta.glob<Record<string, unknown>>('../stories/*.stories.ts', {
+const stories = import.meta.glob<Record<string, unknown>>('../stories/**/*.stories.ts', {
 	eager: true
 });
 

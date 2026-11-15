@@ -1,0 +1,62 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as HeatmapStories from './heatmap.stories';
+
+<Meta of={HeatmapStories} />
+
+# heatmap
+
+## What the legend draws
+
+A single ramp entry, from density 0 to 1. A `step` ramp gives hard edges.
+
+## Supported properties
+
+These are the properties of the layer that change its legend symbol.
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Paint / layout</th>
+			<th>How the legend uses it</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>heatmap-color</code>
+			</td>
+			<td>paint</td>
+			<td>
+				Ramp over <code>heatmap-density</code> 0 → 1 (the default ramp when unset)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>heatmap-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the ramp</td>
+		</tr>
+	</tbody>
+</table>
+
+Other properties do not change the symbol: `heatmap-radius`, `heatmap-weight`, `heatmap-intensity`.
+
+## Controls
+
+Every paint and layout property of the type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. A property without a value is left out of the layer, so MapLibre's default applies. A property whose value is an expression is edited as JSON. The layer definition next to the legend shows what is drawn.
+
+`zoom` evaluates the zoom expressions, and `defaultLabel` names the fallback class of a `match` or `case`.
+
+See [`heatmap` in the MapLibre style specification](https://maplibre.org/maplibre-style-spec/layers/#heatmap) for every property.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

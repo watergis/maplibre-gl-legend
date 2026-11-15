@@ -1,0 +1,65 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as ColorReliefStories from './color-relief.stories';
+
+<Meta of={ColorReliefStories} />
+
+# color-relief
+
+## What the legend draws
+
+One area swatch per class of elevation, with the neutral frame. Labels read like `≤ 0`, `500 – 1500` and `≥ 4000`. When the color has no classes, it has no single value, so the neutral symbol is drawn.
+
+## Supported properties
+
+These are the properties of the layer that change its legend symbol. **Classes** gives the order in which the properties are tried for classification: the first one whose value depends on the feature (a `match`, `case`, `step` or `interpolate`) gives the classes of the legend.
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Paint / layout</th>
+			<th>How the legend uses it</th>
+			<th>Classes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>color-relief-color</code>
+			</td>
+			<td>paint</td>
+			<td>
+				One swatch per stop or interval of <code>elevation</code>
+			</td>
+			<td>1</td>
+		</tr>
+		<tr>
+			<td>
+				<code>color-relief-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the swatches</td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+
+Other properties do not change the symbol: `resampling`.
+
+## Controls
+
+Every paint and layout property of the type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. A property without a value is left out of the layer, so MapLibre's default applies. A property whose value is an expression is edited as JSON. The layer definition next to the legend shows what is drawn.
+
+`zoom` evaluates the zoom expressions, and `defaultLabel` names the fallback class of a `match` or `case`.
+
+See [`color-relief` in the MapLibre style specification](https://maplibre.org/maplibre-style-spec/layers/#color-relief) for every property.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

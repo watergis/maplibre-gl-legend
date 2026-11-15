@@ -1,0 +1,208 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as SymbolStories from './symbol.stories';
+
+<Meta of={SymbolStories} />
+
+# symbol
+
+## What the legend draws
+
+The icon, centered in a swatch that grows to fit it. When the layer has no icon, a sample of the label is drawn instead; when it has both, only the icon. A layer with neither, or an image that the sprite does not have, gets the neutral placeholder.
+
+The labels of symbol layers are covered in **Layers/symbol text**.
+
+## Supported properties
+
+These are the properties of the layer that change its legend symbol. **Classes** gives the order in which the properties are tried for classification: the first one whose value depends on the feature (a `match`, `case`, `step` or `interpolate`) gives the classes of the legend.
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Paint / layout</th>
+			<th>How the legend uses it</th>
+			<th>Classes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>icon-image</code>
+			</td>
+			<td>layout</td>
+			<td>
+				Image of the sprite; a token such as <code>&#123;status&#125;</code> takes the first
+				matching image
+			</td>
+			<td>1</td>
+		</tr>
+		<tr>
+			<td>
+				<code>icon-color</code>
+			</td>
+			<td>paint</td>
+			<td>Color of an SDF icon</td>
+			<td>2</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-color</code>
+			</td>
+			<td>paint</td>
+			<td>Color of the label sample (layers without an icon)</td>
+			<td>3</td>
+		</tr>
+		<tr>
+			<td>
+				<code>icon-size</code>
+			</td>
+			<td>layout</td>
+			<td>Size of the icon, scaled down to fit the swatch</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-size</code>
+			</td>
+			<td>layout</td>
+			<td>Size of the label sample</td>
+			<td>5</td>
+		</tr>
+		<tr>
+			<td>
+				<code>icon-rotate</code>
+			</td>
+			<td>layout</td>
+			<td>Rotation of the icon</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>icon-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the icon</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>icon-halo-color</code>
+			</td>
+			<td>paint</td>
+			<td>Halo of an SDF icon</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>icon-halo-width</code>
+			</td>
+			<td>paint</td>
+			<td>Halo of an SDF icon</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>icon-halo-blur</code>
+			</td>
+			<td>paint</td>
+			<td>Halo of an SDF icon</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-field</code>
+			</td>
+			<td>layout</td>
+			<td>
+				Text of the label sample (<code>Aa</code> for a field without a value)
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-font</code>
+			</td>
+			<td>layout</td>
+			<td>Font stack of the glyphs, or a CSS font</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the label sample</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-halo-color</code>
+			</td>
+			<td>paint</td>
+			<td>Halo of the label sample</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-halo-width</code>
+			</td>
+			<td>paint</td>
+			<td>Halo of the label sample</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-halo-blur</code>
+			</td>
+			<td>paint</td>
+			<td>Halo of the label sample</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-letter-spacing</code>
+			</td>
+			<td>layout</td>
+			<td>Letter spacing of the label sample</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<code>text-transform</code>
+			</td>
+			<td>layout</td>
+			<td>Upper or lower case of the label sample</td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+
+Other properties do not change the symbol: `icon-translate`, `icon-translate-anchor`, `text-translate`, `text-translate-anchor`, `symbol-placement`, `symbol-spacing`, `symbol-avoid-edges`, `symbol-sort-key`, `symbol-z-order`, `icon-allow-overlap`, `icon-overlap`, `icon-ignore-placement`, `icon-optional`, `icon-rotation-alignment`, `icon-text-fit`, `icon-text-fit-padding`, `icon-padding`, `icon-keep-upright`, `icon-offset`, `icon-anchor`, `icon-pitch-alignment`, `text-pitch-alignment`, `text-rotation-alignment`, `text-max-width`, `text-line-height`, `text-justify`, `text-radial-offset`, `text-variable-anchor`, `text-variable-anchor-offset`, `text-anchor`, `text-max-angle`, `text-writing-mode`, `text-rotate`, `text-padding`, `text-keep-upright`, `text-offset`, `text-allow-overlap`, `text-overlap`, `text-ignore-placement`, `text-optional`, `symbol-height-offset`, `symbol-height-anchor`.
+
+## Expressions and classes
+
+When a property with a number in the **Classes** column above depends on the feature, through a `match`, `case`, `step` or `interpolate`, the legend has one entry per class: a value of a `match`, a condition of a `case`, an interval of a `step` or a stop of an `interpolate`. The one with the lowest number sets the classes. The other properties are evaluated for a representative feature of each class, so linked properties (a color and a width on the same field) stay together. `zoom` expressions are evaluated at the `zoom` control. Labels come from the expression, or from `metadata.legend` (see `CustomLabels`).
+
+The shared stories (`CategoricalMatch`, `CategoricalCase`, `GraduatedStep`, `LinearInterpolate`, `ExponentialInterpolate`, `ZoomAndDataInterpolate`, `CustomLabels`) have the same names on every vector layer type, so you can compare the types.
+
+## Assets
+
+Icons need the images of the sprite. The stories load the unvt sprite (non-SDF) and the UNDP sprite (SDF). Labels need the `glyphs` of the style.
+
+## Controls
+
+Every paint and layout property of the type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. A property without a value is left out of the layer, so MapLibre's default applies. A property whose value is an expression is edited as JSON. The layer definition next to the legend shows what is drawn.
+
+`zoom` evaluates the zoom expressions, and `defaultLabel` names the fallback class of a `match` or `case`.
+
+See [`symbol` in the MapLibre style specification](https://maplibre.org/maplibre-style-spec/layers/#symbol) for every property.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

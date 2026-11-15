@@ -1,0 +1,69 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as BackgroundStories from './background.stories';
+
+<Meta of={BackgroundStories} />
+
+# background
+
+## What the legend draws
+
+A rectangle that fills the swatch, with a neutral frame around it. A background has no features, so it always has a single entry.
+
+## Supported properties
+
+These are the properties of the layer that change its legend symbol.
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Paint / layout</th>
+			<th>How the legend uses it</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>background-color</code>
+			</td>
+			<td>paint</td>
+			<td>Color of the rectangle</td>
+		</tr>
+		<tr>
+			<td>
+				<code>background-pattern</code>
+			</td>
+			<td>paint</td>
+			<td>Image of the sprite filling the rectangle, instead of the color</td>
+		</tr>
+		<tr>
+			<td>
+				<code>background-opacity</code>
+			</td>
+			<td>paint</td>
+			<td>Opacity of the rectangle</td>
+		</tr>
+	</tbody>
+</table>
+
+## Assets
+
+`background-pattern` needs the images of a sprite. The stories use hatching made in code.
+
+## Controls
+
+Every paint and layout property of the type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. A property without a value is left out of the layer, so MapLibre's default applies. A property whose value is an expression is edited as JSON. The layer definition next to the legend shows what is drawn.
+
+`zoom` evaluates the zoom expressions, and `defaultLabel` names the fallback class of a `match` or `case`.
+
+See [`background` in the MapLibre style specification](https://maplibre.org/maplibre-style-spec/layers/#background) for every property.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

@@ -1,13 +1,13 @@
 import type { Meta } from '@storybook/html-vite';
-import { layerStory, typeMetaArgs, type TypeStoryArgs } from './expression-stories';
+import { layerStory, typeMeta, type TypeStoryArgs } from '../utils/expression-stories';
 
-export default { title: 'Layers/heatmap', ...typeMetaArgs } satisfies Meta<TypeStoryArgs>;
+export default { title: 'Layers/heatmap', ...typeMeta('heatmap') } satisfies Meta<TypeStoryArgs>;
 
 /** the default ramp of the specification, transparent at density 0 */
-export const DefaultRamp = layerStory('heatmap', 'DefaultRamp', { paint: {} });
+export const DefaultColorRamp = layerStory('heatmap', 'DefaultColorRamp', { paint: {} });
 
 /** a custom ramp with heatmap-opacity 0.8 */
-export const CustomRamp = layerStory('heatmap', 'CustomRamp', {
+export const CustomColorRamp = layerStory('heatmap', 'CustomColorRamp', {
 	paint: {
 		'heatmap-color': [
 			'interpolate',
@@ -31,7 +31,7 @@ export const CustomRamp = layerStory('heatmap', 'CustomRamp', {
 });
 
 /** a step ramp: hard edges */
-export const StepRamp = layerStory('heatmap', 'StepRamp', {
+export const StepColorRamp = layerStory('heatmap', 'StepColorRamp', {
 	paint: {
 		'heatmap-color': [
 			'step',

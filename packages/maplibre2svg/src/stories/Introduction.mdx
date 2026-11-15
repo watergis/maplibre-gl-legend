@@ -10,26 +10,28 @@ These stories show the legend of one or a few layers per page, next to the layer
 
 ## How the stories are organised
 
-**Layers** has a group per layer type: `fill`, `line`, `circle`, `fill-extrusion`, `background`, `symbol`, `symbol text`, `raster`, `hillshade`, `heatmap` and `color-relief`.
+**Layers** has a group per layer type: `fill`, `line`, `circle`, `fill-extrusion`, `background`, `symbol`, `symbol text`, `raster`, `hillshade`, `heatmap` and `color-relief`. Each group opens with a **Docs** page that explains what the legend draws for the type, followed by every story of the group. Each story shows one layer, next to its definition.
 
 The vector types (`fill`, `line`, `circle`, `fill-extrusion`, `symbol`) share a set of stories with the same names, so the same kind of expression can be compared across types:
 
-- `Categorical`: a `match` on a field. One entry per value, plus the fallback.
-- `CategoricalCase`: a `case` with conditions on a field.
-- `Graduated`: a `step`. One entry per interval.
-- `Linear`: an `interpolate` on a field. One entry per stop.
-- `LinearSize`: an `interpolate` on a size property, such as `circle-radius` or `line-width`.
-- `LinearExponential`: an `interpolate` with an `exponential` curve.
-- `ZoomAndData`: an `interpolate` on the zoom whose stops depend on a field.
-- `CustomLabels`: `Categorical` with labels from `metadata.legend`.
+- `CategoricalMatch`: a `match` on a field. One entry per value, plus the fallback.
+- `CategoricalCase`: a `case` with conditions on fields.
+- `GraduatedStep`: a `step`. One entry per interval.
+- `LinearInterpolate`: an `interpolate` on a field. One entry per stop.
+- `LinearInterpolateSize`: an `interpolate` on a size property, such as `circle-radius` or `line-width`.
+- `ExponentialInterpolate`: an `interpolate` with an `exponential` curve, and legacy `stops`.
+- `ZoomAndDataInterpolate`: an `interpolate` on the zoom whose stops depend on a field.
+- `CustomLabels`: `CategoricalMatch` with labels from `metadata.legend`.
 
-Other stories in each group cover what is specific to that type, for example dashes, caps and gradients for `line`, SDF icons and missing images for `symbol`, the fonts and halos of labels for `symbol text`, and tile sources and color adjustments for `raster`.
+Other stories in each group cover what is specific to that type. Examples: dashes, caps and gradients for `line`; SDF icons and missing images for `symbol`; the fonts and halos of labels for `symbol text`; tile sources and color adjustments for `raster`.
 
-**Example Maplibre Style** draws the whole legend of two real styles, as one combined SVG that can be downloaded.
+**Example Maplibre Style** draws the whole legend of a style as one combined SVG, with the definition of each layer next to it. Three ready-made styles are included: unvt, UNDP and the MapLibre demo tiles. `CustomStyle` takes the URL of any style JSON in the `styleUrl` control.
 
 ## Controls
 
-Every story has these controls:
+Every paint and layout property of the layer type is a control, made from the MapLibre style specification and grouped under **paint** and **layout**. Change `circle-radius`, `line-width`, a color or an expression (edited as JSON), and the legend and the layer definition redraw. A property without a value is left out of the layer, so MapLibre's default applies.
+
+The **legend** controls are:
 
 - `zoom`: the zoom level the expressions are evaluated at. Change it to see the classes of zoom-dependent expressions change.
 - `defaultLabel`: the label of the fallback class of a `match` or a `case`.

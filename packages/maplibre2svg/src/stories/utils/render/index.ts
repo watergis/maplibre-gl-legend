@@ -1,6 +1,6 @@
 import type { LayerSpecification, StyleSpecification } from 'maplibre-gl';
-import { createLayerLegend, type LegendOptions } from '../../lib';
-import { definitionPane, layerDetails, sideBySide } from './definition';
+import { createLayerLegend, type LegendOptions } from '../../../lib';
+import { definitionPane, sideBySide } from './definition';
 import { legendRows } from './rows';
 
 export { definitionPane, layerDetails, sideBySide } from './definition';
@@ -15,8 +15,16 @@ export interface LegendStoryArgs {
 export const legendArgs: LegendStoryArgs = { zoom: 12, defaultLabel: 'Other' };
 
 export const legendArgTypes = {
-	zoom: { control: { type: 'range', min: 0, max: 22, step: 0.5 } },
-	defaultLabel: { control: 'text' }
+	zoom: {
+		control: { type: 'range', min: 0, max: 22, step: 0.5 },
+		description: 'The zoom level the expressions are evaluated at',
+		table: { category: 'legend' }
+	},
+	defaultLabel: {
+		control: 'text',
+		description: 'The label of the fallback class of a `match` or a `case`',
+		table: { category: 'legend' }
+	}
 } as const;
 
 const EMPTY_STYLE: StyleSpecification = { version: 8, sources: {}, layers: [] };
@@ -95,26 +103,5 @@ export function renderLegend(
 	);
 	root.style.fontFamily = 'sans-serif';
 	root.style.fontSize = '14px';
-	return root;
-}
-
-/**
- * Render several layers, one collapsible block each with its legend and its definition,
- * such as the variants of one property
- */
-export function renderLayers(
-	layers: LayerSpecification[],
-	args: Partial<LegendStoryArgs>,
-	setup: StorySetup = {}
-): HTMLElement {
-	const shown = legendOptions(args);
-	const style = styleWith(setup, layers);
-	const root = document.createElement('div');
-	root.style.fontFamily = 'sans-serif';
-	root.style.fontSize = '14px';
-	for (const layer of layers) {
-		const legend = legendPane(layer, withArgs(setup.options, shown), style);
-		root.append(layerDetails(layer, legend, displayed(shown, setup), true));
-	}
 	return root;
 }
