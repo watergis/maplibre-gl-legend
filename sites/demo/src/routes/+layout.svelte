@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import { siGithub, siX } from 'simple-icons';
 
 	import { AppBar } from '@skeletonlabs/skeleton-svelte';
@@ -15,6 +16,9 @@
 	let { data, children }: Props = $props();
 
 	let year = new Date().getFullYear();
+
+	const apiHref = resolve('/api');
+	let isApiPage = $derived(page.url.pathname.replace(/\/$/, '') === apiHref);
 </script>
 
 <svelte:head>
@@ -42,7 +46,14 @@
 					</a>
 				</AppBar.Headline>
 				<AppBar.Trail>
-					<nav class="flex justify-end gap-1">
+					<nav class="flex items-center justify-end gap-1">
+						<a
+							class="btn px-2 font-bold {isApiPage ? 'preset-tonal' : 'hover:preset-tonal'}"
+							href={apiHref}
+							aria-current={isApiPage ? 'page' : undefined}
+						>
+							API
+						</a>
 						<LightSwitch />
 						<!-- eslint-disable svelte/no-navigation-without-resolve -->
 						{#each data.nav as link (link.href)}

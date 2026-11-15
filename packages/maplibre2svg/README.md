@@ -6,7 +6,7 @@ Given a style, it works out the classes of each layer (the branches of a `match`
 
 This is an internal package of this repository. [`@watergis/maplibre-gl-legend`](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre-gl-legend) uses it to draw the symbols of its legend control. It is not published to npm.
 
-- API reference: <https://maplibre-gl-legend.water-gis.com/maplibre2svg/api-reference>
+- API reference: <https://maplibre-gl-legend.water-gis.com/docs/modules/_watergis_maplibre2svg.html>
 - Storybook: <https://maplibre-gl-legend.water-gis.com/maplibre2svg/stories>
 
 ## Usage
@@ -314,8 +314,9 @@ const legends = await createLegend(style, { adapters: [new RoundFillAdapter()] }
 pnpm test             # unit tests and SVG snapshots of every story
 pnpm lint
 pnpm storybook        # Storybook on http://localhost:6006
-pnpm run docs         # API reference into site/docs
-pnpm build:site       # API reference and static Storybook into site/
+pnpm build-storybook  # static Storybook into site/storybook
 ```
+
+The API reference of all packages is built with `pnpm build:docs` at the repository root (after `pnpm build`).
 
 `src/lib/regression.test.ts` renders every story with fixed images, glyphs and text widths and compares the SVG with a snapshot. If a change is meant to alter the output, check it in Storybook and update the snapshot with `pnpm test -u`.

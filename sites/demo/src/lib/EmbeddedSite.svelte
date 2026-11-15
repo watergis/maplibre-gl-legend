@@ -1,6 +1,6 @@
 <script lang="ts">
 	/**
-	 * A static site (the TypeDoc API reference or the Storybook of maplibre2svg) shown under the
+	 * A static site (the TypeDoc API reference of all packages, or the Storybook of maplibre2svg) shown under the
 	 * header of the demo, filling the rest of the page
 	 */
 	interface Props {

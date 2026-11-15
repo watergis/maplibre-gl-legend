@@ -22,9 +22,7 @@
 		"lint": "prettier --check . && eslint . && tsc -p tsconfig.storybook.json",
 		"format": "prettier --write .",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build -o site/storybook",
-		"docs": "typedoc",
-		"build:site": "pnpm run docs && pnpm run build-storybook"
+		"build-storybook": "storybook build -o site/storybook"
 	},
 	"keywords": [
 		"maplibre",
@@ -55,7 +53,6 @@
 		"maplibre-gl": "^6.16.0",
 		"prettier": "^3.9.10",
 		"storybook": "^10.6.7",
-		"typedoc": "^0.28.20",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.72.1",
 		"vite": "^8.3.5",
