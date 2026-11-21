@@ -74,8 +74,9 @@ export interface LegendOptions {
 	 * - The toggle of a group shows / hides all of its layers, including the layers not rendered in
 	 *   the current view. It is shown as partially checked when only some of them are visible. Each
 	 *   layer keeps its own toggle.
-	 * - Layers in the groups are listed even if they are not in `targets`. Their titles still come
-	 *   from `targets`, or the layer ID.
+	 * - A layer in a group but not in `targets` is not listed, but the toggle of the group still
+	 *   shows / hides it (e.g. a label layer switched with its features). With an empty `targets`
+	 *   (`{}`), all layers are listed, titled by their IDs.
 	 * - A layer belongs to the first group listing it.
 	 * - A group without any layer listed is not shown.
 	 *
@@ -133,7 +134,10 @@ type LegendItem =
 			type: 'group';
 			key: string;
 			title: string;
+			/** the layers listed in the group */
 			layers: LayerSpecification[];
+			/** the IDs of the layers switched by the group toggle, including the layers in the group not listed */
+			toggleLayerIds: string[];
 			/** true: grouped automatically by source-layer */
 			auto: boolean;
 	  };
@@ -476,8 +480,8 @@ export class MaplibreLegendControl implements IControl {
 			checkbox.addEventListener('click', () => {
 				// a partially visible group becomes visible
 				const visible = checkbox.checked;
-				for (const layer of item.layers) {
-					this.setLayerVisibility(layer.id, visible);
+				for (const layerId of item.toggleLayerIds) {
+					this.setLayerVisibility(layerId, visible);
 				}
 				this.updateGroupStates();
 				this.redrawWhenIdle();
@@ -568,28 +572,34 @@ export class MaplibreLegendControl implements IControl {
 		}
 	}
 
-	/** whether a layer is shown in the legend (regardless of whether it is rendered) */
+	/**
+	 * whether a layer is listed in the legend (regardless of whether it is rendered).
+	 * A layer in a group but not in the targets is not listed, but the group toggle still switches it
+	 */
 	private isTarget(layerId: string): boolean {
 		if (this.targets === undefined || Object.keys(this.targets).length === 0) return true;
-		if (layerId in this.targets) return true;
-		// layers in the groups are shown even if they are not in the targets
-		return Object.values(this.options.groups ?? {}).some((ids) => ids.includes(layerId));
+		return layerId in this.targets;
 	}
 
 	/**
 	 * put layers into groups: the groups in the options first, then layers sharing source and source-layer
 	 * @param layers layers in the order shown in the legend
-	 * @returns the rows of the legend. A group is placed at the position of its first layer
+	 * @param allLayers all layers of the style in the same order, including the layers not listed
+	 * @returns the rows of the legend. A group is placed at the position of its first listed layer
 	 */
-	private createLegendItems(layers: LayerSpecification[]): LegendItem[] {
+	private createLegendItems(
+		layers: LayerSpecification[],
+		allLayers: LayerSpecification[]
+	): LegendItem[] {
 		const groupKeys: Map<string, string> = new Map();
 		const titles: Map<string, string> = new Map();
-		const layerIds = new Set(layers.map((l) => l.id));
+		const styleLayerIds = new Set(allLayers.map((l) => l.id));
 
+		// membership is decided over all layers of the style, so a layer not listed still belongs to the first group listing it
 		for (const [title, ids] of Object.entries(this.options.groups ?? {})) {
 			const key = `group:${title}`;
 			for (const id of ids) {
-				if (!layerIds.has(id) || groupKeys.has(id)) continue;
+				if (!styleLayerIds.has(id) || groupKeys.has(id)) continue;
 				groupKeys.set(id, key);
 				titles.set(key, title);
 			}
@@ -622,17 +632,23 @@ export class MaplibreLegendControl implements IControl {
 			}
 			let group = groups.get(key);
 			if (!group) {
+				const auto = key.startsWith('source-layer:');
 				group = {
 					type: 'group',
 					key,
 					title: titles.get(key) ?? key,
 					layers: [],
-					auto: key.startsWith('source-layer:')
+					// an auto group has only listed layers; a group in the options switches its layers not listed too
+					toggleLayerIds: auto
+						? []
+						: allLayers.filter((l) => groupKeys.get(l.id) === key).map((l) => l.id),
+					auto
 				};
 				groups.set(key, group);
 				items.push(group);
 			}
 			group.layers.push(layer);
+			if (group.auto) group.toggleLayerIds.push(layer.id);
 		}
 		return items;
 	}
@@ -685,7 +701,7 @@ export class MaplibreLegendControl implements IControl {
 		const isShown = (l: LayerSpecification) => !this.onlyRendered || !!visibleLayers[l.id];
 
 		this.groupLayers = new Map();
-		for (const item of this.createLegendItems(targetLayers)) {
+		for (const item of this.createLegendItems(targetLayers, layers)) {
 			if (item.type === 'layer') {
 				if (!isShown(item.layer)) continue;
 				const legend = this.getLayerLegend(item.layer);
@@ -701,11 +717,8 @@ export class MaplibreLegendControl implements IControl {
 				if (legend) this.legendTable.appendChild(legend.tbody);
 				continue;
 			}
-			// the group checkbox switches all layers of the group, including layers not rendered now
-			this.groupLayers.set(
-				item.key,
-				item.layers.map((l) => l.id)
-			);
+			// the group checkbox switches all layers of the group, including layers not rendered now and layers not listed
+			this.groupLayers.set(item.key, item.toggleLayerIds);
 			const header = this.createGroupHeader(item);
 			this.legendTable.appendChild(header);
 			const collapsed = this.isGroupCollapsed(item.key);

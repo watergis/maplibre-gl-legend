@@ -7,7 +7,7 @@ export const ZOOM = 12;
 /** layer id and the title shown in the legend */
 export const TARGETS: { [key: string]: string } = {
 	pipeline: 'Pipeline',
-	pipeline_annotation: 'Pipeline Label',
+	// pipeline_annotation: 'Pipeline Label',
 	meter: 'Water Meter',
 	'flow meter': 'Flow Meter',
 	valve: 'Valve',
@@ -40,6 +40,7 @@ export const DEMO_GROUPS: { [title: string]: string[] } = {
 		'tank',
 		'tank_annotation'
 	],
+	'Water Pipes': ['pipeline', 'pipeline_annotation'],
 	Parcels: ['parcels', 'parcels-outline', 'parcels_annotation'],
 	Village: ['village', 'village_annotation'],
 	DMA: ['dma', 'dma-annotation']

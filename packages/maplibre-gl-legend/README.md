@@ -105,7 +105,7 @@ All options are optional. See [LegendOptions in the API reference](https://mapli
 - groups
   - groups of layers: an object of the group title and the IDs of the layers in the group. e.g. `{ 'Pipeline': ['pipeline', 'pipeline_annotation'] }`
   - the layers of a group are listed under the group title. The checkbox of the group switches all of its layers on/off, and each layer still has its own checkbox. Click the group row (title or chevron) to collapse or expand the group.
-  - layers in the groups are shown even if they are not in `targets`. A layer belongs to the first group listing it.
+  - a layer in a group but not in `targets` is not listed, but the checkbox of the group still switches it on/off (e.g. a label layer switched with its features). With an empty `targets` (`{}`), all layers are listed. A layer belongs to the first group listing it.
   - default: no group
 - groupBySourceLayer
   - true: layers not in `groups` which share the same source and `source-layer` are grouped automatically, titled by the source-layer name. They are grouped only while 2 or more of them are listed (e.g. with `onlyRendered`, a layer not rendered at the current zoom is not counted).
