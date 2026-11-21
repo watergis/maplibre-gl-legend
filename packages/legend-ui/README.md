@@ -14,21 +14,6 @@ This is an internal package of this repository. `@watergis/maplibre-gl-legend` b
 - API reference: <https://maplibre-gl-legend.water-gis.com/docs/modules/_watergis_legend-ui.html>
 - Storybook: <https://maplibre-gl-legend.water-gis.com/stories>
 
-```text
-Legend                                    ×
- ●  Only rendered
-▾ Water Supply                            👁
-│ ▾ Water Facilities                      👁
-│ │ ▾ WTP                                 👁
-│ │ │ ■ WTP                          🎨  👁
-│ │ │ ▭ WTP Label                    🎨  👁
-│ ▾ Water Pipes                           👁
-│ │ Pipeline                         🎨  👁
-│ │ │ ━ DN300
-│ │ │ ━ DN200
-■ Village                            🎨  👁
-```
-
 ## Usage
 
 The panel does not use the map directly. It reads everything through a `LegendSource`: the layers, which layers are rendered, their visibility and their symbols. maplibre-gl-legend implements it with a MapLibre map and maplibre2svg (`MaplibreLegendSource`).
