@@ -42,17 +42,17 @@ export const DEMO_GROUPS: LegendGroups = {
 			Tank: ['tank', 'tank_annotation']
 		},
 		'Water Pipes': ['pipeline', 'pipeline_annotation'],
-		'Meters': ['meter', 'flow meter'],
-		'Valves': ['valve'],
-		'Washout': ['washout'],
+		Meters: ['meter', 'flow meter'],
+		Valves: ['valve'],
+		Washout: ['washout'],
 		'Fire Hydrants': ['firehydrant']
 	},
-	'Zones': {
+	Zones: {
 		Village: ['village', 'village_annotation'],
 		DMA: ['dma', 'dma-annotation']
 	},
-	'Parcels': ['parcels', 'parcels-outline', 'parcels_annotation'],
-	'Contours': ['contour-line', 'contour-label'],
+	Parcels: ['parcels', 'parcels-outline', 'parcels_annotation'],
+	Contours: ['contour-line', 'contour-label']
 };
 
 type OptionValues = Record<string, boolean | string>;
