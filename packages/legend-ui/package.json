@@ -1,7 +1,7 @@
 {
 	"name": "@watergis/legend-ui",
 	"description": "Internal Svelte UI of the legend panel, bundled into maplibre-gl-legend.",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
