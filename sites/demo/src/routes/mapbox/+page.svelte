@@ -21,7 +21,6 @@
 		type MapboxDemoOptions
 	} from '#lib/demo.js';
 	import OptionsPanel from '#lib/OptionsPanel.svelte';
-	import DemoNotice from '#lib/DemoNotice.svelte';
 
 	let mapContainer: HTMLDivElement | undefined = $state();
 	let map: Map | undefined;
@@ -85,7 +84,6 @@
 	{#if hasToken}
 		<OptionsPanel bind:options defaults={MAPBOX_DEFAULTS} fields={MAPBOX_FIELDS} />
 	{/if}
-	<DemoNotice library="Mapbox GL JS" />
 	{#if !hasToken}
 		<div class="absolute inset-0 flex items-center justify-center p-4">
 			<p class="card preset-outlined-warning-500 p-4 text-center">
