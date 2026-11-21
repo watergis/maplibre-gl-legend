@@ -44,6 +44,39 @@ describe('LegendModel', () => {
 		expect(ids(model.view)).toEqual(['c', 'b', 'a']);
 	});
 
+	it('keeps a layer shown again listed until the map draws it', () => {
+		const source = new MockSource({ layers: layers('a', 'b'), createSymbol: error });
+		const model = new LegendModel(source, {});
+		model.refresh();
+		model.setLayersVisibility(['a'], false);
+		model.refresh();
+
+		// the refresh right after the toggle runs before the map draws the layer
+		source.rendered.delete('a');
+		model.setLayersVisibility(['a'], true);
+		model.refresh();
+		expect(ids(model.view)).toEqual(['b', 'a']);
+		expect(model.toggleState(['a'])).toBe('visible');
+
+		// still not rendered at the next refresh (e.g. out of the view): no longer listed
+		model.refresh();
+		expect(ids(model.view)).toEqual(['b']);
+	});
+
+	it('does not list the layers of a group out of the view when the group is hidden', () => {
+		const source = new MockSource({
+			layers: layers('a', 'b'),
+			rendered: ['a'],
+			createSymbol: error
+		});
+		const model = new LegendModel(source, {}, { groups: { G: ['a', 'b'] } });
+		model.refresh();
+		expect(ids(model.view)).toEqual(['a']);
+		model.setLayersVisibility(['a', 'b'], false);
+		model.refresh();
+		expect(ids(model.view)).toEqual(['a']);
+	});
+
 	it('tells the state of a group toggle', () => {
 		const source = new MockSource({ layers: layers('a', 'b'), createSymbol: error });
 		const model = new LegendModel(source, {}, { groups: { G: ['a', 'b'] } });

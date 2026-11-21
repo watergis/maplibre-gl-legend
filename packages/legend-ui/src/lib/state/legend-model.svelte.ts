@@ -27,7 +27,11 @@ export class LegendModel {
 	/** legend symbols of the listed layers at the current view, by layer ID */
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity -- replaced on refresh, read by the components when the rows change
 	private symbols: Map<string, Promise<LayerSymbol>> = new Map();
-	/** layers hidden with a toggle: they stay listed with "Only rendered", so that they can be shown again */
+	/**
+	 * layers hidden with a toggle: they stay listed with "Only rendered", so that they can be shown
+	 * again. A layer shown again stays in it until the next refresh, because the map has not drawn it
+	 * yet when the refresh right after the toggle runs.
+	 */
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity -- only read on refresh
 	private readonly keptHidden: Set<string> = new Set();
 
@@ -68,6 +72,8 @@ export class LegendModel {
 			} else if (this.keptHidden.has(layer.id)) {
 				// hidden by the toggle: keep it listed so that it can be shown again
 				rendered.add(layer.id);
+				// shown again but not drawn yet: keep it listed this time only, without a flicker
+				if (visible[layer.id]) this.keptHidden.delete(layer.id);
 			}
 		}
 		this.visible = visible;
@@ -137,13 +143,29 @@ export class LegendModel {
 	/** show / hide layers (a partially visible group becomes visible) */
 	setLayersVisibility(layerIds: string[], visible: boolean): void {
 		this.source.setLayersVisibility(layerIds, visible);
+		const listed = this.listedLayerIds();
 		const next = { ...this.visible };
 		for (const id of layerIds) {
 			next[id] = visible;
-			if (visible) this.keptHidden.delete(id);
-			else this.keptHidden.add(id);
+			// keep the listed layers only: the layers of a group not in the view stay out of it.
+			// A layer shown again leaves keptHidden on the next refresh (see the field)
+			if (!visible && listed.has(id)) this.keptHidden.add(id);
 		}
 		this.visible = next;
+	}
+
+	/** the IDs of the layers in the rows */
+	private listedLayerIds(): Set<string> {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- a local working copy
+		const ids = new Set<string>();
+		const visit = (nodes: LegendViewNode[]) => {
+			for (const node of nodes) {
+				if (node.type === 'group') visit(node.children);
+				else ids.add(node.layer.id);
+			}
+		};
+		visit(this.view);
+		return ids;
 	}
 
 	/** open the style editor of a layer */
