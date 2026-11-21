@@ -77,6 +77,10 @@ export interface LegendOptions {
 	 * - A layer in a group but not in `targets` is not listed, but the toggle of the group still
 	 *   shows / hides it (e.g. a label layer switched with its features). With an empty `targets`
 	 *   (`{}`), all layers are listed, titled by their IDs.
+	 * - A group with only one layer in `targets` (its other layers are not in `targets`) is shown as
+	 *   a single layer row, without the group title. The toggle of the row still shows / hides all
+	 *   layers of the group. A group with 2+ layers in `targets` stays a group even if only one of
+	 *   them is rendered with {@link onlyRendered}.
 	 * - A layer belongs to the first group listing it.
 	 * - A group without any layer listed is not shown.
 	 *
@@ -279,9 +283,13 @@ export class MaplibreLegendControl implements IControl {
 	/**
 	 * create checkbox for switching layer visibility
 	 * @param layer the layer
+	 * @param groupToggle the group shown as this single layer: the checkbox switches all layers of the group
 	 * @returns the TD Element holding the checkbox, or undefined without `showCheckbox`
 	 */
-	private createLayerCheckbox(layer: LayerSpecification): HTMLElement | undefined {
+	private createLayerCheckbox(
+		layer: LayerSpecification,
+		groupToggle?: { key: string; layerIds: string[] }
+	): HTMLElement | undefined {
 		if (!this.options.showCheckbox) return;
 
 		// create checkbox for switching layer visibility
@@ -299,8 +307,16 @@ export class MaplibreLegendControl implements IControl {
 		checklayer.checked = visible;
 		if (!visible) this.uncheckedLayers[layer.id] = layer.id;
 
+		if (groupToggle) {
+			// its state (checked / partially visible) is set from all layers of the group by updateGroupStates
+			checklayer.classList.add('maplibregl-legend-group-toggle');
+			checklayer.dataset.group = groupToggle.key;
+		}
+
 		checklayer.addEventListener('click', () => {
-			this.setLayerVisibility(layer.id, checklayer.checked);
+			for (const layerId of groupToggle?.layerIds ?? [layer.id]) {
+				this.setLayerVisibility(layerId, checklayer.checked);
+			}
 			this.updateGroupStates();
 			this.redrawWhenIdle();
 		});
@@ -337,11 +353,13 @@ export class MaplibreLegendControl implements IControl {
 	 * Create and return a layer's legend rows
 	 * @param layer the layer
 	 * @param groupKey the key of the group the layer belongs to
+	 * @param groupToggle the group shown as this single layer: its checkbox switches all layers of the group
 	 * @returns the TBODY Element holding the layer's rows, and a promise resolved with false when the layer has no legend (the TBODY is removed)
 	 */
 	private getLayerLegend(
 		layer: LayerSpecification,
-		groupKey?: string
+		groupKey?: string,
+		groupToggle?: { key: string; layerIds: string[] }
 	): { tbody: HTMLElement; ready: Promise<boolean> } | undefined {
 		const map = this.map;
 		if (!map) return;
@@ -356,7 +374,7 @@ export class MaplibreLegendControl implements IControl {
 		const tr = document.createElement('TR');
 		tbody.appendChild(tr);
 
-		const td0 = this.createLayerCheckbox(layer);
+		const td0 = this.createLayerCheckbox(layer, groupToggle);
 		if (td0) tr.appendChild(td0);
 
 		// create legend symbol
@@ -475,6 +493,7 @@ export class MaplibreLegendControl implements IControl {
 			checkbox.setAttribute('type', 'checkbox');
 			checkbox.classList.add('maplibregl-legend-visibility-toggle');
 			checkbox.classList.add('maplibregl-legend-group-toggle');
+			checkbox.dataset.group = item.key;
 			checkbox.setAttribute('aria-label', `Toggle visibility of ${item.title}`);
 			checkbox.title = 'Toggle visibility';
 			checkbox.addEventListener('click', () => {
@@ -557,15 +576,14 @@ export class MaplibreLegendControl implements IControl {
 		);
 	}
 
-	/** update the group checkboxes from the visibility of their layers: checked, unchecked, or indeterminate (partially visible) */
+	/** update the group checkboxes (of group headers, and of groups shown as a single layer) from the visibility of their layers: checked, unchecked, or indeterminate (partially visible) */
 	private updateGroupStates() {
 		if (!this.legendTable) return;
-		for (const el of Array.from(this.legendTable.children)) {
-			if (!(el instanceof HTMLElement) || !el.classList.contains('maplibregl-legend-group'))
-				continue;
-			const checkbox = el.querySelector('input.maplibregl-legend-group-toggle');
+		for (const checkbox of Array.from(
+			this.legendTable.querySelectorAll('input.maplibregl-legend-group-toggle')
+		)) {
 			if (!(checkbox instanceof HTMLInputElement)) continue;
-			const layerIds = this.groupLayers.get(el.dataset.group ?? '') ?? [];
+			const layerIds = this.groupLayers.get(checkbox.dataset.group ?? '') ?? [];
 			const visibleCount = layerIds.filter((id) => this.isLayerVisible(id)).length;
 			checkbox.checked = visibleCount > 0 && visibleCount === layerIds.length;
 			checkbox.indeterminate = visibleCount > 0 && visibleCount < layerIds.length;
@@ -711,9 +729,17 @@ export class MaplibreLegendControl implements IControl {
 
 			const shownLayers = item.layers.filter(isShown);
 			if (shownLayers.length === 0) continue;
-			if (item.auto && shownLayers.length < 2) {
-				// a source-layer group with only one layer listed now (e.g. its other layers are not rendered at this zoom) is shown as a single layer
-				const legend = this.getLayerLegend(shownLayers[0]);
+			// a group in the options with only one layer in the targets is shown as a single layer, and keeps switching all of its layers with the toggle of the layer.
+			// it stays a group when 2+ of its layers are in the targets, even if only one is rendered now, so that the toggle of a layer does not switch the others.
+			// a source-layer group with only one layer listed now (e.g. its other layers are not rendered at this zoom) is shown as a single layer switching the layer alone
+			const single = item.auto ? shownLayers.length === 1 : item.layers.length === 1;
+			if (single) {
+				let groupToggle: { key: string; layerIds: string[] } | undefined;
+				if (!item.auto) {
+					this.groupLayers.set(item.key, item.toggleLayerIds);
+					groupToggle = { key: item.key, layerIds: item.toggleLayerIds };
+				}
+				const legend = this.getLayerLegend(shownLayers[0], undefined, groupToggle);
 				if (legend) this.legendTable.appendChild(legend.tbody);
 				continue;
 			}
