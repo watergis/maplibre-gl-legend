@@ -22,7 +22,6 @@
 		type MaplibreDemoOptions
 	} from '#lib/demo.js';
 	import OptionsPanel from '#lib/OptionsPanel.svelte';
-	import DemoNotice from '#lib/DemoNotice.svelte';
 
 	let mapContainer: HTMLDivElement | undefined = $state();
 	let map: Map | undefined;
@@ -82,5 +81,4 @@
 <div class="relative w-full h-full">
 	<div class="w-full h-full" bind:this={mapContainer}></div>
 	<OptionsPanel bind:options defaults={MAPLIBRE_DEFAULTS} fields={MAPLIBRE_FIELDS} />
-	<DemoNotice library="MapLibre GL JS" />
 </div>
