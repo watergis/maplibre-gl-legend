@@ -19,6 +19,11 @@ const config: StorybookConfig = {
 				url: development ? 'http://localhost:6006' : './maplibre2svg',
 				expanded: true
 			},
+			'legend-ui': {
+				title: 'legend-ui',
+				url: development ? 'http://localhost:6009' : './legend-ui',
+				expanded: true
+			},
 			'style-editor-ui': {
 				title: 'style-editor-ui',
 				url: development ? 'http://localhost:6008' : './style-editor-ui',

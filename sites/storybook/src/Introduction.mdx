@@ -13,6 +13,14 @@ The stories of the packages of [maplibre-gl-legend](https://github.com/watergis/
 - **Layers**: a group per layer type, with the legend of one or a few layers per story, next to the layer definition that produced it.
 - **Example Maplibre Style**: the whole legend of a style as one combined SVG.
 
+## legend-ui
+
+[`@watergis/legend-ui`](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/legend-ui) is the Svelte UI of the legend panel: the tree of layers and groups (nested to any depth) with their symbols, visibility toggles and style editor buttons. It is bundled into maplibre-gl-legend.
+
+- **Panel**: the legend panel with a mock legend source: layers, flat and nested groups, partially visible groups, collapsed groups, groups by source-layer, "Only rendered" and without toggles.
+- **Tree**: the tree of layers and groups and its rows (`LegendTree`, `TreeNode`, `TreeGroup`, `TreeLayer`, `TreeRow`).
+- **Components**: the eye toggle, the layer symbol and the "Only rendered" switch.
+
 ## style-editor-ui
 
 [`@watergis/style-editor-ui`](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/style-editor-ui) is the Svelte UI of the layer style editor, which the legend control opens from a layer with its `showStyleEditor` option. It is bundled into maplibre-gl-legend.

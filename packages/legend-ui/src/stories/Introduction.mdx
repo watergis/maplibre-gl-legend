@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# legend-ui
+
+legend-ui is the Svelte UI of the legend panel of [`@watergis/maplibre-gl-legend`](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/maplibre-gl-legend). It is bundled into maplibre-gl-legend and not published on npm.
+
+The panel lists the layers of the map as a tree:
+
+- each row shows the symbol of the layer (or the chevron of a group) and its title on the left, and the style editor button and the eye toggle on the right, the eye at the right end, so that the toggles of all rows are aligned whether the row has a style editor button or not
+- groups of layers are nested to any depth (the `groups` option). Each level is indented, with a vertical guide line under the chevron of its group
+- the toggle of a group shows / hides all layers of the group, including its nested groups, and is partially checked when only some of them are visible
+- clicking a group row collapses / expands it
+
+## How it is organised
+
+- `types/`: the options, the `LegendGroups` type and the `LegendSource` interface, what the panel needs from the map.
+- `tree/`: the tree of layers and groups made from the options (`GroupTreeBuilder`), and the rows shown now (`buildLegendView`). Plain TypeScript, without DOM.
+- `state/`: `LegendModel`, the state of the panel (rows, "Only rendered", collapsed groups, visibility) kept between refreshes.
+- `components/`: the Svelte components of the panel.
+
+maplibre-gl-legend implements `LegendSource` with a MapLibre map and maplibre2svg, and mounts the panel with `LegendPanel`.
+
+## How the stories are organised
+
+The groups go from the whole panel down to its smallest parts. Each component opens with a **Docs** page that explains what it does, its props and its stories, followed by every story.
+
+- **Panel**: `LegendPanel`, the panel as maplibre-gl-legend shows it: layers, flat and nested groups, partially visible and collapsed groups, groups by source-layer, "Only rendered" and without toggles.
+- **Tree**: the tree of the panel. `LegendTree` lists the top-level rows, `TreeNode` picks `TreeGroup` or `TreeLayer` for a row, and `TreeRow` is the frame of a row (indent and guides, chevron or symbol, title, eye, style button).
+- **Components**: the parts of a row and of the panel: the eye toggle (`VisibilityToggle`), the symbol of a layer (`LayerSymbol`) and the "Only rendered" switch (`OnlyRenderedSwitch`).
+
+## The data of the stories
+
+The stories use a mock legend source (`src/stories/mock-source.ts`): the layers of `src/stories/fixtures.ts` are kept in memory, their symbols are simple swatches, and the toggles change the visibility of the mock layers. `src/stories/ModelFrame.svelte` makes the model of the legend from it and shows the components in a MapLibre control, as the panel is. The **Actions** panel lists the clicks on the style editor buttons and the group rows.
+
+## Styles
+
+The styles are in `src/lib/legend.css`, with the class names of maplibre-gl-legend. Override the `--maplibregl-legend-*` custom properties on `.maplibregl-legend-list` to restyle the panel: see the README of maplibre-gl-legend.

@@ -1,0 +1,13 @@
+{
+	"//": "Typedoc reads the declarations made by svelte-package, which have the types of the Svelte components",
+	"compilerOptions": {
+		"strict": true,
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"target": "ESNext",
+		"lib": ["dom", "ESNext"],
+		"skipLibCheck": true,
+		"noEmit": true
+	},
+	"include": ["dist"]
+}

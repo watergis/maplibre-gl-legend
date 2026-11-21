@@ -1,0 +1,67 @@
+import { Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as TreeLayerStories from './TreeLayer.stories.svelte';
+
+<Meta of={TreeLayerStories} />
+
+# TreeLayer
+
+A layer of the legend tree: its symbol, title, eye toggle and style editor button. A layer styled by data shows its classes (a symbol and a label each) under the row, one level deeper. The symbol is drawn by the legend source; a layer which has nothing to draw is not listed, and a fallback icon is shown when the symbol cannot be drawn.
+
+## Where it is used
+
+`TreeNode`, for a layer row, or a group of the `groups` option with only one listed layer (its toggle then switches all layers of the group).
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'model'}</code>
+			</td>
+			<td>
+				<code>{'LegendModel'}</code>
+			</td>
+			<td></td>
+			<td>The state of the legend panel.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'node'}</code>
+			</td>
+			<td>
+				<code>{'LayerView'}</code>
+			</td>
+			<td></td>
+			<td>The layer row, from the rows of the model.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+The stories use a mock legend source (`src/stories/ModelFrame.svelte`): the eye toggles change the visibility of the mock layers.
+
+- **Layer**: a layer with its symbol.
+- **Hidden**: a hidden layer.
+- **Classified layer**: a layer styled by data, with its classes under the row.
+- **Fallback icon**: the symbol could not be drawn.
+- **With style editor button**: `showStyleEditor`: the **Actions** panel lists the clicks.
+- **In nested groups**: a layer three levels deep: indented, with the guide lines of its groups.
+- **Group shown as a layer**: a group with one listed layer: its eye switches both layers of the group, and is partially checked as one of them is hidden.
+
+## Primary story
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

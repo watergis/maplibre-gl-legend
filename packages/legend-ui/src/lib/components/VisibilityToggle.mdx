@@ -1,0 +1,97 @@
+import { Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as VisibilityToggleStories from './VisibilityToggle.stories.svelte';
+
+<Meta of={VisibilityToggleStories} />
+
+# VisibilityToggle
+
+The eye toggle showing / hiding layers: an eye when all of them are visible, an eye-off when they are hidden, and a gray eye (indeterminate) when only some of them are visible. Clicking a partially visible toggle shows all layers. The icons and colors are the `--maplibregl-legend-icon-*` custom properties.
+
+## Where it is used
+
+`TreeRow`, at the right end of every row.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'model'}</code>
+			</td>
+			<td>
+				<code>{'LegendModel'}</code>
+			</td>
+			<td></td>
+			<td>The state of the legend panel.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'layerIds'}</code>
+			</td>
+			<td>
+				<code>{'string[]'}</code>
+			</td>
+			<td></td>
+			<td>The layers switched by the toggle.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'title'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The title of the layer or the group, for the accessible label.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'name'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The name of the input: the layer ID of a layer row.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'group'}</code>
+			</td>
+			<td>
+				<code>{'boolean'}</code>
+			</td>
+			<td>
+				<code>{'false'}</code>
+			</td>
+			<td>
+				True: the toggle of a group (class <code>maplibregl-legend-group-toggle</code>).
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+The stories use a mock legend source (`src/stories/ModelFrame.svelte`): the eye toggles change the visibility of the mock layers.
+
+- **Visible**: a visible layer.
+- **Hidden**: a hidden layer.
+- **Partially visible group**: a group with one of its three layers hidden.
+
+## Primary story
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

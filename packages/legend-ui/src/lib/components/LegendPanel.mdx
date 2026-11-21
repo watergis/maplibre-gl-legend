@@ -1,0 +1,96 @@
+import { Controls, Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as LegendPanelStories from './LegendPanel.stories.svelte';
+
+<Meta of={LegendPanelStories} />
+
+# LegendPanel
+
+The legend panel: a close button, the title, the "Only rendered" switch (`OnlyRenderedSwitch`) and the tree of layers and groups (`LegendTree`). See the **Tree** and **Components** groups for its parts.
+
+A row is `[indent][chevron or symbol][title] …… [style button][eye]`: the eye is at the right end, aligned in all rows whether they have a style button or not. Each level of the tree is indented by `--maplibregl-legend-group-indent`, with a vertical line (`--maplibregl-legend-tree-guide-color`) under the chevron of each group the row is in.
+
+maplibre-gl-legend mounts it with the `LegendPanel` class, and the stories with `src/stories/LegendPanelFrame.svelte` and a mock legend source.
+
+## Props of the stories
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'layers'}</code>
+			</td>
+			<td>
+				<code>{'LayerSpecification[]'}</code>
+			</td>
+			<td>The layers of the mock style.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'targets'}</code>
+			</td>
+			<td>
+				<code>{'LegendTargets'}</code>
+			</td>
+			<td>The listed layers and their titles. Empty: all layers.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'options'}</code>
+			</td>
+			<td>
+				<code>{'LegendPanelOptions'}</code>
+			</td>
+			<td>
+				The options of the panel: <code>{'groups'}</code>, <code>{'showCheckbox'}</code>,{' '}
+				<code>{'showStyleEditor'}</code>, <code>{'collapseGroups'}</code>, ...
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'rendered'}</code>
+			</td>
+			<td>
+				<code>{'string[]'}</code>
+			</td>
+			<td>The layers rendered in the view, for "Only rendered". Default: all layers.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'hidden'}</code>
+			</td>
+			<td>
+				<code>{'string[]'}</code>
+			</td>
+			<td>The layers hidden at first.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+- **Layers**: the layers without groups.
+- **Flat groups**: groups of layers.
+- **Nested groups**: groups nested three levels deep, with the style editor buttons.
+- **Layers and groups in a group**: a group with layers and a nested group in its array.
+- **Partially visible group**: some layers of a nested group are hidden: the toggles of the group and its parents are partially checked.
+- **Collapsed groups**: `collapseGroups`.
+- **Grouped by source-layer**: `groupBySourceLayer`.
+- **Only rendered**: only the rendered layers are listed.
+- **Without toggles**: `showCheckbox: false`.
+
+## Primary story
+
+<Primary />
+
+<Controls />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

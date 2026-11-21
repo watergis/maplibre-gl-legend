@@ -13,6 +13,8 @@ This monorepo manages the source code and demo page for `@watergis/maplibre-gl-l
 |---|---|---|
 |[@watergis/maplibre-gl-legend](./packages/maplibre-gl-legend/README.md)|The main repository to manage plugin source code|[CHANGELOG](./packages/maplibre-gl-legend/CHANGELOG.md)
 |[@watergis/maplibre2svg](./packages/maplibre2svg/README.md)|Internal package drawing legend symbols as SVG from a MapLibre style (bundled in maplibre-gl-legend)|-|
+|[@watergis/legend-ui](./packages/legend-ui/README.md)|Internal Svelte UI of the legend panel: the tree of layers and nested groups (bundled in maplibre-gl-legend)|-|
+|[@watergis/style-editor-ui](./packages/style-editor-ui/README.md)|Internal Svelte UI of the layer style editor, opened with `showStyleEditor` (bundled in maplibre-gl-legend)|-|
 |[@watergis/mapbox-gl-legend](./packages/mapbox-gl-legend/README.md)|Mapbox GL JS version of the plugin|[CHANGELOG](./packages/mapbox-gl-legend/CHANGELOG.md)
 |[demo](https://github.com/watergis/maplibre-gl-legend/tree/main/sites/demo)|The demo website built by SvelteKit|-|
 

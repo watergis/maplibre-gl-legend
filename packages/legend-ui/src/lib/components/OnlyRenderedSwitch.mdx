@@ -1,0 +1,63 @@
+import { Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as OnlyRenderedSwitchStories from './OnlyRenderedSwitch.stories.svelte';
+
+<Meta of={OnlyRenderedSwitchStories} />
+
+# OnlyRenderedSwitch
+
+The "Only rendered" switch: a checkbox styled as a switch (`role="switch"`). When it is on, only the layers which have features rendered in the current view are listed (and the layers hidden with a toggle, so that they can be shown again).
+
+## Where it is used
+
+`LegendPanel`, under the title.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'model'}</code>
+			</td>
+			<td>
+				<code>{'LegendModel'}</code>
+			</td>
+			<td></td>
+			<td>The state of the legend panel.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'id'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The id of the checkbox, unique in the page, for its label.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+The stories use a mock legend source (`src/stories/ModelFrame.svelte`): the eye toggles change the visibility of the mock layers.
+
+- **On**: the switch on.
+- **Off**: the switch off.
+- **Translated label**: `onlyRenderedLabel`.
+
+## Primary story
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

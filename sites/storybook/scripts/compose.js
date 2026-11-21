@@ -1,7 +1,7 @@
 /**
  * Copy the Storybooks of the packages, built by their `build-storybook` scripts, next to the
- * composed Storybook in build/, where `.storybook/main.ts` refers to them (`./maplibre2svg` and
- * `./style-editor-ui`).
+ * composed Storybook in build/, where `.storybook/main.ts` refers to them (`./maplibre2svg`,
+ * `./legend-ui` and `./style-editor-ui`).
  */
 import { cpSync, existsSync, rmSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -13,6 +13,7 @@ const build = resolve(here, '../build');
 
 const REFS = {
 	maplibre2svg: resolve(packages, 'maplibre2svg/site/storybook'),
+	'legend-ui': resolve(packages, 'legend-ui/storybook-static'),
 	'style-editor-ui': resolve(packages, 'style-editor-ui/storybook-static')
 };
 
