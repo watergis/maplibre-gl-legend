@@ -68,7 +68,13 @@ map.addControl(new MaplibreLegendControl({}, {reverseOrder: false}), 'bottom-lef
 map.addControl(new MaplibreLegendControl(targets, {
   groups: {
     'Pipeline': ['pipeline', 'pipeline_annotation'],
-    'Water Facilities': ['wtp', 'wtp_annotation', 'tank', 'tank_annotation'],
+    // groups can be nested to any depth: an object of groups in place of the array of layer IDs
+    'Water Facilities': {
+      'WTP': ['wtp', 'wtp_annotation'],
+      'Tank': ['tank', 'tank_annotation'],
+    },
+    // or groups in the array next to layer IDs
+    'All Points': [{ 'Some Points': ['points-halo', 'points-circles'] }, 'points-symbols'],
   },
 }), 'top-left');
 });
@@ -85,7 +91,7 @@ All options are optional. See [LegendOptions in the API reference](https://mapli
   - false: Legend will be hide as default
   - default value is `true` if you don't specify the option.
 - showCheckbox
-  - true: the checkbox for switching visibility will be added as default
+  - true: the checkbox (eye icon) for switching visibility will be added at the right end of each row as default
   - false: the checkbox will not be added as default
   - default value is `true` if you don't specify the option.
 - reverseOrder
@@ -107,6 +113,11 @@ All options are optional. See [LegendOptions in the API reference](https://mapli
   - the layers of a group are listed under the group title. The checkbox of the group switches all of its layers on/off, and each layer still has its own checkbox. Click the group row (title or chevron) to collapse or expand the group.
   - a layer in a group but not in `targets` is not listed, but the checkbox of the group still switches it on/off (e.g. a label layer switched with its features). With an empty `targets` (`{}`), all layers are listed. A layer belongs to the first group listing it.
   - a group with only one layer in `targets` (its other layers are not in `targets`) is shown as a single layer row without the group title. The checkbox of the row still switches all layers of the group on/off. A group with 2 or more layers in `targets` stays a group even if only one of them is rendered with `onlyRendered`.
+  - groups can be nested to any depth. The members of a group are either:
+    - an array of layer IDs, which can also have objects of nested groups, e.g. `{ 'All Points': [{ 'Some Points': ['points-halo', 'points-circles'] }, 'points-symbols'] }`
+    - an object of nested groups, e.g. `{ 'Water Facilities': { 'WTP': ['wtp', 'wtp_annotation'], 'Tank': ['tank', 'tank_annotation'] } }`
+  - the legend is shown as a tree: the chevron of a group and the title on the left, the style editor button (with `showStyleEditor`) and the checkbox on the right, the checkbox at the right end. A nested group is indented inside its parent, at the position of its first layer. The checkbox of a group switches the layers of all its nested groups too, and collapsing a group hides all of them. The rules above apply to nested groups as well, counting the layers of their nested groups.
+  - the type of the option is exported as `LegendGroups`.
   - default: no group
 - groupBySourceLayer
   - true: layers not in `groups` which share the same source and `source-layer` are grouped automatically, titled by the source-layer name. They are grouped only while 2 or more of them are listed (e.g. with `onlyRendered`, a layer not rendered at the current zoom is not counted).
@@ -151,8 +162,10 @@ The icons (layer visibility eye / eye-off, close button) and the "Only rendered"
 | `--maplibregl-legend-switch-off-color` | `#c4c4c4` | switch color when off |
 | `--maplibregl-legend-switch-thumb-color` | `#ffffff` | color of the switch knob |
 | `--maplibregl-legend-divider` | `1px solid #e5e5e5` | line between layers |
-| `--maplibregl-legend-group-divider` | `--maplibregl-legend-divider` | line between the layers in a group |
-| `--maplibregl-legend-group-divider-inset` | `8px` | how much shorter the line between the layers in a group is, on each side |
+| `--maplibregl-legend-group-divider` | `none` | line between the rows in a group (none: the rows are tied by the tree guides) |
+| `--maplibregl-legend-group-divider-inset` | `8px` | how much shorter the line between the rows in a group is, on each side |
+| `--maplibregl-legend-group-indent` | `--maplibregl-legend-icon-size` + `4px` | how much each level of the tree is indented |
+| `--maplibregl-legend-tree-guide-color` | `#e5e5e5` | color of the vertical lines guiding the levels of the tree (`transparent`: no line) |
 | `--maplibregl-legend-text-color` | `#1c1c1c` | text color |
 | `--maplibregl-legend-focus-color` | `#3b82f6` | keyboard focus outline color |
 

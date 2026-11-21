@@ -1,0 +1,65 @@
+import { Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as TreeGroupStories from './TreeGroup.stories.svelte';
+
+<Meta of={TreeGroupStories} />
+
+# TreeGroup
+
+A group of the legend tree: its title row (chevron, bold title, and the eye toggle switching all layers of the group, including its nested groups and the layers not listed), then its rows while it is expanded. Clicking the row or the chevron collapses / expands the group; the state is kept in the model between refreshes. A group whose layers all have nothing to draw is not listed.
+
+## Where it is used
+
+`TreeNode`, for a group row. It shows its rows with `TreeNode`, so groups are nested to any depth.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'model'}</code>
+			</td>
+			<td>
+				<code>{'LegendModel'}</code>
+			</td>
+			<td></td>
+			<td>The state of the legend panel.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'node'}</code>
+			</td>
+			<td>
+				<code>{'GroupView'}</code>
+			</td>
+			<td></td>
+			<td>The group row, from the rows of the model.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+The stories use a mock legend source (`src/stories/ModelFrame.svelte`): the eye toggles change the visibility of the mock layers.
+
+- **Group of layers**: a group of two layers.
+- **Nested groups**: a group with nested groups, three levels deep.
+- **Collapsed**: `collapseGroups`: only the title row is shown.
+- **Partially visible**: some layers of a nested group are hidden: the eyes of the group and its parents are partially checked (gray).
+- **Hidden**: all layers of the group are hidden.
+
+## Primary story
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

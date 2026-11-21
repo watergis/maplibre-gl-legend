@@ -5,6 +5,7 @@
 	"entryPoints": [
 		"packages/maplibre-gl-legend",
 		"packages/maplibre2svg",
+		"packages/legend-ui",
 		"packages/style-editor-ui",
 		"packages/mapbox-gl-legend"
 	],

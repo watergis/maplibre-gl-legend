@@ -1,0 +1,57 @@
+import { Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as LayerSymbolStories from './LayerSymbol.stories.svelte';
+
+<Meta of={LayerSymbolStories} />
+
+# LayerSymbol
+
+The legend symbol of a layer: the SVG element drawn by the legend source (maplibre2svg in maplibre-gl-legend), or a fallback icon when it could not be drawn. The classes of a layer styled by data are shown by `TreeLayer` under its row.
+
+## Where it is used
+
+`TreeLayer`, at the left of the title.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'symbol'}</code>
+			</td>
+			<td>
+				<code>{'LayerSymbol'}</code>
+			</td>
+			<td></td>
+			<td>
+				The symbol: <code>single</code> (an SVG element) or <code>error</code> (the fallback icon).
+				Nothing is shown for <code>none</code> and <code>classes</code>.
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+The stories draw simple swatches (`swatchSymbol` of `src/stories/mock-source.ts`) in place of maplibre2svg.
+
+- **Fill**: a fill swatch (the stories draw simple swatches, without maplibre2svg).
+- **Line**: a line swatch.
+- **Circle**: a circle swatch.
+- **Fallback icon**: the icon shown when the symbol could not be drawn.
+
+## Primary story
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

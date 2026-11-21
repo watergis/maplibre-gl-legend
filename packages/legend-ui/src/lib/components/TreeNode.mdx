@@ -1,0 +1,62 @@
+import { Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as TreeNodeStories from './TreeNode.stories.svelte';
+
+<Meta of={TreeNodeStories} />
+
+# TreeNode
+
+A node of the legend tree: a `TreeGroup` for a group row, or a `TreeLayer` for a layer row.
+
+## Where it is used
+
+`LegendTree` and `TreeGroup`, for each of their rows.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'model'}</code>
+			</td>
+			<td>
+				<code>{'LegendModel'}</code>
+			</td>
+			<td></td>
+			<td>The state of the legend panel.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'node'}</code>
+			</td>
+			<td>
+				<code>{'LegendViewNode'}</code>
+			</td>
+			<td></td>
+			<td>A row of the model: a group or a layer.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+The stories use a mock legend source (`src/stories/ModelFrame.svelte`): the eye toggles change the visibility of the mock layers.
+
+- **Group**: a group row.
+- **Layer**: a layer row.
+
+## Primary story
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

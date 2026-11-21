@@ -1,3 +1,5 @@
+import type { LegendGroups } from '@watergis/maplibre-gl-legend';
+
 export type MapLibrary = 'maplibre' | 'mapbox';
 
 export const STYLE_URL = 'https://narwassco.github.io/mapbox-stylefiles/unvt/style.json';
@@ -13,12 +15,12 @@ export const TARGETS: { [key: string]: string } = {
 	valve: 'Valve',
 	firehydrant: 'Fire Hydrant',
 	washout: 'Washout',
-	tank: 'Tank',
-	tank_annotation: 'Tank Label',
-	wtp: 'WTP',
-	wtp_annotation: 'WTP Label',
-	intake: 'Intake',
-	intake_annotation: 'Intake Label',
+	//tank: 'Tank',
+	tank_annotation: 'Tank',
+	//wtp: 'WTP',
+	wtp_annotation: 'WTP',
+	//intake: 'Intake',
+	intake_annotation: 'Intake',
 	parcels: 'Parcels',
 	//parcels_annotation: 'Parcels Label',
 	village: 'Village',
@@ -30,21 +32,27 @@ export const TARGETS: { [key: string]: string } = {
 	hillshade: 'Hillshade'
 };
 
-/** groups of layers used by the maplibre-gl-legend demo: group title and its layer ids */
-export const DEMO_GROUPS: { [title: string]: string[] } = {
-	'Water Facilities': [
-		'wtp',
-		'wtp_annotation',
-		'intake',
-		'intake_annotation',
-		'tank',
-		'tank_annotation'
-	],
-	'Water Pipes': ['pipeline', 'pipeline_annotation'],
-	Parcels: ['parcels', 'parcels-outline', 'parcels_annotation'],
-	Village: ['village', 'village_annotation'],
-	Contours: ['contour-line', 'contour-label'],
-	DMA: ['dma', 'dma-annotation']
+/** groups of layers used by the maplibre-gl-legend demo: group title and its layer ids, or its nested groups */
+export const DEMO_GROUPS: LegendGroups = {
+	// groups can be nested to any depth: an object of groups, or groups next to layer IDs in an array
+	'Water Supply': {
+		'Water Facilities': {
+			WTP: ['wtp', 'wtp_annotation'],
+			Intake: ['intake', 'intake_annotation'],
+			Tank: ['tank', 'tank_annotation']
+		},
+		'Water Pipes': ['pipeline', 'pipeline_annotation'],
+		'Meters': ['meter', 'flow meter'],
+		'Valves': ['valve'],
+		'Washout': ['washout'],
+		'Fire Hydrants': ['firehydrant']
+	},
+	'Zones': {
+		Village: ['village', 'village_annotation'],
+		DMA: ['dma', 'dma-annotation']
+	},
+	'Parcels': ['parcels', 'parcels-outline', 'parcels_annotation'],
+	'Contours': ['contour-line', 'contour-label'],
 };
 
 type OptionValues = Record<string, boolean | string>;

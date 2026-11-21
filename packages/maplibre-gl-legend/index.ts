@@ -61,16 +61,17 @@ map.on('load', function () {
 		onlyRenderedLabel: 'Show only rendered',
 		// a palette button on each layer opens the style editor
 		showStyleEditor: true,
-		// layers in a group are listed under the group title, and switched on/off together
+		// layers in a group are listed under the group title, and switched on/off together.
+		// Groups can be nested to any depth: an object of groups, or groups next to layer IDs in an array
 		groups: {
-			'Water Facilities': [
-				'wtp',
-				'wtp_annotation',
-				'intake',
-				'intake_annotation',
-				'tank',
-				'tank_annotation'
-			],
+			'Water Supply': {
+				'Water Facilities': {
+					WTP: ['wtp', 'wtp_annotation'],
+					Intake: ['intake', 'intake_annotation'],
+					Tank: ['tank', 'tank_annotation']
+				},
+				'Water Pipes': ['pipeline', 'pipeline_annotation']
+			},
 			Parcels: ['parcels', 'parcels-outline', 'parcels_annotation'],
 			Village: ['village', 'village_annotation'],
 			DMA: ['dma', 'dma-annotation']

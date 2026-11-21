@@ -1,12 +1,12 @@
 {
 	"name": "@watergis/storybook",
-	"description": "The Storybook of all packages: maplibre2svg and style-editor-ui composed into one site, shown on the demo site.",
+	"description": "The Storybook of all packages: maplibre2svg, legend-ui and style-editor-ui composed into one site, shown on the demo site.",
 	"version": "0.0.1",
 	"private": true,
 	"type": "module",
 	"scripts": {
 		"storybook": "storybook dev -p 6010",
-		"build-storybook": "pnpm --filter @watergis/maplibre2svg build-storybook && pnpm --filter @watergis/style-editor-ui build-storybook && storybook build -o build && node scripts/compose.js",
+		"build-storybook": "pnpm --filter @watergis/maplibre2svg build-storybook && pnpm --filter @watergis/legend-ui build-storybook && pnpm --filter @watergis/style-editor-ui build-storybook && storybook build -o build && node scripts/compose.js",
 		"lint": "prettier --check .",
 		"format": "prettier --write ."
 	},

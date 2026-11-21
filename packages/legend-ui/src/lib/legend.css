@@ -1,0 +1,431 @@
+/*
+ * Styles of the legend panel (`LegendPanel.svelte`).
+ *
+ * They are global (not scoped to the components) and use the class names of maplibre-gl-legend,
+ * so the rules and custom properties overriding them keep working. Override the custom properties
+ * on `.maplibregl-legend-list` to restyle the panel.
+ *
+ * The rules prefixed by `.maplibregl-ctrl-group` override the styles of the buttons of MapLibre
+ * controls: the panel is shown in a `.maplibregl-ctrl.maplibregl-ctrl-group` element.
+ */
+
+/*
+ * Customizable properties.
+ * Override any of these on `.maplibregl-legend-list` (or a more specific selector) to restyle the control.
+ * Icons are used as CSS masks, so only their shape matters; their color comes from the color properties.
+ */
+.maplibregl-legend-list {
+	/* Lucide "eye": shown when a layer is visible */
+	--maplibregl-legend-icon-visible: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+	/* Lucide "eye-off": shown when a layer is hidden */
+	--maplibregl-legend-icon-hidden: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49'/%3E%3Cpath d='M14.084 14.158a3 3 0 0 1-4.242-4.242'/%3E%3Cpath d='M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143'/%3E%3Cpath d='m2 2 20 20'/%3E%3C/svg%3E");
+	/* Lucide "x": the close button */
+	--maplibregl-legend-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18'/%3E%3Cpath d='m6 6 12 12'/%3E%3C/svg%3E");
+	/* Lucide "palette": the button opening the style editor of a layer */
+	--maplibregl-legend-icon-style: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z'/%3E%3Ccircle cx='13.5' cy='6.5' r='.5' fill='black'/%3E%3Ccircle cx='17.5' cy='10.5' r='.5' fill='black'/%3E%3Ccircle cx='6.5' cy='12.5' r='.5' fill='black'/%3E%3Ccircle cx='8.5' cy='7.5' r='.5' fill='black'/%3E%3C/svg%3E");
+	/* Lucide "chevron-down": the button collapsing a group (rotated when collapsed) */
+	--maplibregl-legend-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+	--maplibregl-legend-icon-size: 16px;
+	--maplibregl-legend-icon-color: #1c1c1c;
+	--maplibregl-legend-icon-hidden-color: #9a9a9a;
+	/* color of the visible icon of a partially visible group */
+	--maplibregl-legend-icon-partial-color: #9a9a9a;
+	--maplibregl-legend-close-icon-size: 16px;
+	--maplibregl-legend-close-icon-color: #1c1c1c;
+	--maplibregl-legend-style-icon-color: #6b6b6b;
+	--maplibregl-legend-style-icon-hover-color: var(--maplibregl-legend-focus-color);
+
+	/* "Only rendered" switch */
+	--maplibregl-legend-switch-width: 28px;
+	--maplibregl-legend-switch-height: 16px;
+	--maplibregl-legend-switch-thumb-size: 12px;
+	--maplibregl-legend-switch-on-color: #3b82f6;
+	--maplibregl-legend-switch-off-color: #c4c4c4;
+	--maplibregl-legend-switch-thumb-color: #ffffff;
+
+	/* line between layers */
+	--maplibregl-legend-divider: 1px solid #e5e5e5;
+	/* line between the rows in a group: none by default, the rows of a group are tied by the tree guides */
+	--maplibregl-legend-group-divider: none;
+	/* how much shorter the line between the layers in a group is, on each side */
+	--maplibregl-legend-group-divider-inset: 8px;
+	/* how much each level of the tree is indented: the width of the chevron and the gap after it */
+	--maplibregl-legend-group-indent: calc(var(--maplibregl-legend-icon-size) + 4px);
+	/* color of the vertical lines guiding the levels of the tree (transparent: no line) */
+	--maplibregl-legend-tree-guide-color: #e5e5e5;
+
+	--maplibregl-legend-text-color: #1c1c1c;
+	--maplibregl-legend-focus-color: #3b82f6;
+}
+
+.maplibregl-legend-list {
+	display: none;
+	position: relative;
+	margin: 0.3em;
+}
+
+.maplibregl-legend-table-wrapper {
+	overflow-y: auto;
+	max-height: calc(100vh * 0.7);
+}
+
+.maplibregl-ctrl-group .maplibregl-legend-list button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	display: block;
+	height: auto;
+}
+
+.maplibregl-legend-list button.active {
+	font-weight: bold;
+}
+
+/* close button (Lucide "x") */
+.maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-close-button {
+	position: absolute;
+	right: 0;
+	top: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: calc(var(--maplibregl-legend-close-icon-size) + 8px);
+	height: calc(var(--maplibregl-legend-close-icon-size) + 8px);
+	padding: 0;
+	border: 0;
+	border-radius: 3px;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.maplibregl-legend-close-button::before {
+	content: '';
+	display: block;
+	width: var(--maplibregl-legend-close-icon-size);
+	height: var(--maplibregl-legend-close-icon-size);
+	background-color: var(--maplibregl-legend-close-icon-color);
+	-webkit-mask: var(--maplibregl-legend-icon-close) center / contain no-repeat;
+	mask: var(--maplibregl-legend-icon-close) center / contain no-repeat;
+}
+
+.maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-close-button:hover {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.maplibregl-legend-close-button:focus-visible {
+	outline: 2px solid var(--maplibregl-legend-focus-color);
+	outline-offset: -2px;
+}
+
+.maplibregl-legend-title-label {
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	margin: 5px;
+	padding-right: calc(var(--maplibregl-legend-close-icon-size) + 8px);
+	color: var(--maplibregl-legend-text-color);
+}
+
+/* "Only rendered" switch */
+.maplibregl-legend-onlyRendered {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	/* the border spans the full width, like the lines between layers */
+	margin: 5px 0 0;
+	padding: 0 5px 5px;
+	border-bottom: var(--maplibregl-legend-divider);
+}
+
+.maplibregl-legend-onlyRendered-checkbox {
+	-webkit-appearance: none;
+	appearance: none;
+	position: relative;
+	flex: none;
+	width: var(--maplibregl-legend-switch-width);
+	height: var(--maplibregl-legend-switch-height);
+	margin: 0;
+	border: 0;
+	border-radius: var(--maplibregl-legend-switch-height);
+	background-color: var(--maplibregl-legend-switch-off-color);
+	cursor: pointer;
+	transition: background-color 0.15s ease-in-out;
+}
+
+.maplibregl-legend-onlyRendered-checkbox::before {
+	content: '';
+	position: absolute;
+	top: calc(
+		(var(--maplibregl-legend-switch-height) - var(--maplibregl-legend-switch-thumb-size)) / 2
+	);
+	left: calc(
+		(var(--maplibregl-legend-switch-height) - var(--maplibregl-legend-switch-thumb-size)) / 2
+	);
+	width: var(--maplibregl-legend-switch-thumb-size);
+	height: var(--maplibregl-legend-switch-thumb-size);
+	border-radius: 50%;
+	background-color: var(--maplibregl-legend-switch-thumb-color);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+	transition: transform 0.15s ease-in-out;
+}
+
+.maplibregl-legend-onlyRendered-checkbox:checked {
+	background-color: var(--maplibregl-legend-switch-on-color);
+}
+
+.maplibregl-legend-onlyRendered-checkbox:checked::before {
+	transform: translateX(
+		calc(var(--maplibregl-legend-switch-width) - var(--maplibregl-legend-switch-height))
+	);
+}
+
+.maplibregl-legend-onlyRendered-checkbox:focus-visible {
+	outline: 2px solid var(--maplibregl-legend-focus-color);
+	outline-offset: 2px;
+}
+
+.maplibregl-legend-onlyRendered-label {
+	font-size: 14px;
+	color: var(--maplibregl-legend-text-color);
+	cursor: pointer;
+}
+
+/* the button collapsing a group (Lucide "chevron-down"), at the left of the group title */
+.maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-group-collapse {
+	display: flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	width: var(--maplibregl-legend-icon-size);
+	height: var(--maplibregl-legend-icon-size);
+	margin-right: calc(var(--maplibregl-legend-group-indent) - var(--maplibregl-legend-icon-size));
+	padding: 0;
+	border: 0;
+	border-radius: 3px;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.maplibregl-legend-group-collapse::before {
+	content: '';
+	display: block;
+	width: var(--maplibregl-legend-icon-size);
+	height: var(--maplibregl-legend-icon-size);
+	background-color: var(--maplibregl-legend-icon-color);
+	-webkit-mask: var(--maplibregl-legend-icon-chevron) center / contain no-repeat;
+	mask: var(--maplibregl-legend-icon-chevron) center / contain no-repeat;
+	transition: transform 0.15s ease-in-out;
+}
+
+.maplibregl-legend-group-collapse[aria-expanded='false']::before {
+	transform: rotate(-90deg);
+}
+
+/* no hover style: the whole group row is clickable (overrides the hover background of MapLibre control buttons) */
+.maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-group-collapse:hover {
+	background-color: transparent;
+}
+
+.maplibregl-legend-group-collapse:focus-visible {
+	outline: 2px solid var(--maplibregl-legend-focus-color);
+	outline-offset: -2px;
+}
+
+/* layer visibility toggle (Lucide "eye" / "eye-off") */
+.maplibregl-legend-visibility-toggle {
+	-webkit-appearance: none;
+	appearance: none;
+	display: block;
+	width: var(--maplibregl-legend-icon-size);
+	height: var(--maplibregl-legend-icon-size);
+	margin: 0 2px;
+	padding: 0;
+	border: 0;
+	background: none;
+	cursor: pointer;
+}
+
+.maplibregl-legend-visibility-toggle::before {
+	content: '';
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: var(--maplibregl-legend-icon-hidden-color);
+	-webkit-mask: var(--maplibregl-legend-icon-hidden) center / contain no-repeat;
+	mask: var(--maplibregl-legend-icon-hidden) center / contain no-repeat;
+}
+
+.maplibregl-legend-visibility-toggle:checked::before {
+	background-color: var(--maplibregl-legend-icon-color);
+	-webkit-mask-image: var(--maplibregl-legend-icon-visible);
+	mask-image: var(--maplibregl-legend-icon-visible);
+}
+
+/* a partially visible group */
+.maplibregl-legend-visibility-toggle:indeterminate::before {
+	background-color: var(--maplibregl-legend-icon-partial-color);
+	-webkit-mask-image: var(--maplibregl-legend-icon-visible);
+	mask-image: var(--maplibregl-legend-icon-visible);
+}
+
+.maplibregl-legend-visibility-toggle:focus-visible {
+	outline: 2px solid var(--maplibregl-legend-focus-color);
+	outline-offset: 2px;
+}
+
+/* button opening the style editor of a layer (Lucide "palette"), with `showStyleEditor` */
+.maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-style-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: calc(var(--maplibregl-legend-icon-size) + 6px);
+	height: calc(var(--maplibregl-legend-icon-size) + 6px);
+	padding: 0;
+	border: 0;
+	border-radius: 3px;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.maplibregl-legend-style-button::before {
+	content: '';
+	display: block;
+	width: var(--maplibregl-legend-icon-size);
+	height: var(--maplibregl-legend-icon-size);
+	background-color: var(--maplibregl-legend-style-icon-color);
+	-webkit-mask: var(--maplibregl-legend-icon-style) center / contain no-repeat;
+	mask: var(--maplibregl-legend-icon-style) center / contain no-repeat;
+}
+
+.maplibregl-ctrl-group .maplibregl-legend-list button.maplibregl-legend-style-button:hover {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.maplibregl-legend-style-button:hover::before {
+	background-color: var(--maplibregl-legend-style-icon-hover-color);
+}
+
+.maplibregl-legend-style-button:focus-visible {
+	outline: 2px solid var(--maplibregl-legend-focus-color);
+	outline-offset: -2px;
+}
+
+/*
+ * The tree of layers and groups. A row is
+ *   [indent][chevron (group) | symbol (layer)][label]......[style button][eye]
+ * Each level is indented by `--maplibregl-legend-group-indent`, with a vertical line under the
+ * chevron of each group the row is in.
+ */
+.maplibregl-legend-tree {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* a line between the top-level layers and groups */
+.maplibregl-legend-tree > .maplibregl-legend-node + .maplibregl-legend-node {
+	border-top: var(--maplibregl-legend-divider);
+}
+
+.maplibregl-legend-children {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* a line between the rows of a group (none by default), shorter on both sides */
+.maplibregl-legend-children > .maplibregl-legend-node + .maplibregl-legend-node::before {
+	content: '';
+	display: block;
+	margin: 0 var(--maplibregl-legend-group-divider-inset);
+	border-top: var(--maplibregl-legend-group-divider);
+}
+
+.maplibregl-legend-row {
+	display: flex;
+	align-items: stretch;
+	gap: 0;
+	padding: 0 2px;
+	min-height: calc(var(--maplibregl-legend-icon-size) + 6px);
+}
+
+.maplibregl-legend-row > * {
+	align-self: center;
+}
+
+.maplibregl-legend-group-header {
+	cursor: pointer;
+}
+
+/* the indent of a row: a vertical line per level, under the chevrons of the groups it is in */
+.maplibregl-legend-indent {
+	flex: none;
+	align-self: stretch;
+	width: calc(var(--maplibregl-legend-tree-levels, 0) * var(--maplibregl-legend-group-indent));
+	background-image: repeating-linear-gradient(
+		to right,
+		transparent 0 calc(var(--maplibregl-legend-icon-size) / 2 - 0.5px),
+		var(--maplibregl-legend-tree-guide-color) calc(var(--maplibregl-legend-icon-size) / 2 - 0.5px)
+			calc(var(--maplibregl-legend-icon-size) / 2 + 0.5px),
+		transparent calc(var(--maplibregl-legend-icon-size) / 2 + 0.5px)
+			var(--maplibregl-legend-group-indent)
+	);
+}
+
+.maplibregl-legend-symbol {
+	display: flex;
+	flex: none;
+	align-items: center;
+	margin: 3px 6px 3px 0;
+}
+
+.maplibregl-legend-symbol > svg {
+	display: block;
+}
+
+.maplibregl-legend-symbol > svg.post-icon {
+	height: 17px;
+}
+
+.maplibregl-legend-label {
+	flex: 1 1 auto;
+	margin: 3px 8px 3px 0;
+	color: var(--maplibregl-legend-text-color);
+	white-space: nowrap;
+}
+
+.maplibregl-legend-group-header .maplibregl-legend-label {
+	font-weight: bold;
+	cursor: pointer;
+}
+
+/* the style button, then the eye toggle at the right end of the rows: the style column is kept
+   empty on the rows without a style button (groups), so the eyes of all rows are aligned */
+.maplibregl-legend-row .maplibregl-legend-visibility-toggle {
+	flex: none;
+	margin: 3px 2px;
+}
+
+.maplibregl-legend-style-slot {
+	flex: none;
+	display: flex;
+	justify-content: center;
+	width: calc(var(--maplibregl-legend-icon-size) + 6px);
+	margin-right: 2px;
+}
+
+/* the classes of a layer styled by data, one level deeper than the layer */
+.maplibregl-legend-classes {
+	display: flex;
+	align-items: stretch;
+	padding: 0 2px;
+}
+
+.maplibregl-legend-classes-symbols {
+	align-self: center;
+	margin: 2px 0 4px;
+}
+
+.maplibregl-legend-classes-symbols > svg {
+	display: block;
+}

@@ -1,0 +1,57 @@
+import { Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as LegendTreeStories from './LegendTree.stories.svelte';
+
+<Meta of={LegendTreeStories} />
+
+# LegendTree
+
+The tree of layers and groups of the legend: a `TreeNode` per top-level row of the model. Groups are nested to any depth, each level indented with a vertical guide line under the chevron of its group. A line (`--maplibregl-legend-divider`) separates the top-level rows.
+
+## Where it is used
+
+`LegendPanel`, under the "Only rendered" switch.
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'model'}</code>
+			</td>
+			<td>
+				<code>{'LegendModel'}</code>
+			</td>
+			<td></td>
+			<td>The state of the legend panel.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+The stories use a mock legend source (`src/stories/ModelFrame.svelte`): the eye toggles change the visibility of the mock layers.
+
+- **Layers**: the layers without groups.
+- **Flat groups**: groups of layers.
+- **Nested groups**: groups nested three levels deep.
+- **Layers and groups in a group**: a group with layers and a nested group in its array.
+- **Grouped by source-layer**: `groupBySourceLayer`.
+- **With style editor buttons**: `showStyleEditor`: the palette buttons on the left of the eyes. The groups have no palette button, and their eyes are still aligned with the eyes of the layers.
+- **Without toggles**: `showCheckbox: false`.
+
+## Primary story
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

@@ -1,0 +1,150 @@
+import { Meta, Primary, Stories } from '@storybook/addon-docs/blocks';
+import * as TreeRowStories from './TreeRow.stories.svelte';
+
+<Meta of={TreeRowStories} />
+
+# TreeRow
+
+The frame of a row of the legend tree: `[indent][lead][title] …… [style][eye]`. The indent is `depth × --maplibregl-legend-group-indent` with a vertical line (`--maplibregl-legend-tree-guide-color`) per level. The style column is shown with `showStyleEditor`, empty when the row has no style button (a group), and the eye with `showCheckbox` at the right end, so that the eyes of all rows are aligned.
+
+## Where it is used
+
+`TreeGroup` (the title row, with the chevron) and `TreeLayer` (with the symbol).
+
+## Props
+
+<table>
+	<thead>
+		<tr>
+			<th>Prop</th>
+			<th>Type</th>
+			<th>Default</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>{'model'}</code>
+			</td>
+			<td>
+				<code>{'LegendModel'}</code>
+			</td>
+			<td></td>
+			<td>The state of the legend panel.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'depth'}</code>
+			</td>
+			<td>
+				<code>{'number'}</code>
+			</td>
+			<td></td>
+			<td>The level of the row: 0 at the top level.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'title'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The title of the row.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'lead'}</code>
+			</td>
+			<td>
+				<code>{'Snippet'}</code>
+			</td>
+			<td></td>
+			<td>The chevron of a group, or the symbol of a layer.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'toggleLayerIds'}</code>
+			</td>
+			<td>
+				<code>{'string[]'}</code>
+			</td>
+			<td></td>
+			<td>The layers switched by the eye toggle.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'toggleName'}</code>
+			</td>
+			<td>
+				<code>{'string'}</code>
+			</td>
+			<td></td>
+			<td>The name of the eye toggle: the layer ID of a layer row.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'groupToggle'}</code>
+			</td>
+			<td>
+				<code>{'boolean'}</code>
+			</td>
+			<td>
+				<code>{'false'}</code>
+			</td>
+			<td>True: the toggle switches a group.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'styleButton'}</code>
+			</td>
+			<td>
+				<code>{'Snippet'}</code>
+			</td>
+			<td></td>
+			<td>The button in the style column.</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'header'}</code>
+			</td>
+			<td>
+				<code>{'boolean'}</code>
+			</td>
+			<td>
+				<code>{'false'}</code>
+			</td>
+			<td>True: the title row of a group (bold, clickable).</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'onrowclick'}</code>
+			</td>
+			<td>
+				<code>{'() => void'}</code>
+			</td>
+			<td></td>
+			<td>Called when the row is clicked outside the toggle and the style button.</td>
+		</tr>
+	</tbody>
+</table>
+
+## Stories
+
+The stories use a mock legend source (`src/stories/ModelFrame.svelte`): the eye toggles change the visibility of the mock layers.
+
+- **Layer row**: a top-level layer row.
+- **Group row**: a group title row: clicking it calls `onrowclick` (see the **Actions** panel).
+- **Nested layer row**: a layer row three levels deep, with three guide lines.
+- **Nested group row**: a group title row two levels deep.
+- **With style editor button**: the palette button on the left of the eye.
+- **Without toggle**: `showCheckbox: false`.
+
+## Primary story
+
+<Primary />
+
+## All stories
+
+<Stories includePrimary={false} title="" />

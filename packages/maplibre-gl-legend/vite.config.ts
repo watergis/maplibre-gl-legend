@@ -41,7 +41,7 @@ export default defineConfig({
 			entry: resolve(__dirname, 'src/lib/index.ts'),
 			name: 'MaplibreLegendControl',
 			fileName: (format) => `maplibre-gl-legend.${format}.js`,
-			// the styles of the plugin and of the Svelte components of the style editor, in one file
+			// the styles of the plugin and of the Svelte components of the legend panel and the style editor, in one file
 			cssFileName: CSS_FILE_NAME,
 			formats: ['es']
 		},
@@ -51,7 +51,7 @@ export default defineConfig({
 	},
 	plugins: [
 		minifiedCss(),
-		// the style editor (`@watergis/style-editor-ui`) is written in Svelte and bundled into the plugin
+		// the legend panel (`@watergis/legend-ui`) and the style editor (`@watergis/style-editor-ui`) are written in Svelte and bundled into the plugin
 		svelte(),
 		// a single `index.d.ts`, with the types of the unpublished workspace packages inlined
 		dts({
@@ -59,7 +59,11 @@ export default defineConfig({
 			entryRoot: 'src/lib',
 			outDirs: 'dist/types',
 			bundleTypes: {
-				bundledPackages: ['@watergis/style-editor-ui', '@watergis/maplibre2svg']
+				bundledPackages: [
+					'@watergis/legend-ui',
+					'@watergis/style-editor-ui',
+					'@watergis/maplibre2svg'
+				]
 			}
 		})
 	],
