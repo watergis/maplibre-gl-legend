@@ -50,3 +50,24 @@ describe('legacy {token} strings', () => {
 		expect(evaluated.unresolvedTokens).toEqual({});
 	});
 });
+
+describe('unresolved values', () => {
+	it('records a property set to an expression which gives nothing for the feature', () => {
+		const evaluated = evaluateLayer(symbol({ 'icon-image': ['get', 'icon'] }), { zoom: 0 });
+		expect(evaluated.layout['icon-image']).toBeUndefined();
+		expect(evaluated.unresolvedValues).toEqual(['icon-image']);
+	});
+
+	it('records nothing for a value the feature gives, a constant, an empty string or tokens', () => {
+		const resolved = evaluateLayer(symbol({ 'icon-image': ['get', 'icon'] }), {
+			zoom: 0,
+			properties: { icon: 'pin' }
+		});
+		expect(resolved.unresolvedValues).toEqual([]);
+		for (const image of ['pin', '', 'mark_{k}']) {
+			expect(evaluateLayer(symbol({ 'icon-image': image }), { zoom: 0 }).unresolvedValues).toEqual(
+				[]
+			);
+		}
+	});
+});

@@ -59,8 +59,14 @@ export const SdfIconWithDarkHalo = symbol(
 	}
 );
 
-/** an image which the sprites do not have: the neutral placeholder */
+/** an image which the sprites do not have: the placeholder, a square with an exclamation mark */
 export const MissingIconImage = symbol('MissingIconImage', { 'icon-image': 'no-such-image' });
+
+/** `["get", "icon"]`: the legend has no feature to take the name from, so the placeholder (#64) */
+export const DataDrivenIconImage = symbol('DataDrivenIconImage', {
+	'icon-image': ['get', 'icon'],
+	'icon-size': 0.7
+});
 
 /** `meter_{status}`: the legend has no feature, so the first matching image stands for it */
 export const IconImageWithToken = symbol('IconImageWithToken', { 'icon-image': 'meter_{status}' });

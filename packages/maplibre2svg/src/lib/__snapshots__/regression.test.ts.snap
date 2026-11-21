@@ -3272,6 +3272,29 @@ exports[`the SVG of every story > Layers/symbol / CustomLabels #0 (../sto… 1`]
 }
 `;
 
+exports[`the SVG of every story > Layers/symbol / DataDrivenIconImage #0 … 1`] = `
+{
+  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="243.4" height="36" viewBox="0 0 243.4 36" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="8" y="8"><g transform="translate(10.1 5.1)"><g transform="translate(4.8999999999999995 4.8999999999999995) translate(-4.8999999999999995 -4.8999999999999995)" opacity="1"><g class="maplibre2svg-missing-icon"><g class="maplibre2svg-missing-icon-default" fill="none" stroke="#888888" stroke-width="1.09" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--maplibre2svg-missing-icon-color, #888888); fill: var(--maplibre2svg-missing-icon-fill, none)"><rect x="0.54" y="0.54" width="8.71" height="8.71" rx="2.18"></rect><line x1="4.9" x2="4.9" y1="2.74" y2="5.39"></line><line x1="4.9" x2="4.91" y1="7.25" y2="7.25"></line></g><foreignObject class="maplibre2svg-missing-icon-custom" x="0" y="0" width="9.8" height="9.8" display="none"><div xmlns="http://www.w3.org/1999/xhtml" style="display: block; width: 100%; height: 100%; background-color: var(--maplibre2svg-missing-icon-color, #888888); -webkit-mask: var(--maplibre2svg-missing-icon) center / contain no-repeat; mask: var(--maplibre2svg-missing-icon) center / contain no-repeat"></div></foreignObject></g></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="44" y="18" dominant-baseline="central">symbol-data-driven-icon-image</text></g></svg>",
+  "entries": [
+    {
+      "entries": [
+        {
+          "height": 20,
+          "kind": "single",
+          "label": "symbol-data-driven-icon-image",
+          "ramp": undefined,
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(10.1 5.1)"><g transform="translate(4.8999999999999995 4.8999999999999995) translate(-4.8999999999999995 -4.8999999999999995)" opacity="1"><g class="maplibre2svg-missing-icon"><g class="maplibre2svg-missing-icon-default" fill="none" stroke="#888888" stroke-width="1.09" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--maplibre2svg-missing-icon-color, #888888); fill: var(--maplibre2svg-missing-icon-fill, none)"><rect x="0.54" y="0.54" width="8.71" height="8.71" rx="2.18"></rect><line x1="4.9" x2="4.9" y1="2.74" y2="5.39"></line><line x1="4.9" x2="4.91" y1="7.25" y2="7.25"></line></g><foreignObject class="maplibre2svg-missing-icon-custom" x="0" y="0" width="9.8" height="9.8" display="none"><div xmlns="http://www.w3.org/1999/xhtml" style="display: block; width: 100%; height: 100%; background-color: var(--maplibre2svg-missing-icon-color, #888888); -webkit-mask: var(--maplibre2svg-missing-icon) center / contain no-repeat; mask: var(--maplibre2svg-missing-icon) center / contain no-repeat"></div></foreignObject></g></g></g></svg>",
+          "width": 30,
+        },
+      ],
+      "label": "symbol-data-driven-icon-image",
+      "layerId": "symbol-data-driven-icon-image",
+      "type": "symbol",
+    },
+  ],
+}
+`;
+
 exports[`the SVG of every story > Layers/symbol / ExponentialInterpolate … 1`] = `
 {
   "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="214" height="104.8" viewBox="0 0 214 104.8" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="28.8"><g transform="translate(13.5 9)"><g transform="translate(1.5 1) translate(-1.5 -1)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="3" height="2" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="52.8"><g transform="translate(12.3 8.2)"><g transform="translate(2.7 1.8) translate(-2.7 -1.8)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="5.4" height="3.6" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g></svg><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="20" y="76.8"><g transform="translate(10.8 7.2)"><g transform="translate(4.199999999999999 2.8) translate(-4.199999999999999 -2.8)" opacity="1"><image href="data:image/x-test,6x4/32d818e5" x="0" y="0" width="8.4" height="5.6" preserveAspectRatio="none" xlink:href="data:image/x-test,6x4/32d818e5"></image></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="8" y="16.4" dominant-baseline="central" font-weight="bold">symbol-exponential-interpolate</text><text x="56" y="38.8" dominant-baseline="central">≤ 0</text><text x="56" y="62.8" dominant-baseline="central">5000</text><text x="56" y="86.8" dominant-baseline="central">≥ 20000</text></g></svg>",
@@ -3383,7 +3406,7 @@ exports[`the SVG of every story > Layers/symbol / IconAndText #0 (../stor… 1`]
 
 exports[`the SVG of every story > Layers/symbol / IconImageWithToken #0 (… 1`] = `
 {
-  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="236.8" height="36" viewBox="0 0 236.8 36" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="8" y="8"><g transform="translate(8 3)"><g transform="translate(7 7) translate(-7 -7)" opacity="1"><rect x="0.5" y="0.5" width="13" height="13" rx="2" fill="rgba(128,128,128,0.2)" stroke="rgba(128,128,128,0.7)" stroke-width="1"></rect><circle cx="7" cy="7" r="2.8" fill="rgba(128,128,128,0.7)"></circle></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="44" y="18" dominant-baseline="central">symbol-icon-image-with-token</text></g></svg>",
+  "combined": "<svg xmlns="http://www.w3.org/2000/svg" width="236.8" height="36" viewBox="0 0 236.8 36" xmlns:xlink="http://www.w3.org/1999/xlink"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20" x="8" y="8"><g transform="translate(8 3)"><g transform="translate(7 7) translate(-7 -7)" opacity="1"><g class="maplibre2svg-missing-icon"><g class="maplibre2svg-missing-icon-default" fill="none" stroke="#888888" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--maplibre2svg-missing-icon-color, #888888); fill: var(--maplibre2svg-missing-icon-fill, none)"><rect x="0.78" y="0.78" width="12.44" height="12.44" rx="3.11"></rect><line x1="7" x2="7" y1="3.92" y2="7.7"></line><line x1="7" x2="7.01" y1="10.36" y2="10.36"></line></g><foreignObject class="maplibre2svg-missing-icon-custom" x="0" y="0" width="14" height="14" display="none"><div xmlns="http://www.w3.org/1999/xhtml" style="display: block; width: 100%; height: 100%; background-color: var(--maplibre2svg-missing-icon-color, #888888); -webkit-mask: var(--maplibre2svg-missing-icon) center / contain no-repeat; mask: var(--maplibre2svg-missing-icon) center / contain no-repeat"></div></foreignObject></g></g></g></svg><g font-family="sans-serif" font-size="12" fill="#222222"><text x="44" y="18" dominant-baseline="central">symbol-icon-image-with-token</text></g></svg>",
   "entries": [
     {
       "entries": [
@@ -3392,7 +3415,7 @@ exports[`the SVG of every story > Layers/symbol / IconImageWithToken #0 (… 1`]
           "kind": "single",
           "label": "symbol-icon-image-with-token",
           "ramp": undefined,
-          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(8 3)"><g transform="translate(7 7) translate(-7 -7)" opacity="1"><rect x="0.5" y="0.5" width="13" height="13" rx="2" fill="rgba(128,128,128,0.2)" stroke="rgba(128,128,128,0.7)" stroke-width="1"></rect><circle cx="7" cy="7" r="2.8" fill="rgba(128,128,128,0.7)"></circle></g></g></svg>",
+          "svg": "<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20"><g transform="translate(8 3)"><g transform="translate(7 7) translate(-7 -7)" opacity="1"><g class="maplibre2svg-missing-icon"><g class="maplibre2svg-missing-icon-default" fill="none" stroke="#888888" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--maplibre2svg-missing-icon-color, #888888); fill: var(--maplibre2svg-missing-icon-fill, none)"><rect x="0.78" y="0.78" width="12.44" height="12.44" rx="3.11"></rect><line x1="7" x2="7" y1="3.92" y2="7.7"></line><line x1="7" x2="7.01" y1="10.36" y2="10.36"></line></g><foreignObject class="maplibre2svg-missing-icon-custom" x="0" y="0" width="14" height="14" display="none"><div xmlns="http://www.w3.org/1999/xhtml" style="display: block; width: 100%; height: 100%; background-color: var(--maplibre2svg-missing-icon-color, #888888); -webkit-mask: var(--maplibre2svg-missing-icon) center / contain no-repeat; mask: var(--maplibre2svg-missing-icon) center / contain no-repeat"></div></foreignObject></g></g></g></svg>",
           "width": 30,
         },
       ],

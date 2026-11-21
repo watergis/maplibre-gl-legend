@@ -81,12 +81,14 @@ describe('renderSymbolLayer', () => {
 	it('draws a placeholder for a missing image, or when it cannot be encoded', async () => {
 		const missing = await render(symbol({ 'icon-image': 'nope' }));
 		expect(missing.svg.querySelector('image')).toBeNull();
-		expect(missing.svg.querySelectorAll('rect, circle').length).toBeGreaterThan(0);
+		expect(missing.svg.querySelector('.maplibre2svg-missing-icon')).not.toBeNull();
 		const layer = symbol({ 'icon-image': 'pin' });
 		const ctx = renderContext([layer], { pin });
 		const noCanvas = await renderSymbolLayer(layer, withoutEncoder(ctx));
 		expect(noCanvas.svg.querySelector('image')).toBeNull();
-		expect(attrsOf(noCanvas.svg, 'rect')).toMatchObject({ width: '15' });
+		expect(noCanvas.svg.querySelector('.maplibre2svg-missing-icon')).not.toBeNull();
+		// at the size of the image: 32 / 2 × 16 / 2, less the stroke
+		expect(attrsOf(noCanvas.svg, 'rect')).toMatchObject({ width: '15', height: '7' });
 	});
 
 	it('picks an image for a {token} name it cannot fill', async () => {
@@ -114,7 +116,52 @@ describe('renderSymbolLayer', () => {
 	it('draws the icon placeholder, not the label, for a missing image', async () => {
 		const result = await render(symbol({ 'icon-image': 'nope', 'text-field': 'Name' }));
 		expect(result.svg.querySelector('text')).toBeNull();
-		expect(result.svg.querySelectorAll('rect, circle').length).toBeGreaterThan(0);
+		expect(result.svg.querySelector('.maplibre2svg-missing-icon')).not.toBeNull();
+	});
+
+	it('draws the placeholder for an icon-image which needs a feature, such as ["get", "icon"]', async () => {
+		for (const layout of [
+			{ 'icon-image': ['get', 'icon'] },
+			{ 'icon-image': ['get', 'icon'], 'text-field': 'Name' },
+			{ 'icon-image': ['concat', ['get', 'kind'], '_11'], 'icon-size': 2 }
+		]) {
+			const result = await render(symbol(layout), { pin });
+			expect(result.svg.querySelector('.maplibre2svg-missing-icon')).not.toBeNull();
+			expect(result.svg.querySelector('text')).toBeNull();
+		}
+	});
+
+	it('draws the image when the feature gives the name', async () => {
+		const result = await render(symbol({ 'icon-image': ['get', 'icon'] }, {}, { icon: 'pin' }), {
+			pin
+		});
+		expect(result.svg.querySelector('image')).not.toBeNull();
+	});
+
+	it('has no icon for an empty icon-image, which means none', async () => {
+		const result = await render(symbol({ 'icon-image': '', 'text-field': 'Name' }));
+		expect(result.svg.querySelector('.maplibre2svg-missing-icon')).toBeNull();
+		expect(result.svg.querySelector('text')?.textContent).toBe('Name');
+	});
+
+	it('styles the placeholder with CSS custom properties', async () => {
+		const result = await render(symbol({ 'icon-image': 'nope' }));
+		const shape = result.svg.querySelector('.maplibre2svg-missing-icon-default');
+		expect(shape?.getAttribute('stroke')).toBe('#888888');
+		expect(shape?.getAttribute('style')).toContain('var(--maplibre2svg-missing-icon-color');
+		expect(shape?.getAttribute('style')).toContain('var(--maplibre2svg-missing-icon-fill');
+	});
+
+	it('has a hidden custom icon, a mask of --maplibre2svg-missing-icon, for a page to show', async () => {
+		const result = await render(symbol({ 'icon-image': 'nope' }));
+		const custom = result.svg.querySelector('.maplibre2svg-missing-icon-custom');
+		expect(custom?.tagName).toBe('foreignObject');
+		// an attribute, which a stylesheet overrides; an inline style would win over it
+		expect(custom?.getAttribute('display')).toBe('none');
+		expect(custom?.getAttribute('style')).toBeNull();
+		const mask = custom?.firstElementChild;
+		expect(mask?.namespaceURI).toBe('http://www.w3.org/1999/xhtml');
+		expect(mask?.getAttribute('style')).toContain('mask: var(--maplibre2svg-missing-icon)');
 	});
 });
 

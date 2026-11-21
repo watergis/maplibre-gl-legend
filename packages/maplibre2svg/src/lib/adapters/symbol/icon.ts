@@ -15,11 +15,16 @@ function iconImage(layer: EvaluatedLayer, ctx: RenderContext): FoundImage | unde
 	return ctx.images.find(layer.layout['icon-image']);
 }
 
-/** Whether the layer draws an icon at all */
+/**
+ * Whether the layer draws an icon at all: also when its `icon-image` gives no image for the
+ * legend's feature, such as `["get", "icon"]`, which is then drawn as the placeholder
+ */
 export function hasIcon(layer: EvaluatedLayer) {
 	const name = layer.layout['icon-image'];
 	return (
-		layer.unresolvedTokens['icon-image'] !== undefined || (typeof name === 'string' && name !== '')
+		layer.unresolvedTokens['icon-image'] !== undefined ||
+		layer.unresolvedValues.includes('icon-image') ||
+		(typeof name === 'string' && name !== '')
 	);
 }
 
@@ -65,8 +70,9 @@ function iconUrl(
 /**
  * The icon of a symbol layer at its real display size, `(width / pixelRatio) × icon-size`,
  * scaled down to fit `maxSize`, rotated by `icon-rotate`, with `icon-opacity`. An SDF image is
- * tinted with `icon-color` and its halo. A missing image gives a neutral stand-in. Nothing
- * when the layer has no `icon-image`.
+ * tinted with `icon-color` and its halo. A missing image, or an `icon-image` the legend cannot
+ * resolve without a feature (`["get", "icon"]`), gives the placeholder of `placeholderPart`.
+ * Nothing when the layer has no `icon-image`.
  */
 export class IconDrawer implements SymbolPartDrawer {
 	async draw(layer: EvaluatedLayer, ctx: RenderContext): Promise<SymbolPart | undefined> {

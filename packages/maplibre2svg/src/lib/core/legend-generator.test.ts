@@ -65,7 +65,7 @@ describe('hostile hosts', () => {
 			imageEncoder: fakeEncoder().encode
 		});
 		expect(hrefs(legend.entries[0].svg)).toEqual([]);
-		expect(legend.entries[0].svg.querySelector('circle')).not.toBeNull();
+		expect(legend.entries[0].svg.querySelector('.maplibre2svg-missing-icon')).not.toBeNull();
 	});
 
 	it('accepts only data:image/ and blob: URLs from the encoder', async () => {
