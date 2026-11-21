@@ -7,7 +7,12 @@ import type { SymbolPartDrawer } from './part';
 import { TextDrawer } from './text';
 
 export { hasIcon, iconSize, IconDrawer, rotatedBox } from './icon';
-export { placeholderPart, type SymbolPart, type SymbolPartDrawer } from './part';
+export {
+	MISSING_ICON_CLASS,
+	placeholderPart,
+	type SymbolPart,
+	type SymbolPartDrawer
+} from './part';
 export { hasText, TextDrawer } from './text';
 
 /** Space between the icon and the text */

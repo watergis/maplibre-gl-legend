@@ -238,34 +238,36 @@ The styles are in [`src/lib/legend.css`](src/lib/legend.css). They are global, n
 
 To restyle the panel, override these on `.maplibregl-legend-list`. Icons are CSS masks: only their shape is used, and their color comes from the color properties.
 
-| Property                                     | Default                                 | Description                                                             |
-| -------------------------------------------- | --------------------------------------- | ----------------------------------------------------------------------- |
-| `--maplibregl-legend-icon-visible`           | Lucide `eye`                            | Icon of a visible layer or group.                                       |
-| `--maplibregl-legend-icon-hidden`            | Lucide `eye-off`                        | Icon of a hidden layer or group.                                        |
-| `--maplibregl-legend-icon-close`             | Lucide `x`                              | Icon of the close button.                                               |
-| `--maplibregl-legend-icon-chevron`           | Lucide `chevron-down`                   | Icon of the button collapsing a group (rotated while collapsed).        |
-| `--maplibregl-legend-icon-style`             | Lucide `palette`                        | Icon of the style editor button.                                        |
-| `--maplibregl-legend-icon-size`              | `16px`                                  | Size of the eye, chevron and style icons.                               |
-| `--maplibregl-legend-icon-color`             | `#1c1c1c`                               | Color of the visible eye and the chevron.                               |
-| `--maplibregl-legend-icon-hidden-color`      | `#9a9a9a`                               | Color of the hidden eye.                                                |
-| `--maplibregl-legend-icon-partial-color`     | `#9a9a9a`                               | Color of the eye of a partially visible group.                          |
-| `--maplibregl-legend-close-icon-size`        | `16px`                                  | Size of the close icon.                                                 |
-| `--maplibregl-legend-close-icon-color`       | `#1c1c1c`                               | Color of the close icon.                                                |
-| `--maplibregl-legend-style-icon-color`       | `#6b6b6b`                               | Color of the style editor button.                                       |
-| `--maplibregl-legend-style-icon-hover-color` | `--maplibregl-legend-focus-color`       | Color of the style editor button on hover.                              |
-| `--maplibregl-legend-switch-width`           | `28px`                                  | Width of the "Only rendered" switch.                                    |
-| `--maplibregl-legend-switch-height`          | `16px`                                  | Height of the switch.                                                   |
-| `--maplibregl-legend-switch-thumb-size`      | `12px`                                  | Size of the knob of the switch.                                         |
-| `--maplibregl-legend-switch-on-color`        | `#3b82f6`                               | Color of the switch when on.                                            |
-| `--maplibregl-legend-switch-off-color`       | `#c4c4c4`                               | Color of the switch when off.                                           |
-| `--maplibregl-legend-switch-thumb-color`     | `#ffffff`                               | Color of the knob.                                                      |
-| `--maplibregl-legend-divider`                | `1px solid #e5e5e5`                     | Line between the top-level rows, and under the switch.                  |
-| `--maplibregl-legend-group-divider`          | `none`                                  | Line between the rows of a group.                                       |
-| `--maplibregl-legend-group-divider-inset`    | `8px`                                   | How much shorter the line between the rows of a group is, on each side. |
-| `--maplibregl-legend-group-indent`           | `--maplibregl-legend-icon-size` + `4px` | How much each level of the tree is indented.                            |
-| `--maplibregl-legend-tree-guide-color`       | `#e5e5e5`                               | Color of the vertical guide lines (`transparent`: no line).             |
-| `--maplibregl-legend-text-color`             | `#1c1c1c`                               | Color of the titles and labels.                                         |
-| `--maplibregl-legend-focus-color`            | `#3b82f6`                               | Color of the keyboard focus outline.                                    |
+| Property                                     | Default                                 | Description                                                                       |
+| -------------------------------------------- | --------------------------------------- | --------------------------------------------------------------------------------- |
+| `--maplibregl-legend-icon-visible`           | Lucide `eye`                            | Icon of a visible layer or group.                                                 |
+| `--maplibregl-legend-icon-hidden`            | Lucide `eye-off`                        | Icon of a hidden layer or group.                                                  |
+| `--maplibregl-legend-icon-close`             | Lucide `x`                              | Icon of the close button.                                                         |
+| `--maplibregl-legend-icon-chevron`           | Lucide `chevron-down`                   | Icon of the button collapsing a group (rotated while collapsed).                  |
+| `--maplibregl-legend-icon-style`             | Lucide `palette`                        | Icon of the style editor button.                                                  |
+| `--maplibregl-legend-icon-missing`           | Lucide `square-exclamation-point`       | Icon of a symbol whose icon the legend cannot show, such as of `["get", "icon"]`. |
+| `--maplibregl-legend-icon-size`              | `16px`                                  | Size of the eye, chevron and style icons.                                         |
+| `--maplibregl-legend-icon-color`             | `#1c1c1c`                               | Color of the visible eye and the chevron.                                         |
+| `--maplibregl-legend-icon-hidden-color`      | `#9a9a9a`                               | Color of the hidden eye.                                                          |
+| `--maplibregl-legend-icon-partial-color`     | `#9a9a9a`                               | Color of the eye of a partially visible group.                                    |
+| `--maplibregl-legend-close-icon-size`        | `16px`                                  | Size of the close icon.                                                           |
+| `--maplibregl-legend-close-icon-color`       | `#1c1c1c`                               | Color of the close icon.                                                          |
+| `--maplibregl-legend-style-icon-color`       | `#6b6b6b`                               | Color of the style editor button.                                                 |
+| `--maplibregl-legend-style-icon-hover-color` | `--maplibregl-legend-focus-color`       | Color of the style editor button on hover.                                        |
+| `--maplibregl-legend-missing-icon-color`     | `#9a9a9a`                               | Color of the missing icon.                                                        |
+| `--maplibregl-legend-switch-width`           | `28px`                                  | Width of the "Only rendered" switch.                                              |
+| `--maplibregl-legend-switch-height`          | `16px`                                  | Height of the switch.                                                             |
+| `--maplibregl-legend-switch-thumb-size`      | `12px`                                  | Size of the knob of the switch.                                                   |
+| `--maplibregl-legend-switch-on-color`        | `#3b82f6`                               | Color of the switch when on.                                                      |
+| `--maplibregl-legend-switch-off-color`       | `#c4c4c4`                               | Color of the switch when off.                                                     |
+| `--maplibregl-legend-switch-thumb-color`     | `#ffffff`                               | Color of the knob.                                                                |
+| `--maplibregl-legend-divider`                | `1px solid #e5e5e5`                     | Line between the top-level rows, and under the switch.                            |
+| `--maplibregl-legend-group-divider`          | `none`                                  | Line between the rows of a group.                                                 |
+| `--maplibregl-legend-group-divider-inset`    | `8px`                                   | How much shorter the line between the rows of a group is, on each side.           |
+| `--maplibregl-legend-group-indent`           | `--maplibregl-legend-icon-size` + `4px` | How much each level of the tree is indented.                                      |
+| `--maplibregl-legend-tree-guide-color`       | `#e5e5e5`                               | Color of the vertical guide lines (`transparent`: no line).                       |
+| `--maplibregl-legend-text-color`             | `#1c1c1c`                               | Color of the titles and labels.                                                   |
+| `--maplibregl-legend-focus-color`            | `#3b82f6`                               | Color of the keyboard focus outline.                                              |
 
 ```css
 .maplibregl-legend-list {

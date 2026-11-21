@@ -110,6 +110,34 @@ A layer can override its labels in `metadata.legend`:
 
 Other layer types get a neutral grey rectangle.
 
+### Icons the legend cannot show
+
+When a `symbol` layer sets `icon-image` but the legend cannot show the image, it draws a grey square with an exclamation mark instead. This happens when the image is missing from the style, when it cannot be encoded, or when `icon-image` depends on a feature the legend does not have, such as `["get", "icon"]`.
+
+The placeholder is a `<g class="maplibre2svg-missing-icon">` with two children:
+
+- `.maplibre2svg-missing-icon-default`: the square drawn in SVG, shown by default. It renders without CSS too.
+- `.maplibre2svg-missing-icon-custom`: hidden by default. An icon of your own, the CSS mask `--maplibre2svg-missing-icon` filled with the color.
+
+When the SVG is inline in the page, CSS can change the color or swap in any SVG icon:
+
+```css
+.my-legend {
+	--maplibre2svg-missing-icon-color: #d97706; /* #888888 by default */
+	--maplibre2svg-missing-icon-fill: #fff7ed; /* fill of the default square, none by default */
+	/* only its shape matters: it is a mask filled with the color */
+	--maplibre2svg-missing-icon: url("data:image/svg+xml,…");
+}
+.my-legend .maplibre2svg-missing-icon-default {
+	display: none;
+}
+.my-legend .maplibre2svg-missing-icon-custom {
+	display: inline;
+}
+```
+
+[legend-ui](../legend-ui) shows the custom icon already: set `--maplibregl-legend-icon-missing` and `--maplibregl-legend-missing-icon-color` on `.maplibregl-legend-list`.
+
 ## How it works
 
 `createLegend` goes through four steps for each layer. Each step is a class, and the source folders follow them:

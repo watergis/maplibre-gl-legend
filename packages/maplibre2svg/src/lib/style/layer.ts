@@ -35,6 +35,13 @@ export interface EvaluatedLayer {
 	 */
 	unresolvedTokens: Record<string, UnresolvedTokens>;
 	/**
+	 * Properties which the style (or the class) sets to a value which gave no value for the
+	 * representative feature, such as `["get", "icon"]` for a feature without `icon`, by name.
+	 * They have no value in `paint` / `layout`; a renderer can show that the value is unknown.
+	 * Only properties without a default can be told apart, such as `icon-image`.
+	 */
+	unresolvedValues: string[];
+	/**
 	 * The layer as it is in the style. Renderers read it for what has no single value, such
 	 * as the color ramps, which are left out of `paint`.
 	 */
@@ -68,6 +75,12 @@ function defaultValue(spec: StylePropertySpecification, input: EvaluationInput, 
 	}
 }
 
+/** What the evaluation of a layer could not resolve */
+interface Unresolved {
+	tokens: Record<string, UnresolvedTokens>;
+	values: string[];
+}
+
 /** The geometry type of the features of a layer type */
 export type GeometryTypeOf = (layerType: string) => GeometryType;
 
@@ -95,15 +108,16 @@ export class LayerEvaluator {
 
 	/** Evaluate every paint and layout property of a layer for one feature at one zoom */
 	evaluate(layer: LayerSpecification, options: EvaluateLayerOptions): EvaluatedLayer {
-		const unresolvedTokens: Record<string, UnresolvedTokens> = {};
+		const unresolved: Unresolved = { tokens: {}, values: [] };
 		return {
 			id: layer.id,
 			type: layer.type,
-			paint: this.#group(layer, 'paint', options, unresolvedTokens),
-			layout: this.#group(layer, 'layout', options, unresolvedTokens),
+			paint: this.#group(layer, 'paint', options, unresolved),
+			layout: this.#group(layer, 'layout', options, unresolved),
 			zoom: options.zoom,
 			properties: options.properties ?? {},
-			unresolvedTokens,
+			unresolvedTokens: unresolved.tokens,
+			unresolvedValues: unresolved.values,
 			original: layer
 		};
 	}
@@ -132,7 +146,7 @@ export class LayerEvaluator {
 		layer: LayerSpecification,
 		group: PropertyGroup,
 		options: EvaluateLayerOptions,
-		unresolved: Record<string, UnresolvedTokens>
+		unresolved: Unresolved
 	): Record<string, unknown> {
 		const values: Record<string, unknown> = {};
 		const properties = options.properties ?? {};
@@ -144,10 +158,13 @@ export class LayerEvaluator {
 			const raw = override !== undefined ? override : rawValue(layer, group, name);
 			if (isTokenString(raw, spec)) {
 				const { missing, partial } = resolveTokens(raw, properties);
-				if (missing.length > 0) unresolved[name] = { template: partial, fields: missing };
+				if (missing.length > 0) unresolved.tokens[name] = { template: partial, fields: missing };
 			}
 			const value = this.property(layer, group, name, input, override);
 			if (value !== undefined) values[name] = value;
+			// set, but nothing for this feature: not an empty string, which means none on purpose
+			else if (raw !== undefined && raw !== '' && !unresolved.tokens[name])
+				unresolved.values.push(name);
 		}
 		return values;
 	}

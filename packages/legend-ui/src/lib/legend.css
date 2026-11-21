@@ -23,6 +23,8 @@
 	--maplibregl-legend-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18'/%3E%3Cpath d='m6 6 12 12'/%3E%3C/svg%3E");
 	/* Lucide "palette": the button opening the style editor of a layer */
 	--maplibregl-legend-icon-style: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z'/%3E%3Ccircle cx='13.5' cy='6.5' r='.5' fill='black'/%3E%3Ccircle cx='17.5' cy='10.5' r='.5' fill='black'/%3E%3Ccircle cx='6.5' cy='12.5' r='.5' fill='black'/%3E%3Ccircle cx='8.5' cy='7.5' r='.5' fill='black'/%3E%3C/svg%3E");
+	/* Lucide "square-exclamation-point": stands in for a symbol icon the legend cannot show, such as of `["get", "icon"]` */
+	--maplibregl-legend-icon-missing: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='3' rx='2'/%3E%3Cpath d='M12 8v4'/%3E%3Cpath d='M12 16h.01'/%3E%3C/svg%3E");
 	/* Lucide "chevron-down": the button collapsing a group (rotated when collapsed) */
 	--maplibregl-legend-icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 	--maplibregl-legend-icon-size: 16px;
@@ -34,6 +36,8 @@
 	--maplibregl-legend-close-icon-color: #1c1c1c;
 	--maplibregl-legend-style-icon-color: #6b6b6b;
 	--maplibregl-legend-style-icon-hover-color: var(--maplibregl-legend-focus-color);
+	/* color of the icon drawn for a symbol icon the legend cannot show, such as of `["get", "icon"]` */
+	--maplibregl-legend-missing-icon-color: #9a9a9a;
 
 	/* "Only rendered" switch */
 	--maplibregl-legend-switch-width: 28px;
@@ -385,6 +389,23 @@
 
 .maplibregl-legend-symbol > svg.post-icon {
 	height: 17px;
+}
+
+/*
+ * The placeholder which maplibre2svg draws for a symbol icon it cannot show: the panel shows its
+ * custom icon, the mask `--maplibregl-legend-icon-missing`, in place of the default drawn one.
+ */
+.maplibregl-legend-list .maplibre2svg-missing-icon {
+	--maplibre2svg-missing-icon: var(--maplibregl-legend-icon-missing);
+	--maplibre2svg-missing-icon-color: var(--maplibregl-legend-missing-icon-color);
+}
+
+.maplibregl-legend-list .maplibre2svg-missing-icon-default {
+	display: none;
+}
+
+.maplibregl-legend-list .maplibre2svg-missing-icon-custom {
+	display: inline;
 }
 
 .maplibregl-legend-label {
