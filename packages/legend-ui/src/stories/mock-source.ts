@@ -110,28 +110,24 @@ export function swatchSymbol(layer: LayerSpecification): LayerSymbol {
 	return { type: 'single', svg };
 }
 
-/** a classified symbol: a swatch and a label per class, stacked */
+/** a classified symbol: a line swatch and a label per class */
 export function classesSymbol(classes: { label: string; color: string }[]): LayerSymbol {
-	const svg = document.createElementNS(SVG_NS, 'svg');
-	const height = classes.length * 20;
-	svg.setAttribute('width', '120');
-	svg.setAttribute('height', String(height));
-	svg.setAttribute('viewBox', `0 0 120 ${height}`);
-	classes.forEach(({ label, color }, i) => {
-		const line = document.createElementNS(SVG_NS, 'line');
-		line.setAttribute('x1', '2');
-		line.setAttribute('x2', '18');
-		line.setAttribute('y1', String(i * 20 + 10));
-		line.setAttribute('y2', String(i * 20 + 10));
-		line.setAttribute('stroke', color);
-		line.setAttribute('stroke-width', '3');
-		const text = document.createElementNS(SVG_NS, 'text');
-		text.setAttribute('x', '26');
-		text.setAttribute('y', String(i * 20 + 14));
-		text.setAttribute('font-size', '12');
-		text.setAttribute('fill', 'currentColor');
-		text.textContent = label;
-		svg.append(line, text);
-	});
-	return { type: 'classes', svg };
+	return {
+		type: 'classes',
+		classes: classes.map(({ label, color }) => {
+			const svg = document.createElementNS(SVG_NS, 'svg');
+			svg.setAttribute('width', '20');
+			svg.setAttribute('height', '20');
+			svg.setAttribute('viewBox', '0 0 20 20');
+			const line = document.createElementNS(SVG_NS, 'line');
+			line.setAttribute('x1', '2');
+			line.setAttribute('x2', '18');
+			line.setAttribute('y1', '10');
+			line.setAttribute('y2', '10');
+			line.setAttribute('stroke', color);
+			line.setAttribute('stroke-width', '3');
+			svg.appendChild(line);
+			return { svg, label };
+		})
+	};
 }

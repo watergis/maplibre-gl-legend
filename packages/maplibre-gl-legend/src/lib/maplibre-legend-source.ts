@@ -1,5 +1,5 @@
 import type { LayerSpecification, Map as MaplibreMap } from 'maplibre-gl';
-import { createLayerLegend, createLegendCache, legendToSvg } from '@watergis/maplibre2svg';
+import { createLayerLegend, createLegendCache } from '@watergis/maplibre2svg';
 import type { LayerSymbol, LegendSource } from '@watergis/legend-ui';
 
 /** Options of {@link MaplibreLegendSource} */
@@ -70,7 +70,10 @@ export class MaplibreLegendSource implements LegendSource {
 		if (legend.entries.length === 0) return { type: 'none' };
 		if (legend.entries.length === 1) return { type: 'single', svg: legend.entries[0].svg };
 		// a classified layer: its classes (symbol and label) under the layer row
-		return { type: 'classes', svg: legendToSvg([legend], { titles: 'never' }) };
+		return {
+			type: 'classes',
+			classes: legend.entries.map((entry) => ({ svg: entry.svg, label: entry.label }))
+		};
 	}
 
 	openStyleEditor(layerId: string, title: string): void {

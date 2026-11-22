@@ -14,7 +14,7 @@ export {
 } from './tree/legend-view';
 export type { LegendGroupMembers, LegendGroups } from './types/legend-groups';
 export type { LegendPanelOptions, LegendTargets } from './types/legend-panel-options';
-export type { LayerSymbol, LegendSource } from './types/legend-source';
+export type { LayerSymbol, LegendClass, LegendSource } from './types/legend-source';
 
 export { default as LegendPanelComponent } from './components/LegendPanel.svelte';
 export { default as LegendTree } from './components/LegendTree.svelte';

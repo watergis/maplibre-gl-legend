@@ -206,7 +206,9 @@ The icons (eye / eye-off, chevron, palette, close) and the "Only rendered" switc
 | `--maplibregl-legend-group-divider-inset`    | `8px`                                   | How much shorter the line between the rows of a group is, on each side. |
 | `--maplibregl-legend-group-indent`           | `--maplibregl-legend-icon-size` + `4px` | How much each level of the tree is indented.                            |
 | `--maplibregl-legend-tree-guide-color`       | `#e5e5e5`                               | Color of the vertical guide lines (`transparent`: no line).             |
+| `--maplibregl-legend-max-width`              | `320px`                                 | Largest width of the panel. Longer labels wrap onto several lines.  |
 | `--maplibregl-legend-text-color`             | `#1c1c1c`                               | Color of the titles and labels.                                         |
+| `--maplibregl-legend-class-font-size`        | `12px`                                  | Font size of the labels of the classes of a layer styled by data.       |
 | `--maplibregl-legend-focus-color`            | `#3b82f6`                               | Color of the keyboard focus outline.                                    |
 
 For rules the custom properties do not cover, see the [elements and classes of the panel](https://github.com/watergis/maplibre-gl-legend/tree/main/packages/legend-ui#elements) in the README of legend-ui.
