@@ -1,17 +1,25 @@
 import type { LayerSpecification } from 'maplibre-gl';
 
+/** A class of a layer styled by data: its symbol and its label */
+export interface LegendClass {
+	/** the symbol, with `width` and `height` attributes */
+	svg: SVGElement;
+	label: string;
+}
+
 /**
  * The legend symbol of a layer:
  *
  * - `none`: the layer has nothing to draw. It is not listed.
  * - `single`: one symbol, shown next to the title of the layer.
- * - `classes`: a layer styled by data, with a symbol and a label per class, shown under the title.
+ * - `classes`: a layer styled by data, with a symbol and a label per class, shown under the title
+ *   as a row per class. The rows are HTML, so long labels wrap to the width of the panel.
  * - `error`: the symbol could not be drawn. A fallback icon is shown.
  */
 export type LayerSymbol =
 	| { type: 'none' }
 	| { type: 'single'; svg: SVGElement }
-	| { type: 'classes'; svg: SVGElement }
+	| { type: 'classes'; classes: LegendClass[] }
 	| { type: 'error' };
 
 /**

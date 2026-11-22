@@ -58,13 +58,20 @@
 	/* color of the vertical lines guiding the levels of the tree (transparent: no line) */
 	--maplibregl-legend-tree-guide-color: #e5e5e5;
 
+	/* the largest width of the panel: longer labels wrap onto several lines */
+	--maplibregl-legend-max-width: 320px;
+
 	--maplibregl-legend-text-color: #1c1c1c;
+	/* font size of the labels of the classes of a layer styled by data */
+	--maplibregl-legend-class-font-size: 12px;
 	--maplibregl-legend-focus-color: #3b82f6;
 }
 
 .maplibregl-legend-list {
 	display: none;
 	position: relative;
+	box-sizing: border-box;
+	max-width: var(--maplibregl-legend-max-width);
 	margin: 0.3em;
 }
 
@@ -412,7 +419,8 @@
 	flex: 1 1 auto;
 	margin: 3px 8px 3px 0;
 	color: var(--maplibregl-legend-text-color);
-	white-space: nowrap;
+	/* breaks even inside a word (e.g. a long layer ID) when it does not fit */
+	overflow-wrap: anywhere;
 }
 
 .maplibregl-legend-group-header .maplibregl-legend-label {
@@ -435,18 +443,67 @@
 	margin-right: 2px;
 }
 
-/* the classes of a layer styled by data, one level deeper than the layer */
+/* the classes of a layer styled by data, one level deeper than the layer: a row per class */
 .maplibregl-legend-classes {
+	margin: 0 0 2px;
+	padding: 0;
+	list-style: none;
+}
+
+.maplibregl-legend-class {
+	/* the height of the first line of the label; the symbol is centered on it */
+	--maplibregl-legend-class-line-height: calc(var(--maplibregl-legend-class-font-size) * 1.4);
 	display: flex;
 	align-items: stretch;
 	padding: 0 2px;
 }
 
-.maplibregl-legend-classes-symbols {
-	align-self: center;
-	margin: 2px 0 4px;
+/*
+ * The symbol is aligned to the first line of a label wrapped onto several lines: the shorter of
+ * the symbol (its height in `--maplibregl-legend-class-symbol-height`, set per row) and the first
+ * line is pushed down by half of the difference.
+ * The symbols are as wide as the widest of the layer, so the labels are aligned.
+ */
+.maplibregl-legend-class-symbol {
+	display: flex;
+	flex: none;
+	align-self: flex-start;
+	align-items: center;
+	margin: max(
+			2px,
+			calc(
+				2px +
+					(
+						var(--maplibregl-legend-class-line-height) -
+							var(--maplibregl-legend-class-symbol-height, 0px)
+					) /
+					2
+			)
+		)
+		6px 2px 0;
 }
 
-.maplibregl-legend-classes-symbols > svg {
+.maplibregl-legend-class-symbol > svg {
 	display: block;
+}
+
+.maplibregl-legend-class-label {
+	flex: 1 1 auto;
+	align-self: flex-start;
+	margin: max(
+			2px,
+			calc(
+				2px +
+					(
+						var(--maplibregl-legend-class-symbol-height, 0px) -
+							var(--maplibregl-legend-class-line-height)
+					) /
+					2
+			)
+		)
+		8px 2px 0;
+	line-height: var(--maplibregl-legend-class-line-height);
+	color: var(--maplibregl-legend-text-color);
+	font-size: var(--maplibregl-legend-class-font-size);
+	overflow-wrap: anywhere;
 }

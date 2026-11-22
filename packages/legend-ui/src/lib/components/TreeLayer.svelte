@@ -58,19 +58,33 @@ layer styled by data one level deeper. A layer which has nothing to draw is not 
 			{/snippet}
 		</TreeRow>
 		{#if symbol?.type === 'classes'}
-			{@const svg = symbol.svg}
-			<div class="maplibregl-legend-classes">
-				<span
-					class="maplibregl-legend-indent"
-					style:--maplibregl-legend-tree-levels={node.depth + 1}
-				></span>
-				<span
-					class="maplibregl-legend-classes-symbols"
-					{@attach (span) => {
-						span.replaceChildren(svg);
-					}}
-				></span>
-			</div>
+			{@const column = Math.max(
+				0,
+				...symbol.classes.map((c) => Number(c.svg.getAttribute('width')) || 0)
+			)}
+			<ul class="maplibregl-legend-classes">
+				{#each symbol.classes as legendClass, i (i)}
+					<li
+						class="maplibregl-legend-class"
+						style:--maplibregl-legend-class-symbol-height="{Number(
+							legendClass.svg.getAttribute('height')
+						) || 0}px"
+					>
+						<span
+							class="maplibregl-legend-indent"
+							style:--maplibregl-legend-tree-levels={node.depth + 1}
+						></span>
+						<span
+							class="maplibregl-legend-class-symbol"
+							style:min-width="{column}px"
+							{@attach (span) => {
+								span.replaceChildren(legendClass.svg);
+							}}
+						></span>
+						<span class="maplibregl-legend-class-label">{legendClass.label}</span>
+					</li>
+				{/each}
+			</ul>
 		{/if}
 	</li>
 {/if}

@@ -30,6 +30,16 @@
 			{ label: 'DN200', color: '#2563eb' },
 			{ label: 'DN100', color: '#60a5fa' }
 		]);
+
+	const longClasses = () =>
+		classesSymbol([
+			{
+				label: 'DN300, DN350, DN400, DN450, DN500, DN600, DN700, DN800, DN900, DN1000',
+				color: '#1e3a8a'
+			},
+			{ label: 'DN200', color: '#2563eb' },
+			{ label: 'Other', color: '#60a5fa' }
+		]);
 </script>
 
 {#snippet template(args: Args)}
@@ -54,6 +64,11 @@
 	name="Classified layer"
 	{template}
 	args={{ layerId: 'pipeline', symbols: { pipeline: pipelineClasses } }}
+/>
+<Story
+	name="Long class labels"
+	{template}
+	args={{ layerId: 'pipeline', symbols: { pipeline: longClasses } }}
 />
 <Story
 	name="Fallback icon"

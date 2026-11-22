@@ -5,7 +5,7 @@ import * as TreeLayerStories from './TreeLayer.stories.svelte';
 
 # TreeLayer
 
-A layer of the legend tree: its symbol, title, eye toggle and style editor button. A layer styled by data shows its classes (a symbol and a label each) under the row, one level deeper. The symbol is drawn by the legend source; a layer which has nothing to draw is not listed, and a fallback icon is shown when the symbol cannot be drawn.
+A layer of the legend tree: its symbol, title, eye toggle and style editor button. A layer styled by data shows its classes (a symbol and a label each) under the row, one level deeper. Labels longer than the panel wrap onto several lines. The symbol is drawn by the legend source; a layer which has nothing to draw is not listed, and a fallback icon is shown when the symbol cannot be drawn.
 
 ## Where it is used
 
@@ -53,6 +53,7 @@ The stories use a mock legend source (`src/stories/ModelFrame.svelte`): the eye 
 - **Layer**: a layer with its symbol.
 - **Hidden**: a hidden layer.
 - **Classified layer**: a layer styled by data, with its classes under the row.
+- **Long class labels**: labels wider than the panel wrap onto several lines.
 - **Fallback icon**: the symbol could not be drawn.
 - **With style editor button**: `showStyleEditor`: the **Actions** panel lists the clicks.
 - **In nested groups**: a layer three levels deep: indented, with the guide lines of its groups.

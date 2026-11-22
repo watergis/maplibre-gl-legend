@@ -27,7 +27,7 @@ const source: LegendSource = {
 	isLayerVisible: (id) => map.getLayoutProperty(id, 'visibility') !== 'none',
 	setLayersVisibility: (ids, visible) =>
 		ids.forEach((id) => map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none')),
-	// { type: 'single', svg } | { type: 'classes', svg } | { type: 'none' } | { type: 'error' }
+	// { type: 'single', svg } | { type: 'classes', classes: [{ svg, label }] } | { type: 'none' } | { type: 'error' }
 	createSymbol: (layer) => drawSymbol(layer),
 	openStyleEditor: (layerId, title) => editor.open({ layerId, title })
 };
@@ -266,7 +266,9 @@ To restyle the panel, override these on `.maplibregl-legend-list`. Icons are CSS
 | `--maplibregl-legend-group-divider-inset`    | `8px`                                   | How much shorter the line between the rows of a group is, on each side.           |
 | `--maplibregl-legend-group-indent`           | `--maplibregl-legend-icon-size` + `4px` | How much each level of the tree is indented.                                      |
 | `--maplibregl-legend-tree-guide-color`       | `#e5e5e5`                               | Color of the vertical guide lines (`transparent`: no line).                       |
+| `--maplibregl-legend-max-width`              | `320px`                                 | Largest width of the panel. Longer labels wrap onto several lines.                |
 | `--maplibregl-legend-text-color`             | `#1c1c1c`                               | Color of the titles and labels.                                                   |
+| `--maplibregl-legend-class-font-size`        | `12px`                                  | Font size of the labels of the classes of a layer styled by data.                 |
 | `--maplibregl-legend-focus-color`            | `#3b82f6`                               | Color of the keyboard focus outline.                                              |
 
 ```css
@@ -311,9 +313,11 @@ div.maplibregl-legend-list                         the panel
             │   ├── span.maplibregl-legend-label
             │   ├── span.maplibregl-legend-style-slot > button.maplibregl-legend-style-button
             │   └── input.maplibregl-legend-visibility-toggle
-            └── div.maplibregl-legend-classes                     classes of a layer styled by data
-                ├── span.maplibregl-legend-indent
-                └── span.maplibregl-legend-classes-symbols > svg
+            └── ul.maplibregl-legend-classes                      classes of a layer styled by data
+                └── li.maplibregl-legend-class                     a class
+                    ├── span.maplibregl-legend-indent
+                    ├── span.maplibregl-legend-class-symbol > svg
+                    └── span.maplibregl-legend-class-label
 ```
 
 - A group row has `data-group` with the key of the group.
